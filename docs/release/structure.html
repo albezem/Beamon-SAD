@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Repo Structure &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Configuration of Project Environment" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="repo-structure">
+<h1>Repo Structure<a class="headerlink" href="#repo-structure" title="Permalink to this headline">¶</a></h1>
+<p>For structuring python projects read the Hitchhiker’s Guid to Python <a class="reference external" href="https://docs.python-guide.org/writing/structure/">here</a>.</p>
+<div class="section" id="overall-structure">
+<h2>Overall Structure<a class="headerlink" href="#overall-structure" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">/</span><span class="n">F</span>
+<span class="go">.</span>
+<span class="go">│   .gitignore</span>
+<span class="go">│   installer.spec</span>
+<span class="go">│   LICENSE</span>
+<span class="go">│   README.md</span>
+<span class="go">│   requirements.txt</span>
+<span class="go">│   runme.sh</span>
+<span class="go">│   setup.py</span>
+<span class="go">│</span>
+<span class="go">├───.idea</span>
+<span class="go">├───.run</span>
+<span class="go">├───beamon</span>
+<span class="go">│   │   core.py</span>
+<span class="go">│   │   __init__.py</span>
+<span class="go">│   │   __main__.py</span>
+<span class="go">│   │   __main.py</span>
+<span class="go">│   ├───resources</span>
+<span class="go">│   │   ├───custom_icons</span>
+<span class="go">│   │   │</span>
+<span class="go">│   │   └───ui</span>
+<span class="go">│   │</span>
+<span class="go">│   ├───ui</span>
+<span class="go">│   │   │</span>
+<span class="go">│   │   ├───tables</span>
+<span class="go">│</span>
+<span class="go">├───Beamon.egg-info</span>
+<span class="go">├───build</span>
+<span class="go">├───dist</span>
+<span class="go">│       Beamon-0.1-py3.7.egg</span>
+<span class="go">│       runbeamon.exe</span>
+<span class="go">│</span>
+<span class="go">├───docs</span>
+<span class="go">│   ├───build</span>
+<span class="go">│   └───source</span>
+<span class="go">├───resources</span>
+<span class="go">│   │   innosetup-6.0.5.exe</span>
+<span class="go">│   │   Winpython64-3.8.3.0.exe</span>
+<span class="go">│   │</span>
+<span class="go">│   └───UML</span>
+<span class="go">│</span>
+<span class="go">└───tests</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="discription">
+<h2>Discription<a class="headerlink" href="#discription" title="Permalink to this headline">¶</a></h2>
+<p>The Actual Modul:</p>
+<p>This is where the core focus of the repository is.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./beamon/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Programms code</p></td>
+</tr>
+</tbody>
+</table>
+<p>When user lunches beamon program as a python package using python interpreter, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">beamon</span>
+</pre></div>
+</div>
+<p>file __main__.py will be executed.
+On the other hand __main.py will be executed if beamon executable e.g. <cite>runbeamon.exe</cite> is called using bash</p>
+<p>License:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./LICENSE</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Copyright</p></td>
+</tr>
+</tbody>
+</table>
+<p>Setup.py:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./setup.py</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package and distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Make:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./make.bat and ./make.sh</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>make for both linux and windows</p></td>
+</tr>
+</tbody>
+</table>
+<p>PyInstaller Specification:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./runbeamon.spec</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>secure distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Distribution files:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./dist/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>distributing Beamon as package or executable</p></td>
+</tr>
+</tbody>
+</table>
+<p>Requirements File:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./requirements.txt</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Developers evironment dependencies</p></td>
+</tr>
+</tbody>
+</table>
+<p>Documentation:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./docs/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package reference documentation.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Test Suite:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./tests/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package integration and unit tests.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Beamon SAD</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Repo Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overall-structure">Overall Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discription">Discription</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">How TOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_loader_wizard.html">Project Loader Wizard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Details</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Configuration of Project Environment</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/structure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

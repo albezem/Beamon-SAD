@@ -1,0 +1,140 @@
+Repo Structure
+***************
+
+For structuring python projects read the Hitchhiker's Guid to Python `here
+<https://docs.python-guide.org/writing/structure/>`_.
+
+Overall Structure
+============================
+>>> tree /F
+.
+│   .gitignore
+│   installer.spec
+│   LICENSE
+│   README.md
+│   requirements.txt
+│   runme.sh
+│   setup.py
+│
+├───.idea
+├───.run
+├───beamon
+│   │   core.py
+│   │   __init__.py
+│   │   __main__.py
+│   │   __main.py
+│   ├───resources
+│   │   ├───custom_icons
+│   │   │
+│   │   └───ui
+│   │
+│   ├───ui
+│   │   │
+│   │   ├───tables
+│
+├───Beamon.egg-info
+├───build
+├───dist
+│       Beamon-0.1-py3.7.egg
+│       runbeamon.exe
+│
+├───docs
+│   ├───build
+│   └───source
+├───resources
+│   │   innosetup-6.0.5.exe
+│   │   Winpython64-3.8.3.0.exe
+│   │
+│   └───UML
+│
+└───tests
+
+
+Discription
+===========
+
+The Actual Modul:
+
+This is where the core focus of the repository is.
+
++------------+------------------------+
+| Location   |  ./beamon/             |
++------------+------------------------+
+| Purpose    | Programms code         |
++------------+------------------------+
+
+When user lunches beamon program as a python package using python interpreter, e.g.
+::
+
+    python -m beamon
+
+file __main__.py will be executed.
+On the other hand __main.py will be executed if beamon executable e.g. `runbeamon.exe` is called using bash
+
+
+
+License:
+
++------------+------------------------+
+| Location   |  ./LICENSE             |
++------------+------------------------+
+| Purpose    | Copyright              |
++------------+------------------------+
+
+Setup.py:
+
++------------+-------------------------------------+
+| Location   |  ./setup.py                         |
++------------+-------------------------------------+
+| Purpose    | Package and distribution management.|
++------------+-------------------------------------+
+
+Make:
+
++------------+-------------------------------------+
+| Location   |  ./make.bat and ./make.sh           |
++------------+-------------------------------------+
+| Purpose    | make for both linux and windows     |
++------------+-------------------------------------+
+
+PyInstaller Specification:
+
++------------+-------------------------------------+
+| Location   |  ./runbeamon.spec                   |
++------------+-------------------------------------+
+| Purpose    | secure distribution management.     |
++------------+-------------------------------------+
+
+Distribution files:
+
++------------+----------------------------------------------+
+| Location   |  ./dist/                                     |
++------------+----------------------------------------------+
+| Purpose    | distributing Beamon as package or executable |
++------------+----------------------------------------------+
+
+Requirements File:
+
++------------+-------------------------------------+
+| Location   |  ./requirements.txt                 |
++------------+-------------------------------------+
+| Purpose    | Developers evironment dependencies  |
++------------+-------------------------------------+
+
+Documentation:
+
++------------+---------------------------------+
+| Location   |  ./docs/                        |
++------------+---------------------------------+
+| Purpose    | Package reference documentation.|
++------------+---------------------------------+
+
+Test Suite:
+
++------------+------------------------------------+
+| Location   |  ./tests/                          |
++------------+------------------------------------+
+| Purpose    | Package integration and unit tests.|
++------------+------------------------------------+
+
+

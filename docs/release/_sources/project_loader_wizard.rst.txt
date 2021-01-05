@@ -1,0 +1,10 @@
+Project Loader Wizard
+**********************
+
+Upon starting Beamon, the user will be confronted with a wizard to load an existing project or make a new one.
+The user will also have a choice to load a geometry file directly.
+The wizard is simplified in the following diagram:
+
+.. image:: ../../resources/diagramms/loader_wizard.jpg
+
+After loading the project (with a geometry file) a notification will show up and notify the user if everything went well or if problems occurred.

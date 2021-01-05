@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beamon Documentation &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Making A Model" href="making_a_model.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="beamon-documentation">
+<h1>Beamon Documentation<a class="headerlink" href="#beamon-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Beamon is an open-source based development in the institute of structural analysis and
+lightweight design at RWTH University in Aachen. Beamon Static Analysis Design (SAD) is mainly
+a graphical finite element program for modeling static structural systems and simulating those using
+the direct stiffness method.</p>
+<div class="section" id="beamon-in-a-glance">
+<h2>Beamon In A Glance<a class="headerlink" href="#beamon-in-a-glance" title="Permalink to this headline">¶</a></h2>
+<p>The following Use-Case-Diagram summarizes Beamon’s capabilities.</p>
+<img alt="Use-Case-Diagram" src="_images/beamon_capabilities.png" />
+<p>Users or specifically designers are capable of defining node coordinates and structure boundary conditions (Structural support).</p>
+<p>Elements are connection information between nodes. In this context, a static model should build a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">Graph</a>.</p>
+<p>Each element has modifiable local system orientation and properties, profiles.</p>
+<p>Designers can apply external forces on structures such as, nodal forces or constant element forces.</p>
+<p>Geometries can be exported and imported as modifiable text files
+(<a class="reference external" href="https://de.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange">ASCII</a>-Symbols).</p>
+<p>Simulation results summed up in section forces and displacements for each element, and support forces and displacements
+for each node can be viewed in tables and exported as Excel or CSV files.</p>
+</div>
+<div class="section" id="documentations-contents">
+<h2>Documentations Contents<a class="headerlink" href="#documentations-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#nodes-and-boundry-conditions">Nodes And Boundry Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#elements">Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#nodes-loads">Nodes Loads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#element-loads">Element Loads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#profiles-and-beamsize">Profiles and BeamSize</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.core">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.simulation">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.database">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#element-orientation">Element Orientation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Beamon SAD</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="making_a_model.html" title="next chapter">Making A Model</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
