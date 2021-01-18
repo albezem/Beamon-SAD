@@ -1,0 +1,42 @@
+How TOs
+*******
+
+This chapter introduces some best practices and tutorials on how to implement some necessary features in the project.
+
+How To Build This Documentation
+================================
+
+Steps to build sphinx documentation:
+
+#. Install perl
+#. Install MikTex and latexmk package in MikTex
+#. Install sphinx package in your Python environment
+
+On your environment command line run following command from project root directory:
+
+.. code-block::
+
+    python -m sphinx -b latex docs\source docs\build\latex
+
+to build the latex version of the documentation. And then run
+
+.. code-block::
+
+    cd docs\build\latex && make
+
+to compile the latex documentation.
+
+Or run:
+
+.. code-block::
+
+    python -m sphinx -b html docs\source docs\build\html
+
+to build the html version of the documentation.
+
+How to Style QTableView Cells
+=============================
+
+https://www.learnpyqt.com/tutorials/qtableview-modelviews-numpy-pandas/
+
+

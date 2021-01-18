@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beamon Documentation &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="beamon-documentation">
+<h1>Beamon Documentation<a class="headerlink" href="#beamon-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Beamon is an open-source based development in the institute of structural analysis and
+lightweight design at RWTH University in Aachen. Beamon Static Analysis Design (SAD) is mainly
+a graphical finite element program for modeling static structural systems and simulating those using
+the direct stiffness method.</p>
+<div class="section" id="beamon-in-a-glance">
+<h2>Beamon In A Glance<a class="headerlink" href="#beamon-in-a-glance" title="Permalink to this headline">¶</a></h2>
+<p>The following Use-Case-Diagram summarizes Beamon’s capabilities.</p>
+<img alt="Use-Case-Diagram" src="_images/beamon_capabilities.png" />
+<p>Users or specifically designers are capable of defining node coordinates and structure boundary conditions (Structural support).</p>
+<p>Elements are connection information between nodes. In this context, a static model should build a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">Graph</a>.</p>
+<p>Each element has modifiable local system orientation and properties, profiles.</p>
+<p>Designers can apply external forces on structures such as, nodal forces or constant element forces.</p>
+<p>Geometries can be exported and imported as modifiable text files
+(<a class="reference external" href="https://de.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange">ASCII</a>-Symbols).</p>
+<p>Simulation results summed up in section forces and displacements for each element, and support forces and displacements
+for each node can be viewed in tables and exported as Excel or CSV files.</p>
+</div>
+<div class="section" id="documentations-contents">
+<h2>Documentations Contents<a class="headerlink" href="#documentations-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#windows-executable">Windows Executable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#python-package-for-developers-and-testers">Python Package (for developers and testers)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#starting-beamon">Starting Beamon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#how-to-use-beamon-package">How to use beamon package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#beamon-s-comman-line-arguments">Beamon’s comman line arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#using-beamon">Using Beamon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#loading-a-project-and-geometry-files">Loading a Project and Geometry files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#nodes-and-boundry-conditions">Nodes And Boundry Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#with-geometry-file">With Geometry File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#with-user-interface">With User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#nodes-and-boundry-conditions-visualization">Nodes and Boundry Conditions Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#elements">Elements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id3">With Geometry File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id6">With User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#elements-visualization">Elements Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#nodes-loads">Nodes Loads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id7">With Geometry File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id10">With User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#nodes-loads-visualization">Nodes Loads Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#element-loads">Element Loads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id11">With Geometry File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id14">With User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#element-loads-visualization">Element Loads Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="making_a_model.html#profiles-and-beamsize">Profiles and BeamSize</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id15">With Geometry File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#id16">With User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_a_model.html#with-beamsize">With BeamSize</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#element-orientation">Element Orientation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#calfem">CALFEM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.core">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.simulation">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-beamon.database">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="env.html">Programming Environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="env.html#python-environment">Python Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env.html#ide">IDE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env.html#project-requirements">Project Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Project Structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#directives-structure">Directives Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#discription">Discription</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#the-actual-module">The Actual Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#release-files">Release Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#resources">Resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#license">License</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#setup-py">Setup.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#make">Make</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#pyinstaller-specification">PyInstaller Specification:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#distribution-files">Distribution files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#requirements-file">Requirements File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#documentation">Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structure.html#test-suite">Test Suite</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html">Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#the-database">The Database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="implementation.html#database-structure-alpha-release">Database Structure (alpha release)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="implementation.html#sqlite-queries">SQLite Queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="implementation.html#reading-geometry-files-efficiently">Reading Geometry Files Efficiently</a></li>
+<li class="toctree-l4"><a class="reference internal" href="implementation.html#resetting-primary-keys">Resetting Primary Keys</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#pyside2-or-pyqt5">PySide2 or PyQt5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#package-vs-executable">Package vs. Executable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#class-structure">Class Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#the-simulation">The Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto.html">How TOs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto.html#how-to-build-this-documentation">How To Build This Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto.html#how-to-style-qtableview-cells">How to Style QTableView Cells</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="getting_started.html" title="next chapter">Getting Started</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

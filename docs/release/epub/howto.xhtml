@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How TOs</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-tos">
+<h1>How TOs</h1>
+<p>This chapter introduces some best practices and tutorials on how to implement some necessary features in the project.</p>
+<div class="section" id="how-to-build-this-documentation">
+<h2>How To Build This Documentation</h2>
+<p>Steps to build sphinx documentation:</p>
+<ol class="arabic simple">
+<li><p>Install perl</p></li>
+<li><p>Install MikTex and latexmk package in MikTex</p></li>
+<li><p>Install sphinx package in your Python environment</p></li>
+</ol>
+<p>On your environment command line run following command from project root directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">sphinx</span> <span class="o">-</span><span class="n">b</span> <span class="n">latex</span> <span class="n">docs</span>\<span class="n">source</span> <span class="n">docs</span>\<span class="n">build</span>\<span class="n">latex</span>
+</pre></div>
+</div>
+<p>to build the latex version of the documentation. And then run</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>\<span class="n">build</span>\<span class="n">latex</span> <span class="o">&amp;&amp;</span> <span class="n">make</span>
+</pre></div>
+</div>
+<p>to compile the latex documentation.</p>
+<p>Or run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">sphinx</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="n">docs</span>\<span class="n">source</span> <span class="n">docs</span>\<span class="n">build</span>\<span class="n">html</span>
+</pre></div>
+</div>
+<p>to build the html version of the documentation.</p>
+</div>
+<div class="section" id="how-to-style-qtableview-cells">
+<h2>How to Style QTableView Cells</h2>
+<p><a class="reference external" href="https://www.learnpyqt.com/tutorials/qtableview-modelviews-numpy-pandas/">https://www.learnpyqt.com/tutorials/qtableview-modelviews-numpy-pandas/</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

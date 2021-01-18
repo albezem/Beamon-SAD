@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Implementation Details &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How TOs" href="howto.html" />
+    <link rel="prev" title="Project Structure" href="structure.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="implementation-details">
+<h1>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h1>
+<p>This chapter include implementation details from database structure to UML class diagrams.
+It should help develop an understanding of the project for newcomers.</p>
+<div class="section" id="the-database">
+<h2>The Database<a class="headerlink" href="#the-database" title="Permalink to this headline">¶</a></h2>
+<p>The Database is implemented using SQLite3 in Python. Using SQLite database files as project files is quite convenient.
+Therefore we will be referring to database files with project files.</p>
+<div class="section" id="database-structure-alpha-release">
+<h3>Database Structure (alpha release)<a class="headerlink" href="#database-structure-alpha-release" title="Permalink to this headline">¶</a></h3>
+<p>The following diagram shows an entity-relationship diagram (ER-Diagram) of the alpha release.</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/er_diagram_alpha.png" src="_images/er_diagram_alpha.png" />
+<p class="caption"><span class="caption-text">ER-Diagram of the alpha release.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Some entities have composite attributes. For example, Links has attribute <span class="math notranslate nohighlight">\(\vec{v}\)</span>, which practically
+have to be divided up into v_x, v_y, and v_z.
+<em>dof</em> represents which degree of freedom is locked/unlocked (0/1) on a node to save boundary conditions.
+<em>edof</em> is element degree of freedom which consists of 12 integer numbers.</p>
+</div>
+<div class="section" id="sqlite-queries">
+<h3>SQLite Queries<a class="headerlink" href="#sqlite-queries" title="Permalink to this headline">¶</a></h3>
+<p>The following sql query shows how to pass parameters to an sql query.
+cur is connection object cursor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;path_to_database&quot;</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT id FROM Nodes WHERE x=</span><span class="si">{x}</span><span class="s1"> and y=</span><span class="si">{y}</span><span class="s1"> and z=</span><span class="si">{z}</span><span class="s1">;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">z</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Another way of passing parameters to sql queries is using the tuple params.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;path_to_database&quot;</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT id FROM Nodes WHERE x={?} and y={?} and z={?};&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also obtain panda Dataframes using sql queries. It is very convenient especially when using QTableViews to show
+data tables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;path_to_database&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas.io.sql</span> <span class="k">as</span> <span class="nn">sql</span>
+<span class="n">sql</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT E, G, A, Iy, Iz, kv, k from Profile&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-geometry-files-efficiently">
+<h3>Reading Geometry Files Efficiently<a class="headerlink" href="#reading-geometry-files-efficiently" title="Permalink to this headline">¶</a></h3>
+<p>Geometry files are, for modifiability purposes, text files with ASCII characters.
+Reading large text files into SQLite database could cause run-time problems.
+<em>import_text</em> method in <em>Database</em> class avoids those problems by firstly reading the text file in a buffered CSV file,
+which will be transformed into pandas dataframe, which is imported eventually into the database efficiently.</p>
+<p>The following activity diagram summarizes the steps taken in <em>import_text</em> to import geometry files.</p>
+<div class="figure align-default" id="id2">
+<img alt="_images/activity_import_text.png" src="_images/activity_import_text.png" />
+<p class="caption"><span class="caption-text">UML activity diagram showing steps to import geometry files in acitvity import_text.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="resetting-primary-keys">
+<h3>Resetting Primary Keys<a class="headerlink" href="#resetting-primary-keys" title="Permalink to this headline">¶</a></h3>
+<p>After deleting rows in SQLite3 tables, primary keys would have gaps. To prevent that from happening, primary keys have to be altered.
+Resetting primary keys involves changing foreign keys as well.</p>
+<p>The following methods reset primary keys for each table:</p>
+<ul class="simple">
+<li><p><em>sort_node_indexes</em></p></li>
+<li><p><em>sort_profile_indexes</em></p></li>
+<li><p><em>sort_link_indexes</em></p></li>
+<li><p><em>sort_load_indexes</em></p></li>
+<li><p><em>sort_lineload_indexes</em></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="pyside2-or-pyqt5">
+<h2>PySide2 or PyQt5<a class="headerlink" href="#pyside2-or-pyqt5" title="Permalink to this headline">¶</a></h2>
+<p>PySid2 and PyQt5 have almost the same api.
+But it is worth mentioning that using PyQt5 is more beneficial in the long run.
+PySide development lagged behind PyQt and PySide2 supports only Linux and MacOs Platforms.
+On the Other hand PySide have very convenient Libraries for 3D animations that PyQt5 dont have.</p>
+<p>Eventually PyQt5 was chosen due to major popularity and community support.</p>
+</div>
+<div class="section" id="package-vs-executable">
+<h2>Package vs. Executable<a class="headerlink" href="#package-vs-executable" title="Permalink to this headline">¶</a></h2>
+<p>Running Beamon as a package is not much challenging as an Executable that has been securely compressed using
+e.g. PyInstaller (among other).</p>
+<p>In some cases you need to differentiate between the two situations.
+Some dependencies have to be formatted first before they get used. For example all .ui files will be formatted
+using pyuic5 from xml to python at every run in the main script. This will prevent mistakes like forgetting
+to update the user interface that is being used after modification.
+In the Executable version of the program this is no longer needed. The program will be in a frozen state and there
+are no updates to any files anymore.</p>
+<p>For this reason there are two main scripts for each of the program versions
+<strong>__main__.py</strong> for Beamon as a package and <strong>__main.py</strong> for Beamon as an executable.</p>
+<p><strong>__main.py</strong> has no formatting commands whereas <strong>__main__.py</strong> uses pyuic5 module to format local files like .ui and
+.rst</p>
+</div>
+<div class="section" id="class-structure">
+<h2>Class Structure<a class="headerlink" href="#class-structure" title="Permalink to this headline">¶</a></h2>
+<p>The following class diagram shows the whole class structure in Beamon project.</p>
+<div class="figure align-default" id="id3">
+<img alt="_images/class_complex.svg" src="_images/class_complex.svg" /><p class="caption"><span class="caption-text">UML class diagram showing Beamon project structure.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>There are two main scripts <em>__main__</em> and <em>__main</em> that instantiate the application.
+<em>__main is for executables and does not contain formatting instructions. Both main scripts are connected to the
+*Main</em> GUI class.</p>
+<p><em>Main</em> resides in the <em>ui</em> package, which contains everything related to the user interface.
+As you can see <em>Main</em> inherits from <em>QMainWindow</em>, which is a single tone PyQt5 class.</p>
+<p><em>VisualizerMainForm</em> class is responsible for visualization. It contains <em>PyVistaWidget</em> which is the visualization
+component based on PyVista and should therefore inherit from <em>QtInteractor</em>.
+Furthermore, the visualizer can call helper dialogs like <em>GridSettingsMainForm</em> to control grid settings.</p>
+<p><em>BeamSizeMainForm</em> class can be called from <em>Main</em>. BeamSize is an expansion of the basic functionality of Beamon and
+should therefore reside in the <em>expansions</em> package. <em>BeamSizeMainform</em> contains a PyQtGraph plot widget. <em>PlotWidget</em>
+should therefore inherit from <em>QGraphicsView</em>.</p>
+<p><em>QDockWidget</em> can be triggered from <em>Main</em> and contains a widget that could be dynamically changed. <em>QDockWidget</em>
+shows either <em>IntroMainForm</em> or <em>TableMainForm</em>.</p>
+<p><em>IntroMainForm</em> contains a web browser that shows this documentation in PDF-format.</p>
+<p>Inside <em>tables</em> package you will find classes that follow the model-view-controller design pattern. <em>TableMainForm</em>
+contains the view, which is QTableView. <em>InLineEditDelegate</em> is the controller. All models like <em>NodeTableModel</em> inherit
+from <em>QAbstractTableModel</em>.</p>
+</div>
+<div class="section" id="the-simulation">
+<h2>The Simulation<a class="headerlink" href="#the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The following diagram shows how the simulation in Beamon is implemented. Three parts are involved in the Simulation,
+<em>Database</em>, <em>Core</em> and <em>CALFEM</em>. Each part has it’s own responsibility. <em>Database</em> is responsible for obtaining and
+saving data. <em>Core</em> is responsible for the calculations implemented in Beamon. <em>CALFEM</em> is the Calfem-Python Package
+which is responsible for the most complex calculation.</p>
+<div class="figure align-default" id="id4">
+<img alt="_images/activity_simulation.jpg" src="_images/activity_simulation.jpg" />
+<p class="caption"><span class="caption-text">UML activity diagram showing static simulation steps.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contrib.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="env.html">Programming Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Project Structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-database">The Database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-structure-alpha-release">Database Structure (alpha release)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlite-queries">SQLite Queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reading-geometry-files-efficiently">Reading Geometry Files Efficiently</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resetting-primary-keys">Resetting Primary Keys</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyside2-or-pyqt5">PySide2 or PyQt5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-vs-executable">Package vs. Executable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#class-structure">Class Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-simulation">The Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto.html">How TOs</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="contrib.html">Contributing</a><ul>
+      <li>Previous: <a href="structure.html" title="previous chapter">Project Structure</a></li>
+      <li>Next: <a href="howto.html" title="next chapter">How TOs</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/implementation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,54 @@
+Getting Started
+################
+
+Installation
+============
+
+Windows Executable
+------------------
+Download windows executable in **releases** directory an run it.
+
+Python Package (for developers and testers)
+-------------------------------------------
+Use the package manager `pip<https://pip.pypa.io/en/stable/>` to install requirements from requirements.txt file.
+
+Starting Beamon
+===============
+
+How to use beamon package
+-------------------------
+
+To run Beamon package use the following command in your python environment::
+
+     python -m beamon
+
+This will execute the user interface of Beamon
+
+Beamon's comman line arguments
+------------------------------
+
+Available command line arguments are:
+
+#. -i \<path to geometry file\>
+#. -o \<path to output geometry file\> **(will be removed in future releases)**
+#. -t test mode (lunches all submodules on start)
+#. -r ram mode (runs database on RAM)
+#. -d \<path to database file\>
+
+
+Using Beamon
+============
+
+Loading a Project and Geometry files
+------------------------------------
+
+Upon starting Beamon, the user will be confronted with a wizard to load an existing project or make a new one.
+The user will also have a choice to load a geometry file directly. The user can append the geometry file to existing
+data in project or overwrite all existing geometry data.
+
+The wizard is simplified in the following diagram:
+
+.. image:: ../../resources/diagramms/loader_wizard.jpg
+
+After loading the project (with a geometry file) a notification will show up and notify the user if
+everything went well or if problems occurred.

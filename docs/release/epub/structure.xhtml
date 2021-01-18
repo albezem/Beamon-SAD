@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Structure</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="project-structure">
+<h1>Project Structure</h1>
+<p>For structuring python projects read the Hitchhiker’s Guid to Python <a class="reference external" href="https://docs.python-guide.org/writing/structure/">here</a><span class="link-target"> [https://docs.python-guide.org/writing/structure/]</span>.</p>
+<div class="section" id="directives-structure">
+<h2>Directives Structure</h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">/</span><span class="n">F</span>
+<span class="go">.</span>
+<span class="go">|   .gitattributes</span>
+<span class="go">│   .gitignore</span>
+<span class="go">│   LICENSE</span>
+<span class="go">│   make.bat</span>
+<span class="go">│   make.sh</span>
+<span class="go">│   README.md</span>
+<span class="go">│   requirements.txt</span>
+<span class="go">│   runbeamon.spec</span>
+<span class="go">│   setup.py</span>
+<span class="go">├───beamon</span>
+<span class="go">│   ├───resources</span>
+<span class="go">│   │   ├───custom_icons</span>
+<span class="go">│   │   └───ui</span>
+<span class="go">│   ├───ui</span>
+<span class="go">│   │   ├───expansions</span>
+<span class="go">│   │   ├───settings</span>
+<span class="go">│   │   ├───tables</span>
+<span class="go">├───build</span>
+<span class="go">├───dist</span>
+<span class="go">├───docs</span>
+<span class="go">│   ├───build</span>
+<span class="go">│   ├───release</span>
+<span class="go">│   └───source</span>
+<span class="go">│       ├───resources</span>
+<span class="go">│       │   └───figures</span>
+<span class="go">│       └───_static</span>
+<span class="go">├───releases</span>
+<span class="go">│   └───alpha</span>
+<span class="go">├───resources</span>
+<span class="go">└───tests</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="discription">
+<h2>Discription</h2>
+<div class="section" id="the-actual-module">
+<h3>The Actual Module</h3>
+<p>This is where the core focus of the repository is.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./beamon/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Programs code</p></td>
+</tr>
+</tbody>
+</table>
+<p>When user lunches Beamon as a python package using python interpreter, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">beamon</span>
+</pre></div>
+</div>
+<p>file __main__.py will be executed.
+On the other hand __main.py will be executed if beamon executable e.g. <cite>runbeamon.exe</cite> is called using bash</p>
+</div>
+<div class="section" id="release-files">
+<h3>Release Files</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./releases</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>All executables releases</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./docs/release</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>latest documentation release</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resources">
+<h3>Resources</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./beamon/resources</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>program dependent resources for running</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./resources</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>project dependent resources</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="license">
+<h3>License</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./LICENSE</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Copyright</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="setup-py">
+<h3>Setup.py</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./setup.py</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package and distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="make">
+<h3>Make</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./make.bat and ./make.sh</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>make for both linux and windows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pyinstaller-specification">
+<h3>PyInstaller Specification:</h3>
+<p>This file is auto generated from make and excluded from remote repository. It can be modified for testing purposes.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./runbeamon.spec</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>secure distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="distribution-files">
+<h3>Distribution files</h3>
+<p>This directory is also autogenerated and excluded from remote repository.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./dist/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>distributing Beamon as package or executable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="requirements-file">
+<h3>Requirements File</h3>
+<p>Contains all dependencies for the project.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./requirements.txt</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Developers evironment dependencies</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation</h3>
+<p>It is worth noting that the <strong>release</strong> directory inside <strong>docs</strong> is the latest documentation release.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./docs/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package reference documentation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test-suite">
+<h3>Test Suite</h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./tests/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package integration and unit tests.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

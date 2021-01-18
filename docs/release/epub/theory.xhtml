@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theory</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="theory">
+<h1>Theory</h1>
+<p>This project is base on bachelor thesis “Entwicklung eines Softwaresystems zur Visualisierung und Simulation von
+Tragwerksstrukturen” in english “Development of a software system for the visualization and simulation of truss
+structures” at institute of structural mechanics and lightweight design at RWTH-Aachen University.</p>
+<div class="section" id="element-orientation">
+<h2>Element Orientation</h2>
+<p>Supposedly we have an element defined between points A and B.
+We define elements local z-axis by an auxiliary vector <span class="math notranslate nohighlight">\(\vec{v}\)</span>. As shown in Figure below, <span class="math notranslate nohighlight">\(\vec{v}\)</span> has one
+orthogonal projection on the normal plane E. The normal vector of E points in the direction
+of local x-axis. This projection of <span class="math notranslate nohighlight">\(\vec{v}\)</span> onto plane E points in the direction of the local z-axis.</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/DefiningBeamOrientation.png" src="_images/DefiningBeamOrientation.png" />
+<p class="caption"><span class="caption-text">The rotation of an element is based only on the local z-axis, which is defined by the vector <span class="math notranslate nohighlight">\(\vec{v}\)</span></span></p>
+</div>
+</div>
+<div class="section" id="calfem">
+<h2>CALFEM</h2>
+<p>Beamon’s simulation is based on open source library CALFEM. For further information read
+<code class="xref download docutils literal notranslate"><span class="pre">CALFEM</span> <span class="pre">for</span> <span class="pre">Matlab</span></code><span class="link-target"> [https://raw.githubusercontent.com/CALFEM/calfem-matlab/master/calfem34.pdf]</span> and
+<code class="xref download docutils literal notranslate"><span class="pre">CALFEM</span> <span class="pre">for</span> <span class="pre">Python</span></code><span class="link-target"> [https://raw.githubusercontent.com/CALFEM/calfem-python/master/manual.pdf]</span></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

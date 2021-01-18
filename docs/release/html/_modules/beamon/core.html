@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>beamon.core &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for beamon.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Core functions for beamon</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">calfem.core</span> <span class="k">as</span> <span class="nn">cal</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="get_rmat"><a class="viewcode-back" href="../../api.html#beamon.core.get_rmat">[docs]</a><span class="k">def</span> <span class="nf">get_rmat</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the 3D Rotation matrix of a plane defined with vector normal M.</span>
+<span class="sd">    N will be the vector normal to the plane you want to rotate into.</span>
+
+<span class="sd">    :param M: 3 component list</span>
+<span class="sd">    :type M: double</span>
+<span class="sd">    :param N: 3 component list</span>
+<span class="sd">    :type N: double</span>
+<span class="sd">    :return: 3x3 matrix</span>
+<span class="sd">    :rtype: double</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Let M be the vector normal to your current plane, and N be the vector normal to the plane you want to rotate int</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="c1"># If M == N you can stop now and leave the original points unchanged</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">N</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># Calculate the rotation angle</span>
+    <span class="n">costheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">*</span> <span class="n">norm</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+    <span class="c1"># Calculate the rotation axis</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">costheta</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">c</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">C</span> <span class="o">-</span> <span class="n">z</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">s</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">y</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">z</span> <span class="o">*</span> <span class="n">C</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">s</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">z</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">C</span> <span class="o">-</span> <span class="n">y</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">z</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">c</span><span class="p">]])</span></div>
+
+
+<div class="viewcode-block" id="transform"><a class="viewcode-back" href="../../api.html#beamon.core.transform">[docs]</a><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms each point in points matrix using the transformation matrix T.</span>
+<span class="sd">    points should have row wise point coordinates.</span>
+
+<span class="sd">    :param T: 3x3 Transformation Matrix</span>
+<span class="sd">    :type T: double</span>
+<span class="sd">    :param points: nx3 points matrix</span>
+<span class="sd">    :type points: double</span>
+<span class="sd">    :return: nx3 points matrix</span>
+<span class="sd">    :rtype: double</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="make_joints"><a class="viewcode-back" href="../../api.html#beamon.core.make_joints">[docs]</a><span class="k">def</span> <span class="nf">make_joints</span><span class="p">(</span><span class="n">edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">ndofs</span><span class="p">,</span> <span class="n">bc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.</span>
+<span class="sd">    This will adjust translation conditions between elements.</span>
+<span class="sd">    New nodes and dofs will be appended at the ende of each input &#39;nodes&#39; and &#39;dof&#39;.</span>
+<span class="sd">    edof matrix contain element dof numbers for each nodal point end. Free dof number is predefined as zero.</span>
+<span class="sd">    nodes matrix contain [x,y,z] nodes coordinates in each row.</span>
+<span class="sd">    dof matrix contain nodes degrees of freedom for each node in a row.</span>
+<span class="sd">    bc array contain nodes degrees of freedom that are locked.</span>
+<span class="sd">    map contains mapping information from cloned nodes to origin nodes</span>
+
+<span class="sd">    :param edof: topology matrix</span>
+<span class="sd">    :type edof: integer matrix</span>
+<span class="sd">    :param nodes: nodes coordinates matrix</span>
+<span class="sd">    :type nodes: float matrix</span>
+<span class="sd">    :param dof: nodes dof matrix</span>
+<span class="sd">    :type dof: integer matrix</span>
+<span class="sd">    :param ndofs: number of dof in each node</span>
+<span class="sd">    :type ndofs: integer (3 or 6)</span>
+<span class="sd">    :param bc: boundary conditions array</span>
+<span class="sd">    :type bc: integer array</span>
+<span class="sd">    :param map: origin and cloned nodes mapping</span>
+<span class="sd">    :type map: dict</span>
+<span class="sd">    :return: edof, nodes, dof, map</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">el_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">last_dof</span> <span class="o">=</span> <span class="n">dof</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">map</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># mapping cloned nodes to origin nodes</span>
+
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">edof</span><span class="p">:</span>
+        <span class="c1"># something free at element beginning node</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># add a new node</span>
+            <span class="n">o_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># origin node index</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">nodes</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">o_idx</span><span class="p">]))</span>  <span class="c1"># append new node coordinates</span>
+            <span class="c1"># map cloned node index to origin node</span>
+            <span class="nb">map</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)]</span> <span class="o">=</span> <span class="n">o_idx</span>
+            <span class="n">n_dof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">last_dof</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndofs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>  <span class="c1"># get new dof</span>
+            <span class="n">last_dof</span> <span class="o">=</span> <span class="n">n_dof</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># replace 0 values in edof</span>
+            <span class="n">n_dof_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">edof</span><span class="p">[</span><span class="n">el_idx</span><span class="p">,</span> <span class="nb">id</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_dof</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+                <span class="n">n_dof_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># adjust boundary conditions</span>
+            <span class="c1"># get origin node dof</span>
+            <span class="n">o_dof</span> <span class="o">=</span> <span class="n">dof</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="c1"># append new dof numbers to bc if origin dof numbers happen to be in bc</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">n_dof</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">bc</span><span class="p">,</span> <span class="n">o_dof</span><span class="p">,</span> <span class="n">assume_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">2</span><span class="p">]]:</span>
+                <span class="n">bc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="c1"># something free at element end node</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># add a new node</span>
+            <span class="n">o_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># origin node index</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">nodes</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">o_idx</span><span class="p">]))</span>  <span class="c1"># append new node coordinates</span>
+            <span class="c1"># map cloned node index to origin node</span>
+            <span class="nb">map</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)]</span> <span class="o">=</span> <span class="n">o_idx</span>
+            <span class="n">n_dof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">last_dof</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndofs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>  <span class="c1"># get new dof</span>
+            <span class="n">last_dof</span> <span class="o">=</span> <span class="n">n_dof</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># replace 0 values in edof</span>
+            <span class="n">n_dof_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">edof</span><span class="p">[</span><span class="n">el_idx</span><span class="p">,</span> <span class="nb">id</span> <span class="o">+</span> <span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_dof</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+                <span class="n">n_dof_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># adjust boundary conditions</span>
+            <span class="c1"># get origin node dof</span>
+            <span class="n">o_dof</span> <span class="o">=</span> <span class="n">dof</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="c1"># append new dof numbers to bc if origin dof numbers happen to be in bc</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">n_dof</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">bc</span><span class="p">,</span> <span class="n">o_dof</span><span class="p">,</span> <span class="n">assume_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">2</span><span class="p">]]:</span>
+                <span class="n">bc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">el_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># make new dof matrix</span>
+    <span class="n">dof</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">createdofs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span> <span class="n">ndofs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="nb">map</span></div>
+
+
+<div class="viewcode-block" id="get_local_orientation"><a class="viewcode-back" href="../../api.html#beamon.core.get_local_orientation">[docs]</a><span class="k">def</span> <span class="nf">get_local_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates all local axes orientation vectors according to v vector and</span>
+<span class="sd">     normal vectors n = (node2-node1)/abs(node2-node1)</span>
+<span class="sd">    Z axes is the projection of v on the plane with orthogonal vector X axes</span>
+
+<span class="sd">    :return: x,y,z directions in each row</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get all n and v vectors</span>
+    <span class="c1"># orientation = self.data_set.get_link_orientations()</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">orientation</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># x axes vectors</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">orientation</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># y axes vectors</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">orientation</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># z axes vectors</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">orientation</span><span class="p">:</span>
+        <span class="n">x_el</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]])</span>  <span class="c1"># direction vector</span>
+        <span class="c1"># normalize</span>
+        <span class="n">x_el</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">x_el</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">z_el</span> <span class="o">=</span> <span class="n">_project_onto_plane</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x_el</span><span class="p">)</span>
+        <span class="n">y_el</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x_el</span><span class="p">,</span> <span class="n">z_el</span><span class="p">)</span>  <span class="c1"># negative because left hand coordinate systems are being used</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_el</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_el</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_el</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
+
+
+<div class="viewcode-block" id="assemble_global_f"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_global_f">[docs]</a><span class="k">def</span> <span class="nf">assemble_global_f</span><span class="p">(</span><span class="n">loads</span><span class="p">,</span> <span class="n">Dof</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assemble global loads vector from nodes loads.</span>
+<span class="sd">    Loads should contain nodes coordinates and the forces applied to each node [x,y,z, u,v,w, m_x,m_y,m_z]</span>
+
+<span class="sd">    :param loads: Nodes loads array</span>
+<span class="sd">    :type loads: float matrix</span>
+<span class="sd">    :param Dof: nodes degrees of freedom</span>
+<span class="sd">    :type Dof: integer matrix</span>
+<span class="sd">    :return: global force vector (n x 1 vector)</span>
+<span class="sd">    :rtype: float vector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># global f size is the last dof number</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">Dof</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">load</span> <span class="ow">in</span> <span class="n">loads</span><span class="p">:</span>
+        <span class="n">n_dofs</span> <span class="o">=</span> <span class="n">Dof</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">load</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># get dof index in global f for each node</span>
+        <span class="n">column_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">dof_id</span> <span class="ow">in</span> <span class="n">n_dofs</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">[</span><span class="n">dof_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">load</span><span class="p">[</span><span class="n">column_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># superposition of each load vector component</span>
+            <span class="n">column_id</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">f</span></div>
+
+
+<div class="viewcode-block" id="assemble_element_loads"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_element_loads">[docs]</a><span class="k">def</span> <span class="nf">assemble_element_loads</span><span class="p">(</span><span class="n">loads</span><span class="p">,</span> <span class="n">Edof</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assemble element local loads vector from element loads.</span>
+<span class="sd">    Loads should contain [link_id, qx, qy, qz, qw]</span>
+
+<span class="sd">    :param loads: element loads</span>
+<span class="sd">    :type loads: float matrix</span>
+<span class="sd">    :param Edof: Element degree of freedom (Topology matrix)</span>
+<span class="sd">    :type Edof: integer matrix</span>
+<span class="sd">    :return: local forces</span>
+<span class="sd">    :rtype: float matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Edof</span><span class="p">),</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">load</span> <span class="ow">in</span> <span class="n">loads</span><span class="p">:</span>
+        <span class="n">eq</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">load</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">eq</span></div>
+
+
+<div class="viewcode-block" id="assemble_bc"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_bc">[docs]</a><span class="k">def</span> <span class="nf">assemble_bc</span><span class="p">(</span><span class="n">nodes_bc</span><span class="p">,</span> <span class="n">Dof</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assemble boundary condition information in a vector.</span>
+<span class="sd">    nodes_bc should contain [u_x,u_y,u_z,phi_x,phi_y,phi_z] for each node, which can only contain</span>
+<span class="sd">    0 (free) or 1 (locked).</span>
+<span class="sd">    The assembled bc vector could be ex. [1,2,5,6] that locks movement in those numbered directions.</span>
+
+<span class="sd">    :param nodes_bc: boundary condition information from database</span>
+<span class="sd">    :type nodes_bc: integer matrix</span>
+<span class="sd">    :param Dof: nodes degrees of freedom</span>
+<span class="sd">    :type Dof: integer matrix</span>
+<span class="sd">    :return: bc vector</span>
+<span class="sd">    :rtype: integer 1 x n vector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bc</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">row_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">bcond</span> <span class="ow">in</span> <span class="n">nodes_bc</span><span class="p">:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">bcond</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="n">bc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dof</span><span class="p">[</span><span class="n">row_id</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">row_id</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="assemble_nodes_results"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_nodes_results">[docs]</a><span class="k">def</span> <span class="nf">assemble_nodes_results</span><span class="p">(</span><span class="n">o_edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assemble nodes displacements and support forces according to joints mapping into a pandas dataframe.</span>
+
+<span class="sd">    :param o_edof: origin edof</span>
+<span class="sd">    :type o_edof: integer matrix</span>
+<span class="sd">    :param nodes: nodes coordinates</span>
+<span class="sd">    :type nodes: float matrix</span>
+<span class="sd">    :param a: nodes displacements</span>
+<span class="sd">    :type a: float vector</span>
+<span class="sd">    :param r: nodes support forces</span>
+<span class="sd">    :type r: float vector</span>
+<span class="sd">    :param map: origin nodes to cloned joint nodes map</span>
+<span class="sd">    :type map: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># displacements</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># reaction forces</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">node_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">n_a</span><span class="p">,</span> <span class="n">n_q</span><span class="p">,</span> <span class="n">n_coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">o_edof</span><span class="p">):</span>
+            <span class="n">node_idx</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>  <span class="c1"># if joint node take origin node index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node_idx</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># if origin node just take it&#39;s index</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">node_idx</span><span class="p">,</span> <span class="n">n_a</span><span class="p">,</span> <span class="n">n_coord</span><span class="p">,</span> <span class="n">n_q</span><span class="p">))</span>
+        <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># values will be sorted for Node Nr. in case of existing joint nodes that has the same number as their origin nodes</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_z&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;Qx&#39;</span><span class="p">,</span> <span class="s1">&#39;Qy&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;Qz&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_z&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_project_onto_plane</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;gets the projection of v onto a plane defined by n as its orthogonal vector.</span>
+
+<span class="sd">    :param v: numpy vector in R3</span>
+<span class="sd">    :param n: numpy normal vector in R3</span>
+<span class="sd">    :return: numpy array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="o">*</span> <span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

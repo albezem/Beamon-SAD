@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contributing &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Programming Environment" href="env.html" />
+    <link rel="prev" title="API" href="api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="env.html">Programming Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="env.html#python-environment">Python Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env.html#ide">IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env.html#project-requirements">Project Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Project Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#directives-structure">Directives Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#discription">Discription</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#the-actual-module">The Actual Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#release-files">Release Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#resources">Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#license">License</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#setup-py">Setup.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#make">Make</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#pyinstaller-specification">PyInstaller Specification:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#distribution-files">Distribution files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#requirements-file">Requirements File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure.html#test-suite">Test Suite</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#the-database">The Database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#database-structure-alpha-release">Database Structure (alpha release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#sqlite-queries">SQLite Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#reading-geometry-files-efficiently">Reading Geometry Files Efficiently</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implementation.html#resetting-primary-keys">Resetting Primary Keys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#pyside2-or-pyqt5">PySide2 or PyQt5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#package-vs-executable">Package vs. Executable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#class-structure">Class Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#the-simulation">The Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">How TOs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="howto.html#how-to-build-this-documentation">How To Build This Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto.html#how-to-style-qtableview-cells">How to Style QTableView Cells</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="env.html">Programming Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Project Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto.html">How TOs</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API</a></li>
+      <li>Next: <a href="env.html" title="next chapter">Programming Environment</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/contrib.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

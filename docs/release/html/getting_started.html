@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Making A Model" href="making_a_model.html" />
+    <link rel="prev" title="Beamon Documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="windows-executable">
+<h3>Windows Executable<a class="headerlink" href="#windows-executable" title="Permalink to this headline">¶</a></h3>
+<p>Download windows executable in <strong>releases</strong> directory an run it.</p>
+</div>
+<div class="section" id="python-package-for-developers-and-testers">
+<h3>Python Package (for developers and testers)<a class="headerlink" href="#python-package-for-developers-and-testers" title="Permalink to this headline">¶</a></h3>
+<p>Use the package manager <cite>pip&lt;https://pip.pypa.io/en/stable/&gt;</cite> to install requirements from requirements.txt file.</p>
+</div>
+</div>
+<div class="section" id="starting-beamon">
+<h2>Starting Beamon<a class="headerlink" href="#starting-beamon" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-to-use-beamon-package">
+<h3>How to use beamon package<a class="headerlink" href="#how-to-use-beamon-package" title="Permalink to this headline">¶</a></h3>
+<p>To run Beamon package use the following command in your python environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">beamon</span>
+</pre></div>
+</div>
+<p>This will execute the user interface of Beamon</p>
+</div>
+<div class="section" id="beamon-s-comman-line-arguments">
+<h3>Beamon’s comman line arguments<a class="headerlink" href="#beamon-s-comman-line-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Available command line arguments are:</p>
+<ol class="arabic simple">
+<li><p>-i &lt;path to geometry file&gt;</p></li>
+<li><p>-o &lt;path to output geometry file&gt; <strong>(will be removed in future releases)</strong></p></li>
+<li><p>-t test mode (lunches all submodules on start)</p></li>
+<li><p>-r ram mode (runs database on RAM)</p></li>
+<li><p>-d &lt;path to database file&gt;</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="using-beamon">
+<h2>Using Beamon<a class="headerlink" href="#using-beamon" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="loading-a-project-and-geometry-files">
+<h3>Loading a Project and Geometry files<a class="headerlink" href="#loading-a-project-and-geometry-files" title="Permalink to this headline">¶</a></h3>
+<p>Upon starting Beamon, the user will be confronted with a wizard to load an existing project or make a new one.
+The user will also have a choice to load a geometry file directly. The user can append the geometry file to existing
+data in project or overwrite all existing geometry data.</p>
+<p>The wizard is simplified in the following diagram:</p>
+<img alt="_images/loader_wizard.jpg" src="_images/loader_wizard.jpg" />
+<p>After loading the project (with a geometry file) a notification will show up and notify the user if
+everything went well or if problems occurred.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-beamon">Starting Beamon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-beamon">Using Beamon</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Repo Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">How TOs</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Beamon Documentation</a></li>
+      <li>Next: <a href="making_a_model.html" title="next chapter">Making A Model</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/getting_started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

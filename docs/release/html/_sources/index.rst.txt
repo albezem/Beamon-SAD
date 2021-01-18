@@ -1,0 +1,45 @@
+Beamon Documentation
+********************
+
+Beamon is an open-source based development in the institute of structural analysis and
+lightweight design at RWTH University in Aachen. Beamon Static Analysis Design (SAD) is mainly
+a graphical finite element program for modeling static structural systems and simulating those using
+the direct stiffness method.
+
+
+Beamon In A Glance
+==================
+The following Use-Case-Diagram summarizes Beamon's capabilities.
+
+.. image:: resources/figures/beamon_capabilities.png
+  :alt: Use-Case-Diagram
+
+Users or specifically designers are capable of defining node coordinates and structure boundary conditions (Structural support).
+
+Elements are connection information between nodes. In this context, a static model should build a
+`Graph <https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)>`_.
+
+Each element has modifiable local system orientation and properties, profiles.
+
+Designers can apply external forces on structures such as, nodal forces or constant element forces.
+
+Geometries can be exported and imported as modifiable text files
+(`ASCII <https://de.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange>`_-Symbols).
+
+Simulation results summed up in section forces and displacements for each element, and support forces and displacements
+for each node can be viewed in tables and exported as Excel or CSV files.
+
+
+Documentations Contents
+=======================
+
+.. toctree::
+   :maxdepth: 5
+
+   getting_started
+   making_a_model
+   theory
+   api
+   contrib
+
+
