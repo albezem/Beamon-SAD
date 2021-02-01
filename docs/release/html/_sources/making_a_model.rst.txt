@@ -115,6 +115,54 @@ Visual example of an element defined with nodes 5 and 6. With local axes orienta
 .. image:: resources/figures/vis_element.png
   :alt: Elements Visualization
 
+Nodes Joints
+============
+
+Joints specify which element degree of freedom should be excluded from force transition between two elements.
+In Beamon, the user can change the element's degrees of freedom.
+
+With Geometry File
+------------------
+To define joints use the keyword '*joint'.
+Each entry starts with a valid element index number followed by two sets of 6 optional integer numbers.
+The following syntax diagram hopefully clarifies syntax for joints.
+
+.. figure:: resources/figures/jointEntry.png
+
+    Syntax diagram for joint entry in geometry file
+
+**Example**:
+from elements example above we can define the following joints::
+
+    *joint
+    1,123456,123456
+    2,123,456
+    3,,1
+
+The first join entry detaches element 1 of all degrees of freedom from the structure.
+This will produce a singular system of equations.
+The second entry makes more sense. It detaches :math:`u_x, u_y, u_z` degrees of freedom
+at the beginning of element 2 and detaches :math:`\varphi_x, \varphi_y, \varphi_z` degrees of freedom at the end of
+element 2 from the structure. The third entry detaches :math:`u_x` at the end of element 3.
+
+With User Interface
+-------------------
+
+Element degrees of freedom can be seen only if the user has already defined elements.
+All degrees of freedom can be changed using the checkboxes as in the figure below.
+
+.. image:: resources/figures/jointEntryGUI.png
+  :alt: Editing Joints
+
+
+Joints Visualization
+--------------------
+
+Joint nodes can be detected when yellow spheres are displayed near the nodes in each element's direction.
+
+.. image:: resources/figures/vis_joint.png
+  :alt: Joints Visualization
+
 Nodes Loads
 ===========
 

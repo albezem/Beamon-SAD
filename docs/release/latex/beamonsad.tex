@@ -73,7 +73,7 @@
 
 
 \title{Beamon SAD}
-\date{Jan 14, 2021}
+\date{Feb 01, 2021}
 \release{alpha}
 \author{Maher Albezem}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -133,7 +133,7 @@ Download windows executable in \sphinxstylestrong{releases} directory an run it.
 
 \subsubsection{Python Package (for developers and testers)}
 \label{\detokenize{getting_started:python-package-for-developers-and-testers}}
-Use the package manager \sphinxtitleref{pip\textless{}https://pip.pypa.io/en/stable/\textgreater{}} to install requirements from requirements.txt file.
+Use the package manager {\color{red}\bfseries{}\textasciigrave{}pip\textless{}https://pip.pypa.io/en/stable/\textgreater{}\textasciigrave{}\_} to install requirements from requirements.txt file.
 
 
 \subsection{Starting Beamon}
@@ -214,7 +214,7 @@ The following syntax diagram shows the syntax for nodes input.
 \capstart
 
 \noindent\sphinxincludegraphics{{nodeEntry}.png}
-\caption{Syntax diagram for nodes entry in geometry file}\label{\detokenize{making_a_model:id17}}\end{figure}
+\caption{Syntax diagram for nodes entry in geometry file}\label{\detokenize{making_a_model:id21}}\end{figure}
 
 Where dof is defined as:
 
@@ -223,7 +223,7 @@ Where dof is defined as:
 \capstart
 
 \noindent\sphinxincludegraphics{{dof}.png}
-\caption{Syntax diagram for dof in nodes entry in geometry file}\label{\detokenize{making_a_model:id18}}\end{figure}
+\caption{Syntax diagram for dof in nodes entry in geometry file}\label{\detokenize{making_a_model:id22}}\end{figure}
 
 \sphinxstylestrong{Example}:
 
@@ -285,7 +285,7 @@ The following syntax diagram shows the syntax for elements input.
 \capstart
 
 \noindent\sphinxincludegraphics{{elementEntry}.png}
-\caption{Syntax diagram for element entry in geometry file}\label{\detokenize{making_a_model:id19}}\end{figure}
+\caption{Syntax diagram for element entry in geometry file}\label{\detokenize{making_a_model:id23}}\end{figure}
 
 \sphinxstylestrong{Example}:
 from nodes example above we can define following elements:
@@ -313,6 +313,57 @@ Visual example of an element defined with nodes 5 and 6. With local axes orienta
 \noindent\sphinxincludegraphics{{vis_element}.png}
 
 
+\subsection{Nodes Joints}
+\label{\detokenize{making_a_model:nodes-joints}}
+Joints specify which element degree of freedom should be excluded from force transition between two elements.
+In Beamon, the user can change the element’s degrees of freedom.
+
+
+\subsubsection{With Geometry File}
+\label{\detokenize{making_a_model:id7}}
+To define joints use the keyword ‘{\color{red}\bfseries{}*}joint’.
+Each entry starts with a valid element index number followed by two sets of 6 optional integer numbers.
+The following syntax diagram hopefully clarifies syntax for joints.
+
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\noindent\sphinxincludegraphics{{jointEntry}.png}
+\caption{Syntax diagram for joint entry in geometry file}\label{\detokenize{making_a_model:id24}}\end{figure}
+
+\sphinxstylestrong{Example}:
+from elements example above we can define the following joints:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{o}{*}\PYG{n}{joint}
+\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{123456}\PYG{p}{,}\PYG{l+m+mi}{123456}
+\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{123}\PYG{p}{,}\PYG{l+m+mi}{456}
+\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{p}{,}\PYG{l+m+mi}{1}
+\end{sphinxVerbatim}
+
+The first join entry detaches element 1 of all degrees of freedom from the structure.
+This will produce a singular system of equations.
+The second entry makes more sense. It detaches \(u_x, u_y, u_z\) degrees of freedom
+at the beginning of element 2 and detaches \(\varphi_x, \varphi_y, \varphi_z\) degrees of freedom at the end of
+element 2 from the structure. The third entry detaches \(u_x\) at the end of element 3.
+
+
+\subsubsection{With User Interface}
+\label{\detokenize{making_a_model:id10}}
+Element degrees of freedom can be seen only if the user has already defined elements.
+All degrees of freedom can be changed using the checkboxes as in the figure below.
+
+\noindent\sphinxincludegraphics{{jointEntryGUI}.png}
+
+
+\subsubsection{Joints Visualization}
+\label{\detokenize{making_a_model:joints-visualization}}
+Joint nodes can be detected when yellow spheres are displayed near the nodes in each element’s direction.
+
+\noindent\sphinxincludegraphics{{vis_joint}.png}
+
+
 \subsection{Nodes Loads}
 \label{\detokenize{making_a_model:nodes-loads}}
 Nodes Loads or Point Load describes the force that acts at a point.
@@ -324,7 +375,7 @@ and
 
 
 \subsubsection{With Geometry File}
-\label{\detokenize{making_a_model:id7}}
+\label{\detokenize{making_a_model:id11}}
 To define node loads use the keyword ‘{\color{red}\bfseries{}*}load’. Each entry starts with a valid node index number followed by 6
 floating\sphinxhyphen{}point numbers for force and momentum vector respectively.
 
@@ -335,7 +386,7 @@ The following syntax diagram hopefully clarifies syntax for point load.
 \capstart
 
 \noindent\sphinxincludegraphics{{loadEntry}.png}
-\caption{Syntax diagram for load entry in geometry files}\label{\detokenize{making_a_model:id20}}\end{figure}
+\caption{Syntax diagram for load entry in geometry files}\label{\detokenize{making_a_model:id25}}\end{figure}
 
 \sphinxstylestrong{Example}:
 from nodes example above we can define following loads:
@@ -353,7 +404,7 @@ In this case, all other components will be assumed to be zero as if ‘2,1,1,0,0
 
 
 \subsubsection{With User Interface}
-\label{\detokenize{making_a_model:id10}}
+\label{\detokenize{making_a_model:id14}}
 Analogous to {\hyperref[\detokenize{making_a_model:nodes-input}]{\sphinxcrossref{\DUrole{std,std-ref}{Nodes And Boundry Conditions}}}}
 
 
@@ -379,7 +430,7 @@ Element loads can be only defined using an existing element index number and the
 
 
 \subsubsection{With Geometry File}
-\label{\detokenize{making_a_model:id11}}
+\label{\detokenize{making_a_model:id15}}
 To define element loads use the keyword ‘{\color{red}\bfseries{}*}lineload’. Each entry starts with a valid node index number followed by 6
 floating\sphinxhyphen{}point numbers for force and momentum vector respectively.
 
@@ -390,7 +441,7 @@ The following syntax diagram describes element load entries.
 \capstart
 
 \noindent\sphinxincludegraphics{{lineloadEntry}.png}
-\caption{Syntax Diagram of element loads entry in geometry files}\label{\detokenize{making_a_model:id21}}\end{figure}
+\caption{Syntax Diagram of element loads entry in geometry files}\label{\detokenize{making_a_model:id26}}\end{figure}
 
 \sphinxstylestrong{Example}:
 
@@ -405,7 +456,7 @@ first element load entry has constant \(q_z=-7.5e+06\) value on element 2.
 
 
 \subsubsection{With User Interface}
-\label{\detokenize{making_a_model:id14}}
+\label{\detokenize{making_a_model:id18}}
 Analogous to {\hyperref[\detokenize{making_a_model:nodes-input}]{\sphinxcrossref{\DUrole{std,std-ref}{Nodes And Boundry Conditions}}}}
 
 
@@ -447,7 +498,7 @@ Simulating 3D Beams requires specific element properties (profiles). Each profil
 
 
 \subsubsection{With Geometry File}
-\label{\detokenize{making_a_model:id15}}
+\label{\detokenize{making_a_model:id19}}
 To define profiles use keyword ‘*profile’.
 The following syntax diagram shows how each profile entry should be.
 
@@ -456,7 +507,7 @@ The following syntax diagram shows how each profile entry should be.
 \capstart
 
 \noindent\sphinxincludegraphics{{profileEntry}.png}
-\caption{Syntax diagram for profile entries in geometry files}\label{\detokenize{making_a_model:id22}}\end{figure}
+\caption{Syntax diagram for profile entries in geometry files}\label{\detokenize{making_a_model:id27}}\end{figure}
 
 \sphinxstylestrong{Example}:
 
@@ -467,7 +518,7 @@ The following syntax diagram shows how each profile entry should be.
 
 
 \subsubsection{With User Interface}
-\label{\detokenize{making_a_model:id16}}
+\label{\detokenize{making_a_model:id20}}
 Analogous to {\hyperref[\detokenize{making_a_model:nodes-input}]{\sphinxcrossref{\DUrole{std,std-ref}{Nodes And Boundry Conditions}}}}
 
 
@@ -503,7 +554,7 @@ Calculated and entered values can be seen in profiles table in the visualizer.
 \capstart
 
 \noindent\sphinxincludegraphics{{beamsize}.png}
-\caption{BeamSize GUI depicting interaction with drawing.}\label{\detokenize{making_a_model:id23}}\end{figure}
+\caption{BeamSize GUI depicting interaction with drawing.}\label{\detokenize{making_a_model:id28}}\end{figure}
 
 
 \section{Theory}
@@ -598,7 +649,7 @@ float matrix
 \index{assemble\_global\_f() (in module beamon.core)@\spxentry{assemble\_global\_f()}\spxextra{in module beamon.core}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.core.assemble_global_f}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{assemble\_global\_f}}}{\emph{\DUrole{n}{loads}}, \emph{\DUrole{n}{Dof}}}{}
+\phantomsection\label{\detokenize{api:beamon.core.assemble_global_f}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{assemble\_global\_f}}}{\emph{\DUrole{n}{loads}}, \emph{\DUrole{n}{Dof}}, \emph{\DUrole{n}{ndof}}}{}
 Assemble global loads vector from nodes loads.
 Loads should contain nodes coordinates and the forces applied to each node {[}x,y,z, u,v,w, m\_x,m\_y,m\_z{]}
 \begin{quote}\begin{description}
@@ -608,6 +659,9 @@ Loads should contain nodes coordinates and the forces applied to each node {[}x,
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{Dof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer matrix}}) \textendash{} nodes degrees of freedom
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ndof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} number of dofs n (defines the dimension of f)
 
 \end{itemize}
 
@@ -624,28 +678,31 @@ float vector
 \index{assemble\_nodes\_results() (in module beamon.core)@\spxentry{assemble\_nodes\_results()}\spxextra{in module beamon.core}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.core.assemble_nodes_results}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{assemble\_nodes\_results}}}{\emph{\DUrole{n}{o\_edof}}, \emph{\DUrole{n}{nodes}}, \emph{\DUrole{n}{a}}, \emph{\DUrole{n}{r}}, \emph{\DUrole{n}{map}}}{}
-Assemble nodes displacements and support forces according to joints mapping into a pandas dataframe.
+\phantomsection\label{\detokenize{api:beamon.core.assemble_nodes_results}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{assemble\_nodes\_results}}}{\emph{\DUrole{n}{o\_edof}}, \emph{\DUrole{n}{nodes}}, \emph{\DUrole{n}{a}}, \emph{\DUrole{n}{Q}}}{}
+Assemble nodes displacements and support forces according without joints dof results
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{o\_edof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer matrix}}) \textendash{} origin edof
+\sphinxstyleliteralstrong{\sphinxupquote{o\_edof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer matrix}}) \textendash{} origin edof containing zeros for free dof
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{nodes}} (\sphinxstyleliteralemphasis{\sphinxupquote{float matrix}}) \textendash{} nodes coordinates
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{a}} (\sphinxstyleliteralemphasis{\sphinxupquote{float vector}}) \textendash{} nodes displacements
+\sphinxstyleliteralstrong{\sphinxupquote{a}} (\sphinxstyleliteralemphasis{\sphinxupquote{numpy float vector}}) \textendash{} nodes displacements
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{r}} (\sphinxstyleliteralemphasis{\sphinxupquote{float vector}}) \textendash{} nodes support forces
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{map}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}) \textendash{} origin nodes to cloned joint nodes map
+\sphinxstyleliteralstrong{\sphinxupquote{r}} (\sphinxstyleliteralemphasis{\sphinxupquote{numpy float vector}}) \textendash{} nodes support forces
 
 \end{itemize}
 
+\item[{Returns}] \leavevmode
+table with columns {[}‘Node Nr.’, ‘ax’, ‘ay’, ‘az’, ‘aphi\_x’, ‘aphi\_y’, ‘aphi\_z’, ‘x’, ‘y’, ‘z’, ‘Qx’,
+
 \end{description}\end{quote}
+
+‘Qy’,’Qz’, ‘Qphi\_x’, ‘Qphi\_y’, ‘Qphi\_z’{]}
+:rtype: pandas Dataframe
 
 \end{fulllineitems}
 
@@ -697,6 +754,7 @@ double
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{api:beamon.core.make_joints}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{make\_joints}}}{\emph{\DUrole{n}{edof}}, \emph{\DUrole{n}{nodes}}, \emph{\DUrole{n}{dof}}, \emph{\DUrole{n}{ndofs}}, \emph{\DUrole{n}{bc}}}{}
+TODO: remove
 Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.
 This will adjust translation conditions between elements.
 New nodes and dofs will be appended at the ende of each input ‘nodes’ and ‘dof’.
@@ -1039,7 +1097,7 @@ if node already exists, True: if node has been added
 \index{add\_profile() (beamon.database.Database method)@\spxentry{add\_profile()}\spxextra{beamon.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_profile}}}{\emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}, \emph{\DUrole{n}{k}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.Database.add_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_profile}}}{\emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
 Adds a profile
 
 \end{fulllineitems}
@@ -1091,8 +1149,8 @@ True: if successfully changed/ False: if node not found
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{api:beamon.database.Database.change_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_edof}}}{\emph{\DUrole{n}{edof}}, \emph{\DUrole{n}{n\_index}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{e\_index}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
-Changes given degrees of freedom for all elements connected to the node with index.
-If e\_index is given only the degrees of freedom for that element will be changed.
+Changes given degrees of freedom for all elements connected to the node with n\_index.
+If e\_index is given instead only the degrees of freedom for that element will be changed.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1213,7 +1271,7 @@ True/False
 \index{change\_profile() (beamon.database.Database method)@\spxentry{change\_profile()}\spxextra{beamon.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_profile}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}, \emph{\DUrole{n}{k}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.Database.change_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_profile}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
 Changes certain profile values with index
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -2001,7 +2059,7 @@ True/False
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{api:beamon.database.Database.import_text}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{import\_text}}}{\emph{\DUrole{n}{path}}}{}
 This method is for importing geometry files to the database according to specified syntax in documentation.
-Keywords: {\color{red}\bfseries{}*}node, {\color{red}\bfseries{}*}element, {\color{red}\bfseries{}*}profile, {\color{red}\bfseries{}*}load, {\color{red}\bfseries{}*}lineload.
+Keywords: {\color{red}\bfseries{}*}node, {\color{red}\bfseries{}*}element, {\color{red}\bfseries{}*}profile, {\color{red}\bfseries{}*}load, {\color{red}\bfseries{}*}lineload, {\color{red}\bfseries{}*}joint
 Tables will be checked for integrity after import.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2824,8 +2882,8 @@ For this reason there are two main scripts for each of the program versions
 .rst
 
 
-\subsubsection{Class Structure}
-\label{\detokenize{implementation:class-structure}}
+\subsubsection{Class Structure (alpha release)}
+\label{\detokenize{implementation:class-structure-alpha-release}}
 The following class diagram shows the whole class structure in Beamon project.
 
 \begin{figure}[htbp]
@@ -2836,8 +2894,8 @@ The following class diagram shows the whole class structure in Beamon project.
 \caption{UML class diagram showing Beamon project structure.}\label{\detokenize{implementation:id3}}\end{figure}
 
 There are two main scripts \sphinxstyleemphasis{\_\_main\_\_} and \sphinxstyleemphasis{\_\_main} that instantiate the application.
-\sphinxstyleemphasis{\_\_main is for executables and does not contain formatting instructions. Both main scripts are connected to the
-*Main} GUI class.
+\sphinxstyleemphasis{\_\_main is for executables and does not contain formatting instructions. Both main scripts are connected to the *Main}
+GUI class.
 
 \sphinxstyleemphasis{Main} resides in the \sphinxstyleemphasis{ui} package, which contains everything related to the user interface.
 As you can see \sphinxstyleemphasis{Main} inherits from \sphinxstyleemphasis{QMainWindow}, which is a single tone PyQt5 class.
@@ -2860,6 +2918,31 @@ contains the view, which is QTableView. \sphinxstyleemphasis{InLineEditDelegate}
 from \sphinxstyleemphasis{QAbstractTableModel}.
 
 
+\subsubsection{How The UI Is Built}
+\label{\detokenize{implementation:how-the-ui-is-built}}
+As can be seen in the figure below, the \sphinxstyleemphasis{.ui} file (which is an XML file) is made using the Qt Designer.
+Let’s assume we are formatting the main UI, which is \sphinxstyleemphasis{main.ui}.
+This file can be formatted to a python class, \sphinxstyleemphasis{Ui\_MainWindow}, using the pyqt5ac package. Class \sphinxstyleemphasis{Main} is
+then connected to \sphinxstyleemphasis{Ui\_MainWindow} and has all the backend functionality of the main UI.
+
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\noindent\sphinxincludegraphics{{qt}.png}
+\caption{Diagram explaining how an exemplary UI class is built.}\label{\detokenize{implementation:id4}}\end{figure}
+
+Main class should be initiated like this.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{Main}\PYG{p}{(}\PYG{n}{QMainWindow}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}\PYG{p}{:}
+        \PYG{n+nb}{super}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ui} \PYG{o}{=} \PYG{n}{Ui\PYGZus{}MainWindow}\PYG{p}{(}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ui}\PYG{o}{.}\PYG{n}{setupUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
 \subsubsection{The Simulation}
 \label{\detokenize{implementation:the-simulation}}
 The following diagram shows how the simulation in Beamon is implemented. Three parts are involved in the Simulation,
@@ -2872,7 +2955,7 @@ which is responsible for the most complex calculation.
 \capstart
 
 \noindent\sphinxincludegraphics{{activity_simulation}.jpg}
-\caption{UML activity diagram showing static simulation steps.}\label{\detokenize{implementation:id4}}\end{figure}
+\caption{UML activity diagram showing static simulation steps.}\label{\detokenize{implementation:id5}}\end{figure}
 
 
 \subsection{How TOs}

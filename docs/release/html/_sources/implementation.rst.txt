@@ -112,8 +112,8 @@ For this reason there are two main scripts for each of the program versions
 .rst
 
 
-Class Structure
-===============
+Class Structure (alpha release)
+===============================
 
 The following class diagram shows the whole class structure in Beamon project.
 
@@ -122,8 +122,8 @@ The following class diagram shows the whole class structure in Beamon project.
     UML class diagram showing Beamon project structure.
 
 There are two main scripts *__main__* and *__main* that instantiate the application.
-*__main is for executables and does not contain formatting instructions. Both main scripts are connected to the
-*Main* GUI class.
+*__main is for executables and does not contain formatting instructions. Both main scripts are connected to the *Main*
+GUI class.
 
 *Main* resides in the *ui* package, which contains everything related to the user interface.
 As you can see *Main* inherits from *QMainWindow*, which is a single tone PyQt5 class.
@@ -144,6 +144,28 @@ shows either *IntroMainForm* or *TableMainForm*.
 Inside *tables* package you will find classes that follow the model-view-controller design pattern. *TableMainForm*
 contains the view, which is QTableView. *InLineEditDelegate* is the controller. All models like *NodeTableModel* inherit
 from *QAbstractTableModel*.
+
+How The UI Is Built
+====================
+
+As can be seen in the figure below, the *.ui* file (which is an XML file) is made using the Qt Designer.
+Let's assume we are formatting the main UI, which is *main.ui*.
+This file can be formatted to a python class, *Ui_MainWindow*, using the pyqt5ac package. Class *Main* is
+then connected to *Ui_MainWindow* and has all the backend functionality of the main UI.
+
+.. figure:: resources/diagrams/qt.png
+
+    Diagram explaining how an exemplary UI class is built.
+
+Main class should be initiated like this.
+
+.. code-block:: python
+
+    class Main(QMainWindow):
+        __init__(self):
+            super().__init__()
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
 
 
 The Simulation

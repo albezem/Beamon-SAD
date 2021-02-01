@@ -107,15 +107,15 @@ are no updates to any files anymore.</p>
 <p><strong>__main.py</strong> has no formatting commands whereas <strong>__main__.py</strong> uses pyuic5 module to format local files like .ui and
 .rst</p>
 </div>
-<div class="section" id="class-structure">
-<h2>Class Structure</h2>
+<div class="section" id="class-structure-alpha-release">
+<h2>Class Structure (alpha release)</h2>
 <p>The following class diagram shows the whole class structure in Beamon project.</p>
 <div class="figure align-default" id="id3">
 <img alt="_images/class_complex.svg" src="_images/class_complex.svg" /><p class="caption"><span class="caption-text">UML class diagram showing Beamon project structure.</span></p>
 </div>
 <p>There are two main scripts <em>__main__</em> and <em>__main</em> that instantiate the application.
-<em>__main is for executables and does not contain formatting instructions. Both main scripts are connected to the
-*Main</em> GUI class.</p>
+<em>__main is for executables and does not contain formatting instructions. Both main scripts are connected to the *Main</em>
+GUI class.</p>
 <p><em>Main</em> resides in the <em>ui</em> package, which contains everything related to the user interface.
 As you can see <em>Main</em> inherits from <em>QMainWindow</em>, which is a single tone PyQt5 class.</p>
 <p><em>VisualizerMainForm</em> class is responsible for visualization. It contains <em>PyVistaWidget</em> which is the visualization
@@ -131,13 +131,32 @@ shows either <em>IntroMainForm</em> or <em>TableMainForm</em>.</p>
 contains the view, which is QTableView. <em>InLineEditDelegate</em> is the controller. All models like <em>NodeTableModel</em> inherit
 from <em>QAbstractTableModel</em>.</p>
 </div>
+<div class="section" id="how-the-ui-is-built">
+<h2>How The UI Is Built</h2>
+<p>As can be seen in the figure below, the <em>.ui</em> file (which is an XML file) is made using the Qt Designer.
+Let’s assume we are formatting the main UI, which is <em>main.ui</em>.
+This file can be formatted to a python class, <em>Ui_MainWindow</em>, using the pyqt5ac package. Class <em>Main</em> is
+then connected to <em>Ui_MainWindow</em> and has all the backend functionality of the main UI.</p>
+<div class="figure align-default" id="id4">
+<img alt="_images/qt.png" src="_images/qt.png" />
+<p class="caption"><span class="caption-text">Diagram explaining how an exemplary UI class is built.</span></p>
+</div>
+<p>Main class should be initiated like this.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_MainWindow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="the-simulation">
 <h2>The Simulation</h2>
 <p>The following diagram shows how the simulation in Beamon is implemented. Three parts are involved in the Simulation,
 <em>Database</em>, <em>Core</em> and <em>CALFEM</em>. Each part has it’s own responsibility. <em>Database</em> is responsible for obtaining and
 saving data. <em>Core</em> is responsible for the calculations implemented in Beamon. <em>CALFEM</em> is the Calfem-Python Package
 which is responsible for the most complex calculation.</p>
-<div class="figure align-default" id="id4">
+<div class="figure align-default" id="id5">
 <img alt="_images/activity_simulation.jpg" src="_images/activity_simulation.jpg" />
 <p class="caption"><span class="caption-text">UML activity diagram showing static simulation steps.</span></p>
 </div>

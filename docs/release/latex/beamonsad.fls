@@ -1021,12 +1021,11 @@ INPUT beamon_capabilities.png
 INPUT .\beamon_capabilities.png
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri8t.tfm
+INPUT C:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\ecrb1000.tfm
+INPUT C:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\tcrb1000.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8t.tfm
-INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\courier\pcrr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
 INPUT .\loader_wizard.jpg
@@ -1085,6 +1084,7 @@ INPUT .\vis_node.png
 INPUT .\vis_node.png
 INPUT vis_node.png
 INPUT .\vis_node.png
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri8t.tfm
 INPUT .\elementEntry.png
 INPUT .\elementEntry.png
 INPUT elementEntry.png
@@ -1096,6 +1096,8 @@ INPUT .\elementEntry.png
 INPUT .\elementEntry.png
 INPUT elementEntry.png
 INPUT .\elementEntry.png
+INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT .\vis_element.png
 INPUT .\vis_element.png
 INPUT vis_element.png
@@ -1107,6 +1109,39 @@ INPUT .\vis_element.png
 INPUT .\vis_element.png
 INPUT vis_element.png
 INPUT .\vis_element.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntry.png
+INPUT jointEntry.png
+INPUT .\jointEntry.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT jointEntryGUI.png
+INPUT .\jointEntryGUI.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT vis_joint.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT .\vis_joint.png
+INPUT vis_joint.png
+INPUT .\vis_joint.png
 INPUT .\loadEntry.png
 INPUT .\loadEntry.png
 INPUT loadEntry.png
@@ -1156,29 +1191,29 @@ INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8c.tfm
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\profileEntry.png
-INPUT profileEntry.png
-INPUT .\profileEntry.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT beamsize.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT .\beamsize.png
-INPUT beamsize.png
-INPUT .\beamsize.png
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmr8c.vf
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\profileEntry.png
+INPUT profileEntry.png
+INPUT .\profileEntry.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT beamsize.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT .\beamsize.png
+INPUT beamsize.png
+INPUT .\beamsize.png
 INPUT .\DefiningBeamOrientation.png
 INPUT .\DefiningBeamOrientation.png
 INPUT DefiningBeamOrientation.png
@@ -1203,6 +1238,8 @@ INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmri8c.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrb8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\courier\pcrb8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrb8r.tfm
+INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmr8t.vf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT .\er_diagram_alpha.png
 INPUT .\er_diagram_alpha.png
 INPUT er_diagram_alpha.png
@@ -1220,20 +1257,20 @@ INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1pcr.fd
 INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1pcr.fd
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8c.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrro8t.tfm
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT .\activity_import_text.png
-INPUT activity_import_text.png
-INPUT .\activity_import_text.png
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\courier\pcrr8c.vf
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\courier\pcrro8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrro8r.tfm
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT .\activity_import_text.png
+INPUT activity_import_text.png
+INPUT .\activity_import_text.png
 INPUT .\class_complex.jpg
 INPUT .\class_complex.jpg
 INPUT class_complex.jpg
@@ -1245,6 +1282,17 @@ INPUT .\class_complex.jpg
 INPUT .\class_complex.jpg
 INPUT class_complex.jpg
 INPUT .\class_complex.jpg
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT qt.png
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT .\qt.png
+INPUT qt.png
+INPUT .\qt.png
 INPUT .\activity_simulation.jpg
 INPUT .\activity_simulation.jpg
 INPUT activity_simulation.jpg
@@ -1266,6 +1314,8 @@ INPUT beamonsad.aux
 INPUT .\beamonsad.out
 INPUT .\beamonsad.out
 INPUT C:\Program Files\MiKTeX\fonts\enc\dvips\base\8r.enc
+INPUT C:\Users\maher\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrb1000.pk
+INPUT C:\Users\maher\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrb1000.pk
 INPUT C:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb

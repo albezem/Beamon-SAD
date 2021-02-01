@@ -10,7 +10,7 @@ Download windows executable in **releases** directory an run it.
 
 Python Package (for developers and testers)
 -------------------------------------------
-Use the package manager `pip<https://pip.pypa.io/en/stable/>` to install requirements from requirements.txt file.
+Use the package manager `pip<https://pip.pypa.io/en/stable/>`_ to install requirements from requirements.txt file.
 
 Starting Beamon
 ===============

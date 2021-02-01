@@ -64,7 +64,7 @@ Loads should contain [link_id, qx, qy, qz, qw]</p>
 
 <dl class="py function">
 <dt id="beamon.core.assemble_global_f">
-<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_global_f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loads</span></em>, <em class="sig-param"><span class="n">Dof</span></em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_global_f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loads</span></em>, <em class="sig-param"><span class="n">Dof</span></em>, <em class="sig-param"><span class="n">ndof</span></em><span class="sig-paren">)</span></dt>
 <dd><p>Assemble global loads vector from nodes loads.
 Loads should contain nodes coordinates and the forces applied to each node [x,y,z, u,v,w, m_x,m_y,m_z]</p>
 <dl class="field-list simple">
@@ -72,6 +72,7 @@ Loads should contain nodes coordinates and the forces applied to each node [x,y,
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>loads</strong> (<em>float matrix</em>) – Nodes loads array</p></li>
 <li><p><strong>Dof</strong> (<em>integer matrix</em>) – nodes degrees of freedom</p></li>
+<li><p><strong>ndof</strong> (<em>integer</em>) – number of dofs n (defines the dimension of f)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -85,19 +86,23 @@ Loads should contain nodes coordinates and the forces applied to each node [x,y,
 
 <dl class="py function">
 <dt id="beamon.core.assemble_nodes_results">
-<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_nodes_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o_edof</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">map</span></em><span class="sig-paren">)</span></dt>
-<dd><p>Assemble nodes displacements and support forces according to joints mapping into a pandas dataframe.</p>
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_nodes_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o_edof</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">Q</span></em><span class="sig-paren">)</span></dt>
+<dd><p>Assemble nodes displacements and support forces according without joints dof results</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>o_edof</strong> (<em>integer matrix</em>) – origin edof</p></li>
+<li><p><strong>o_edof</strong> (<em>integer matrix</em>) – origin edof containing zeros for free dof</p></li>
 <li><p><strong>nodes</strong> (<em>float matrix</em>) – nodes coordinates</p></li>
-<li><p><strong>a</strong> (<em>float vector</em>) – nodes displacements</p></li>
-<li><p><strong>r</strong> (<em>float vector</em>) – nodes support forces</p></li>
-<li><p><strong>map</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><span class="link-target"> [https://docs.python.org/3/library/stdtypes.html#dict]</span>) – origin nodes to cloned joint nodes map</p></li>
+<li><p><strong>a</strong> (<em>numpy float vector</em>) – nodes displacements</p></li>
+<li><p><strong>r</strong> (<em>numpy float vector</em>) – nodes support forces</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table with columns [‘Node Nr.’, ‘ax’, ‘ay’, ‘az’, ‘aphi_x’, ‘aphi_y’, ‘aphi_z’, ‘x’, ‘y’, ‘z’, ‘Qx’,</p>
+</dd>
 </dl>
+<p>‘Qy’,’Qz’, ‘Qphi_x’, ‘Qphi_y’, ‘Qphi_z’]
+:rtype: pandas Dataframe</p>
 </dd></dl>
 
 <dl class="py function">
@@ -139,7 +144,8 @@ N will be the vector normal to the plane you want to rotate into.</p>
 <dl class="py function">
 <dt id="beamon.core.make_joints">
 <code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">make_joints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edof</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">dof</span></em>, <em class="sig-param"><span class="n">ndofs</span></em>, <em class="sig-param"><span class="n">bc</span></em><span class="sig-paren">)</span></dt>
-<dd><p>Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.
+<dd><p>TODO: remove
+Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.
 This will adjust translation conditions between elements.
 New nodes and dofs will be appended at the ende of each input ‘nodes’ and ‘dof’.
 edof matrix contain element dof numbers for each nodal point end. Free dof number is predefined as zero.
@@ -396,7 +402,7 @@ default values for [u_x, .. ,phi_z] is e vector [1,…,1].</p>
 
 <dl class="py method">
 <dt id="beamon.database.Database.add_profile">
-<code class="sig-name descname">add_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span></dt>
+<code class="sig-name descname">add_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em><span class="sig-paren">)</span></dt>
 <dd><p>Adds a profile</p>
 </dd></dl>
 
@@ -430,8 +436,8 @@ in the z axes of node 300.</p>
 <dl class="py method">
 <dt id="beamon.database.Database.change_edof">
 <code class="sig-name descname">change_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edof</span></em>, <em class="sig-param"><span class="n">n_index</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span></dt>
-<dd><p>Changes given degrees of freedom for all elements connected to the node with index.
-If e_index is given only the degrees of freedom for that element will be changed.</p>
+<dd><p>Changes given degrees of freedom for all elements connected to the node with n_index.
+If e_index is given instead only the degrees of freedom for that element will be changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -511,7 +517,7 @@ If e_index is given only the degrees of freedom for that element will be changed
 
 <dl class="py method">
 <dt id="beamon.database.Database.change_profile">
-<code class="sig-name descname">change_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span></dt>
+<code class="sig-name descname">change_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em><span class="sig-paren">)</span></dt>
 <dd><p>Changes certain profile values with index</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -1168,7 +1174,7 @@ nodes indices instead of all nodes information.</p>
 <dt id="beamon.database.Database.import_text">
 <code class="sig-name descname">import_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span></dt>
 <dd><p>This method is for importing geometry files to the database according to specified syntax in documentation.
-Keywords: <a href="#id1"><span class="problematic" id="id2">*</span></a>node, <a href="#id3"><span class="problematic" id="id4">*</span></a>element, <a href="#id5"><span class="problematic" id="id6">*</span></a>profile, <a href="#id7"><span class="problematic" id="id8">*</span></a>load, <a href="#id9"><span class="problematic" id="id10">*</span></a>lineload.
+Keywords: <a href="#id1"><span class="problematic" id="id2">*</span></a>node, <a href="#id3"><span class="problematic" id="id4">*</span></a>element, <a href="#id5"><span class="problematic" id="id6">*</span></a>profile, <a href="#id7"><span class="problematic" id="id8">*</span></a>load, <a href="#id9"><span class="problematic" id="id10">*</span></a>lineload, <a href="#id11"><span class="problematic" id="id12">*</span></a>joint
 Tables will be checked for integrity after import.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

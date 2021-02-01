@@ -167,14 +167,14 @@
       </navPoint>
       <navPoint id="navPoint27" playOrder="20">
         <navLabel>
-          <text>Nodes Loads</text>
+          <text>Nodes Joints</text>
         </navLabel>
-        <content src="making_a_model.xhtml#nodes-loads" />  
+        <content src="making_a_model.xhtml#nodes-joints" />  
         <navPoint id="navPoint28" playOrder="20">
           <navLabel>
-            <text>Nodes Loads</text>
+            <text>Nodes Joints</text>
           </navLabel>
-          <content src="making_a_model.xhtml#nodes-loads" />  
+          <content src="making_a_model.xhtml#nodes-joints" />  
         </navPoint>
         <navPoint id="navPoint29" playOrder="21">
           <navLabel>
@@ -190,21 +190,21 @@
         </navPoint>
         <navPoint id="navPoint31" playOrder="23">
           <navLabel>
-            <text>Nodes Loads Visualization</text>
+            <text>Joints Visualization</text>
           </navLabel>
-          <content src="making_a_model.xhtml#nodes-loads-visualization" />  
+          <content src="making_a_model.xhtml#joints-visualization" />  
         </navPoint>
       </navPoint>
       <navPoint id="navPoint32" playOrder="24">
         <navLabel>
-          <text>Element Loads</text>
+          <text>Nodes Loads</text>
         </navLabel>
-        <content src="making_a_model.xhtml#element-loads" />  
+        <content src="making_a_model.xhtml#nodes-loads" />  
         <navPoint id="navPoint33" playOrder="24">
           <navLabel>
-            <text>Element Loads</text>
+            <text>Nodes Loads</text>
           </navLabel>
-          <content src="making_a_model.xhtml#element-loads" />  
+          <content src="making_a_model.xhtml#nodes-loads" />  
         </navPoint>
         <navPoint id="navPoint34" playOrder="25">
           <navLabel>
@@ -220,21 +220,21 @@
         </navPoint>
         <navPoint id="navPoint36" playOrder="27">
           <navLabel>
-            <text>Element Loads Visualization</text>
+            <text>Nodes Loads Visualization</text>
           </navLabel>
-          <content src="making_a_model.xhtml#element-loads-visualization" />  
+          <content src="making_a_model.xhtml#nodes-loads-visualization" />  
         </navPoint>
       </navPoint>
       <navPoint id="navPoint37" playOrder="28">
         <navLabel>
-          <text>Profiles and BeamSize</text>
+          <text>Element Loads</text>
         </navLabel>
-        <content src="making_a_model.xhtml#profiles-and-beamsize" />  
+        <content src="making_a_model.xhtml#element-loads" />  
         <navPoint id="navPoint38" playOrder="28">
           <navLabel>
-            <text>Profiles and BeamSize</text>
+            <text>Element Loads</text>
           </navLabel>
-          <content src="making_a_model.xhtml#profiles-and-beamsize" />  
+          <content src="making_a_model.xhtml#element-loads" />  
         </navPoint>
         <navPoint id="navPoint39" playOrder="29">
           <navLabel>
@@ -246,9 +246,39 @@
           <navLabel>
             <text>With User Interface</text>
           </navLabel>
-          <content src="making_a_model.xhtml#id16" />  
+          <content src="making_a_model.xhtml#id18" />  
         </navPoint>
         <navPoint id="navPoint41" playOrder="31">
+          <navLabel>
+            <text>Element Loads Visualization</text>
+          </navLabel>
+          <content src="making_a_model.xhtml#element-loads-visualization" />  
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint42" playOrder="32">
+        <navLabel>
+          <text>Profiles and BeamSize</text>
+        </navLabel>
+        <content src="making_a_model.xhtml#profiles-and-beamsize" />  
+        <navPoint id="navPoint43" playOrder="32">
+          <navLabel>
+            <text>Profiles and BeamSize</text>
+          </navLabel>
+          <content src="making_a_model.xhtml#profiles-and-beamsize" />  
+        </navPoint>
+        <navPoint id="navPoint44" playOrder="33">
+          <navLabel>
+            <text>With Geometry File</text>
+          </navLabel>
+          <content src="making_a_model.xhtml#id19" />  
+        </navPoint>
+        <navPoint id="navPoint45" playOrder="34">
+          <navLabel>
+            <text>With User Interface</text>
+          </navLabel>
+          <content src="making_a_model.xhtml#id20" />  
+        </navPoint>
+        <navPoint id="navPoint46" playOrder="35">
           <navLabel>
             <text>With BeamSize</text>
           </navLabel>
@@ -256,191 +286,197 @@
         </navPoint>
       </navPoint>
     </navPoint>
-    <navPoint id="navPoint42" playOrder="32">
+    <navPoint id="navPoint47" playOrder="36">
       <navLabel>
         <text>Theory</text>
       </navLabel>
       <content src="theory.xhtml" />  
-      <navPoint id="navPoint43" playOrder="32">
+      <navPoint id="navPoint48" playOrder="36">
         <navLabel>
           <text>Theory</text>
         </navLabel>
         <content src="theory.xhtml" />  
       </navPoint>
-      <navPoint id="navPoint44" playOrder="33">
+      <navPoint id="navPoint49" playOrder="37">
         <navLabel>
           <text>Element Orientation</text>
         </navLabel>
         <content src="theory.xhtml#element-orientation" />  
       </navPoint>
-      <navPoint id="navPoint45" playOrder="34">
+      <navPoint id="navPoint50" playOrder="38">
         <navLabel>
           <text>CALFEM</text>
         </navLabel>
         <content src="theory.xhtml#calfem" />  
       </navPoint>
     </navPoint>
-    <navPoint id="navPoint46" playOrder="35">
+    <navPoint id="navPoint51" playOrder="39">
       <navLabel>
         <text>API</text>
       </navLabel>
       <content src="api.xhtml" />  
-      <navPoint id="navPoint47" playOrder="35">
+      <navPoint id="navPoint52" playOrder="39">
         <navLabel>
           <text>API</text>
         </navLabel>
         <content src="api.xhtml" />  
       </navPoint>
-      <navPoint id="navPoint48" playOrder="36">
+      <navPoint id="navPoint53" playOrder="40">
         <navLabel>
           <text>Core</text>
         </navLabel>
         <content src="api.xhtml#module-beamon.core" />  
       </navPoint>
-      <navPoint id="navPoint49" playOrder="37">
+      <navPoint id="navPoint54" playOrder="41">
         <navLabel>
           <text>Simulation</text>
         </navLabel>
         <content src="api.xhtml#module-beamon.simulation" />  
       </navPoint>
-      <navPoint id="navPoint50" playOrder="38">
+      <navPoint id="navPoint55" playOrder="42">
         <navLabel>
           <text>Database</text>
         </navLabel>
         <content src="api.xhtml#module-beamon.database" />  
       </navPoint>
-      <navPoint id="navPoint51" playOrder="39">
+      <navPoint id="navPoint56" playOrder="43">
         <navLabel>
           <text>Indices and tables</text>
         </navLabel>
         <content src="api.xhtml#indices-and-tables" />  
       </navPoint>
     </navPoint>
-    <navPoint id="navPoint52" playOrder="40">
+    <navPoint id="navPoint57" playOrder="44">
       <navLabel>
         <text>Contributing</text>
       </navLabel>
       <content src="contrib.xhtml" />  
-      <navPoint id="navPoint53" playOrder="40">
+      <navPoint id="navPoint58" playOrder="44">
         <navLabel>
           <text>Contributing</text>
         </navLabel>
         <content src="contrib.xhtml" />  
       </navPoint>
-      <navPoint id="navPoint54" playOrder="41">
+      <navPoint id="navPoint59" playOrder="45">
         <navLabel>
           <text>Programming Environment</text>
         </navLabel>
         <content src="env.xhtml" />  
-        <navPoint id="navPoint55" playOrder="41">
+        <navPoint id="navPoint60" playOrder="45">
           <navLabel>
             <text>Programming Environment</text>
           </navLabel>
           <content src="env.xhtml" />  
         </navPoint>
-        <navPoint id="navPoint56" playOrder="42">
+        <navPoint id="navPoint61" playOrder="46">
           <navLabel>
             <text>Python Environment</text>
           </navLabel>
           <content src="env.xhtml#python-environment" />  
         </navPoint>
-        <navPoint id="navPoint57" playOrder="43">
+        <navPoint id="navPoint62" playOrder="47">
           <navLabel>
             <text>IDE</text>
           </navLabel>
           <content src="env.xhtml#ide" />  
         </navPoint>
-        <navPoint id="navPoint58" playOrder="44">
+        <navPoint id="navPoint63" playOrder="48">
           <navLabel>
             <text>Project Requirements</text>
           </navLabel>
           <content src="env.xhtml#project-requirements" />  
         </navPoint>
       </navPoint>
-      <navPoint id="navPoint59" playOrder="45">
+      <navPoint id="navPoint64" playOrder="49">
         <navLabel>
           <text>Project Structure</text>
         </navLabel>
         <content src="structure.xhtml" />  
-        <navPoint id="navPoint60" playOrder="45">
+        <navPoint id="navPoint65" playOrder="49">
           <navLabel>
             <text>Project Structure</text>
           </navLabel>
           <content src="structure.xhtml" />  
         </navPoint>
-        <navPoint id="navPoint61" playOrder="46">
+        <navPoint id="navPoint66" playOrder="50">
           <navLabel>
             <text>Directives Structure</text>
           </navLabel>
           <content src="structure.xhtml#directives-structure" />  
         </navPoint>
-        <navPoint id="navPoint62" playOrder="47">
+        <navPoint id="navPoint67" playOrder="51">
           <navLabel>
             <text>Discription</text>
           </navLabel>
           <content src="structure.xhtml#discription" />  
         </navPoint>
       </navPoint>
-      <navPoint id="navPoint63" playOrder="48">
+      <navPoint id="navPoint68" playOrder="52">
         <navLabel>
           <text>Implementation Details</text>
         </navLabel>
         <content src="implementation.xhtml" />  
-        <navPoint id="navPoint64" playOrder="48">
+        <navPoint id="navPoint69" playOrder="52">
           <navLabel>
             <text>Implementation Details</text>
           </navLabel>
           <content src="implementation.xhtml" />  
         </navPoint>
-        <navPoint id="navPoint65" playOrder="49">
+        <navPoint id="navPoint70" playOrder="53">
           <navLabel>
             <text>The Database</text>
           </navLabel>
           <content src="implementation.xhtml#the-database" />  
         </navPoint>
-        <navPoint id="navPoint66" playOrder="50">
+        <navPoint id="navPoint71" playOrder="54">
           <navLabel>
             <text>PySide2 or PyQt5</text>
           </navLabel>
           <content src="implementation.xhtml#pyside2-or-pyqt5" />  
         </navPoint>
-        <navPoint id="navPoint67" playOrder="51">
+        <navPoint id="navPoint72" playOrder="55">
           <navLabel>
             <text>Package vs. Executable</text>
           </navLabel>
           <content src="implementation.xhtml#package-vs-executable" />  
         </navPoint>
-        <navPoint id="navPoint68" playOrder="52">
+        <navPoint id="navPoint73" playOrder="56">
           <navLabel>
-            <text>Class Structure</text>
+            <text>Class Structure (alpha release)</text>
           </navLabel>
-          <content src="implementation.xhtml#class-structure" />  
+          <content src="implementation.xhtml#class-structure-alpha-release" />  
         </navPoint>
-        <navPoint id="navPoint69" playOrder="53">
+        <navPoint id="navPoint74" playOrder="57">
+          <navLabel>
+            <text>How The UI Is Built</text>
+          </navLabel>
+          <content src="implementation.xhtml#how-the-ui-is-built" />  
+        </navPoint>
+        <navPoint id="navPoint75" playOrder="58">
           <navLabel>
             <text>The Simulation</text>
           </navLabel>
           <content src="implementation.xhtml#the-simulation" />  
         </navPoint>
       </navPoint>
-      <navPoint id="navPoint70" playOrder="54">
+      <navPoint id="navPoint76" playOrder="59">
         <navLabel>
           <text>How TOs</text>
         </navLabel>
         <content src="howto.xhtml" />  
-        <navPoint id="navPoint71" playOrder="54">
+        <navPoint id="navPoint77" playOrder="59">
           <navLabel>
             <text>How TOs</text>
           </navLabel>
           <content src="howto.xhtml" />  
         </navPoint>
-        <navPoint id="navPoint72" playOrder="55">
+        <navPoint id="navPoint78" playOrder="60">
           <navLabel>
             <text>How To Build This Documentation</text>
           </navLabel>
           <content src="howto.xhtml#how-to-build-this-documentation" />  
         </navPoint>
-        <navPoint id="navPoint73" playOrder="56">
+        <navPoint id="navPoint79" playOrder="61">
           <navLabel>
             <text>How to Style QTableView Cells</text>
           </navLabel>

@@ -12,7 +12,6 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -93,8 +92,18 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
+<span class="k">def</span> <span class="nf">fill_edof</span><span class="p">(</span><span class="n">edof</span><span class="p">):</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">edof</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">edof</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="n">edof</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nb">max</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">edof</span>
+
+
 <div class="viewcode-block" id="make_joints"><a class="viewcode-back" href="../../api.html#beamon.core.make_joints">[docs]</a><span class="k">def</span> <span class="nf">make_joints</span><span class="p">(</span><span class="n">edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">ndofs</span><span class="p">,</span> <span class="n">bc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.</span>
+    <span class="sd">&quot;&quot;&quot;TODO: remove</span>
+<span class="sd">    Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.</span>
 <span class="sd">    This will adjust translation conditions between elements.</span>
 <span class="sd">    New nodes and dofs will be appended at the ende of each input &#39;nodes&#39; and &#39;dof&#39;.</span>
 <span class="sd">    edof matrix contain element dof numbers for each nodal point end. Free dof number is predefined as zero.</span>
@@ -198,7 +207,7 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
 
 
-<div class="viewcode-block" id="assemble_global_f"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_global_f">[docs]</a><span class="k">def</span> <span class="nf">assemble_global_f</span><span class="p">(</span><span class="n">loads</span><span class="p">,</span> <span class="n">Dof</span><span class="p">):</span>
+<div class="viewcode-block" id="assemble_global_f"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_global_f">[docs]</a><span class="k">def</span> <span class="nf">assemble_global_f</span><span class="p">(</span><span class="n">loads</span><span class="p">,</span> <span class="n">Dof</span><span class="p">,</span> <span class="n">ndof</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Assemble global loads vector from nodes loads.</span>
 <span class="sd">    Loads should contain nodes coordinates and the forces applied to each node [x,y,z, u,v,w, m_x,m_y,m_z]</span>
 
@@ -206,15 +215,22 @@
 <span class="sd">    :type loads: float matrix</span>
 <span class="sd">    :param Dof: nodes degrees of freedom</span>
 <span class="sd">    :type Dof: integer matrix</span>
+<span class="sd">    :param ndof: number of dofs n (defines the dimension of f)</span>
+<span class="sd">    :type ndof: integer</span>
 <span class="sd">    :return: global force vector (n x 1 vector)</span>
 <span class="sd">    :rtype: float vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># global f size is the last dof number</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">Dof</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">ndof</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">load</span> <span class="ow">in</span> <span class="n">loads</span><span class="p">:</span>
+
         <span class="n">n_dofs</span> <span class="o">=</span> <span class="n">Dof</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">load</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># get dof index in global f for each node</span>
+
         <span class="n">column_id</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">dof_id</span> <span class="ow">in</span> <span class="n">n_dofs</span><span class="p">:</span>
+            <span class="c1"># exclude forces applied to nodes that are not connected to the structure</span>
+            <span class="k">if</span> <span class="n">dof_id</span> <span class="o">&gt;=</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">f</span><span class="p">[</span><span class="n">dof_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">load</span><span class="p">[</span><span class="n">column_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># superposition of each load vector component</span>
             <span class="n">column_id</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">f</span></div>
@@ -260,8 +276,9 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bc</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="assemble_nodes_results"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_nodes_results">[docs]</a><span class="k">def</span> <span class="nf">assemble_nodes_results</span><span class="p">(</span><span class="n">o_edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Assemble nodes displacements and support forces according to joints mapping into a pandas dataframe.</span>
+<span class="k">def</span> <span class="nf">_assemble_nodes_results</span><span class="p">(</span><span class="n">o_edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TODO:remove</span>
+<span class="sd">    Assemble nodes displacements and support forces according to joints mapping into a pandas dataframe.</span>
 
 <span class="sd">    :param o_edof: origin edof</span>
 <span class="sd">    :type o_edof: integer matrix</span>
@@ -289,8 +306,40 @@
     <span class="c1"># values will be sorted for Node Nr. in case of existing joint nodes that has the same number as their origin nodes</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span>
                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_z&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;Qx&#39;</span><span class="p">,</span> <span class="s1">&#39;Qy&#39;</span><span class="p">,</span>
-                                 <span class="s1">&#39;Qz&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_z&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">)</span></div>
+                                 <span class="s1">&#39;Qz&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_z&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">)</span>
 
+
+<div class="viewcode-block" id="assemble_nodes_results"><a class="viewcode-back" href="../../api.html#beamon.core.assemble_nodes_results">[docs]</a><span class="k">def</span> <span class="nf">assemble_nodes_results</span><span class="p">(</span><span class="n">o_edof</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assemble nodes displacements and support forces according without joints dof results</span>
+
+<span class="sd">    :param o_edof: origin edof containing zeros for free dof</span>
+<span class="sd">    :type o_edof: integer matrix</span>
+<span class="sd">    :param nodes: nodes coordinates</span>
+<span class="sd">    :type nodes: float matrix</span>
+<span class="sd">    :param a: nodes displacements</span>
+<span class="sd">    :type a: numpy float vector</span>
+<span class="sd">    :param r: nodes support forces</span>
+<span class="sd">    :type r: numpy float vector</span>
+<span class="sd">    :return: table with columns [&#39;Node Nr.&#39;, &#39;ax&#39;, &#39;ay&#39;, &#39;az&#39;, &#39;aphi_x&#39;, &#39;aphi_y&#39;, &#39;aphi_z&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;Qx&#39;,</span>
+<span class="sd">    &#39;Qy&#39;,&#39;Qz&#39;, &#39;Qphi_x&#39;, &#39;Qphi_y&#39;, &#39;Qphi_z&#39;]</span>
+<span class="sd">    :rtype: pandas Dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># remove joint dof results</span>
+    <span class="n">n_joints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">o_edof</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_joints</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">o_edof</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[:</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">o_edof</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># reshape for 6 dof for each node</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># displacements</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># reaction forces</span>
+    <span class="c1"># results matrix</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">Q</span><span class="p">]</span>
+    <span class="c1"># values will be sorted for Node Nr. in case of existing joint nodes that has the same number as their origin nodes</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;aphi_z&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;Qx&#39;</span><span class="p">,</span> <span class="s1">&#39;Qy&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;Qz&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_x&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_y&#39;</span><span class="p">,</span> <span class="s1">&#39;Qphi_z&#39;</span><span class="p">])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;Node Nr.&#39;</span><span class="p">],</span> <span class="n">downcast</span><span class="o">=</span><span class="s1">&#39;integer&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
 
 <span class="k">def</span> <span class="nf">_project_onto_plane</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;gets the projection of v onto a plane defined by n as its orthogonal vector.</span>
