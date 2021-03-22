@@ -73,7 +73,7 @@
 
 
 \title{Beamon SAD}
-\date{Feb 01, 2021}
+\date{Mar 19, 2021}
 \release{alpha}
 \author{Maher Albezem}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -89,17 +89,17 @@
 \phantomsection\label{\detokenize{index::doc}}
 
 
-Beamon is an open\sphinxhyphen{}source based development in the institute of structural analysis and
+Beamon is an open\sphinxhyphen{}source\sphinxhyphen{}based development in the institute of structural analysis and
 lightweight design at RWTH University in Aachen. Beamon Static Analysis Design (SAD) is mainly
 a graphical finite element program for modeling static structural systems and simulating those using
 the direct stiffness method.
 
+\noindent\sphinxincludegraphics{{intro}.png}
+
 
 \chapter{Beamon In A Glance}
 \label{\detokenize{index:beamon-in-a-glance}}
-The following Use\sphinxhyphen{}Case\sphinxhyphen{}Diagram summarizes Beamon’s capabilities.
-
-\noindent\sphinxincludegraphics{{beamon_capabilities}.png}
+\noindent\sphinxincludegraphics{{intro2}.jpg}
 
 Users or specifically designers are capable of defining node coordinates and structure boundary conditions (Structural support).
 
@@ -116,6 +116,8 @@ Geometries can be exported and imported as modifiable text files
 Simulation results summed up in section forces and displacements for each element, and support forces and displacements
 for each node can be viewed in tables and exported as Excel or CSV files.
 
+Many models can be viewed simultaneously in separate windows. A project overview shows a report for each model.
+
 
 \chapter{Documentations Contents}
 \label{\detokenize{index:documentations-contents}}
@@ -125,21 +127,29 @@ for each node can be viewed in tables and exported as Excel or CSV files.
 
 \subsection{Installation}
 \label{\detokenize{getting_started:installation}}
+Beamon SAD can be used as Program that can be installed or run directly as a python package.
 
-\subsubsection{Windows Executable}
-\label{\detokenize{getting_started:windows-executable}}
-Download windows executable in \sphinxstylestrong{releases} directory an run it.
+
+\subsubsection{Windows Installer}
+\label{\detokenize{getting_started:windows-installer}}
+Executing the Beamons installer in \sphinxstylestrong{release} directory shows a Wizard to help user threw the installation process.
+Make sure to specify an installation location with access rights.
+
+
+\subsubsection{Windows Portable Version}
+\label{\detokenize{getting_started:windows-portable-version}}
+Run Beamon executable files from \sphinxstylestrong{releases} directory.
 
 
 \subsubsection{Python Package (for developers and testers)}
 \label{\detokenize{getting_started:python-package-for-developers-and-testers}}
-Use the package manager {\color{red}\bfseries{}\textasciigrave{}pip\textless{}https://pip.pypa.io/en/stable/\textgreater{}\textasciigrave{}\_} to install requirements from requirements.txt file.
+Use the package manager \sphinxhref{https://pip.pypa.io/en/stable/}{pip} to install requirements from requirements.txt file.
 
 
 \subsection{Starting Beamon}
 \label{\detokenize{getting_started:starting-beamon}}
 
-\subsubsection{How to use beamon package}
+\subsubsection{How To Use \sphinxstyleemphasis{beamon} Package}
 \label{\detokenize{getting_started:how-to-use-beamon-package}}
 To run Beamon package use the following command in your python environment:
 
@@ -150,8 +160,8 @@ To run Beamon package use the following command in your python environment:
 This will execute the user interface of Beamon
 
 
-\subsubsection{Beamon’s comman line arguments}
-\label{\detokenize{getting_started:beamon-s-comman-line-arguments}}
+\subsubsection{Beamon’s command Line Arguments}
+\label{\detokenize{getting_started:beamon-s-command-line-arguments}}
 Available command line arguments are:
 \begin{enumerate}
 \sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
@@ -159,7 +169,7 @@ Available command line arguments are:
 \sphinxhyphen{}i \textless{}path to geometry file\textgreater{}
 
 \item {} 
-\sphinxhyphen{}o \textless{}path to output geometry file\textgreater{} \sphinxstylestrong{(will be removed in future releases)}
+\sphinxhyphen{}m model name for the imported geometry file
 
 \item {} 
 \sphinxhyphen{}t test mode (lunches all submodules on start)
@@ -176,18 +186,30 @@ Available command line arguments are:
 \subsection{Using Beamon}
 \label{\detokenize{getting_started:using-beamon}}
 
-\subsubsection{Loading a Project and Geometry files}
-\label{\detokenize{getting_started:loading-a-project-and-geometry-files}}
-Upon starting Beamon, the user will be confronted with a wizard to load an existing project or make a new one.
-The user will also have a choice to load a geometry file directly. The user can append the geometry file to existing
-data in project or overwrite all existing geometry data.
+\subsubsection{Browsing Models}
+\label{\detokenize{getting_started:browsing-models}}
+A list of project names and their last modification date can be seen in the project overview window.
+Model names can be changed when the user double clicks on the model name in the table.
 
-The wizard is simplified in the following diagram:
+On the right side, there is a report for each selected model showing the number of nodes, elements,  joints,
+and how many profiles are used by the model.
 
-\noindent\sphinxincludegraphics{{loader_wizard}.jpg}
+The user can import geometry to the model or export existing geometry. Upon importing a geometry file to a
+selected model user can choose between appending and overwriting geometry to the model.
+Appending geometry means current geometry will be extended.
+Overwriting means the current geometry will be erased and replaced with the imported ones.
 
-After loading the project (with a geometry file) a notification will show up and notify the user if
-everything went well or if problems occurred.
+\noindent\sphinxincludegraphics{{vis_project_browser}.png}
+
+
+\subsection{Using the Visualizer}
+\label{\detokenize{getting_started:using-the-visualizer}}
+\noindent\sphinxincludegraphics{{how_to_visualization}.png}
+
+The Visualizer consists of a virtual 3D room, called visualization, to display the structure
+and a tree of selectable elements to modify the structure.
+To modify nodes for example click on the Nodes element on the left\sphinxhyphen{}hand side section and a table will be displayed.
+To see visualization controls click on Visualization \sphinxhyphen{}\textgreater{} Help on the toolbar.
 
 
 \section{Making A Model}
@@ -692,7 +714,7 @@ Assemble nodes displacements and support forces according without joints dof res
 \sphinxstyleliteralstrong{\sphinxupquote{a}} (\sphinxstyleliteralemphasis{\sphinxupquote{numpy float vector}}) \textendash{} nodes displacements
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{r}} (\sphinxstyleliteralemphasis{\sphinxupquote{numpy float vector}}) \textendash{} nodes support forces
+\sphinxstyleliteralstrong{\sphinxupquote{Q}} (\sphinxstyleliteralemphasis{\sphinxupquote{numpy float vector}}) \textendash{} nodes support forces
 
 \end{itemize}
 
@@ -750,48 +772,6 @@ double
 
 \end{fulllineitems}
 
-\index{make\_joints() (in module beamon.core)@\spxentry{make\_joints()}\spxextra{in module beamon.core}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.core.make_joints}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{beamon.core.}}\sphinxbfcode{\sphinxupquote{make\_joints}}}{\emph{\DUrole{n}{edof}}, \emph{\DUrole{n}{nodes}}, \emph{\DUrole{n}{dof}}, \emph{\DUrole{n}{ndofs}}, \emph{\DUrole{n}{bc}}}{}
-TODO: remove
-Extends edof, nodes, dof and bc matrices with new cloned nodes that has new dof.
-This will adjust translation conditions between elements.
-New nodes and dofs will be appended at the ende of each input ‘nodes’ and ‘dof’.
-edof matrix contain element dof numbers for each nodal point end. Free dof number is predefined as zero.
-nodes matrix contain {[}x,y,z{]} nodes coordinates in each row.
-dof matrix contain nodes degrees of freedom for each node in a row.
-bc array contain nodes degrees of freedom that are locked.
-map contains mapping information from cloned nodes to origin nodes
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{edof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer matrix}}) \textendash{} topology matrix
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{nodes}} (\sphinxstyleliteralemphasis{\sphinxupquote{float matrix}}) \textendash{} nodes coordinates matrix
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{dof}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer matrix}}) \textendash{} nodes dof matrix
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{ndofs}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}\sphinxstyleliteralemphasis{\sphinxupquote{ (}}\sphinxstyleliteralemphasis{\sphinxupquote{3}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{6}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} number of dof in each node
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{bc}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer array}}) \textendash{} boundary conditions array
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{map}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}) \textendash{} origin and cloned nodes mapping
-
-\end{itemize}
-
-\item[{Returns}] \leavevmode
-edof, nodes, dof, map
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
 \index{transform() (in module beamon.core)@\spxentry{transform()}\spxextra{in module beamon.core}}
 
 \begin{fulllineitems}
@@ -801,10 +781,10 @@ points should have row wise point coordinates.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{T}} (\sphinxstyleliteralemphasis{\sphinxupquote{double}}) \textendash{} 3x3 Transformation Matrix
+\sphinxstyleliteralstrong{\sphinxupquote{T}} (\sphinxstyleliteralemphasis{\sphinxupquote{double}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}) \textendash{} 3x3 Transformation Matrix
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{points}} (\sphinxstyleliteralemphasis{\sphinxupquote{double}}) \textendash{} nx3 points matrix
+\sphinxstyleliteralstrong{\sphinxupquote{points}} (\sphinxstyleliteralemphasis{\sphinxupquote{double}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}\sphinxstyleliteralemphasis{\sphinxupquote{{[}}}\sphinxstyleliteralemphasis{\sphinxupquote{{]}}}) \textendash{} nx3 points matrix
 
 \end{itemize}
 
@@ -824,12 +804,12 @@ double
 \label{\detokenize{api:module-beamon.simulation}}\label{\detokenize{api:simulation}}\index{module@\spxentry{module}!beamon.simulation@\spxentry{beamon.simulation}}\index{beamon.simulation@\spxentry{beamon.simulation}!module@\spxentry{module}}\index{Simulation (class in beamon.simulation)@\spxentry{Simulation}\spxextra{class in beamon.simulation}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.simulation.}}\sphinxbfcode{\sphinxupquote{Simulation}}}{\emph{\DUrole{n}{database}}}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.simulation.}}\sphinxbfcode{\sphinxupquote{Simulation}}}{\emph{\DUrole{n}{database}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{api:beamon.database.database.Database}]{\sphinxcrossref{beamon.database.database.Database}}}}}}{}
 Main simulation module. Uses core and database to do calculations.
 \index{element\_stats() (beamon.simulation.Simulation method)@\spxentry{element\_stats()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.element_stats}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{element\_stats}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.element_stats}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{element\_stats}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Statistics about Simulation results for elements as pandas Dataframe with following columns:
 {[}‘Element Nr.’, ‘Min N’, ‘Max N’, ‘Min Vy’, ‘Max Vy’, ‘Min Vz’, ‘Max Vz’, ‘Min T’, ‘Max T’, ‘Min My’, ‘Max My’,
 ‘Min Mz’, ‘Max Mz’{]}
@@ -847,7 +827,7 @@ pandas Dataframe
 \index{global\_element\_displaced\_points() (beamon.simulation.Simulation method)@\spxentry{global\_element\_displaced\_points()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.global_element_displaced_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{global\_element\_displaced\_points}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.global_element_displaced_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{global\_element\_displaced\_points}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Returns displaced points coordinates in global coordinate system for each evaluation point on elements
 as pandas Dataframe with following columns:
 {[}‘Element Nr.’, ‘x’, ‘y’, ‘z’{]}
@@ -862,10 +842,28 @@ pandas Dataframe
 
 \end{fulllineitems}
 
+\index{global\_element\_displacements() (beamon.simulation.Simulation method)@\spxentry{global\_element\_displacements()}\spxextra{beamon.simulation.Simulation method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.global_element_displacements}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{global\_element\_displacements}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
+Simulation results for global element displacements for translation as pandas
+Dataframe with following columns:
+{[}‘Element Nr.’, ‘u’, ‘v’, ‘w’{]}
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+local element displacements matrix
+
+\item[{Return type}] \leavevmode
+pandas Dataframe
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
 \index{global\_element\_evaluation\_points() (beamon.simulation.Simulation method)@\spxentry{global\_element\_evaluation\_points()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.global_element_evaluation_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{global\_element\_evaluation\_points}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.global_element_evaluation_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{global\_element\_evaluation\_points}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Returns simulation evaluation point coordinates in global coordinate system
 as pandas Dataframe with following columns:
 {[}‘Element Nr.’, ‘x’, ‘y’, ‘z’{]}
@@ -883,7 +881,7 @@ pandas Dataframe
 \index{local\_element\_displacements() (beamon.simulation.Simulation method)@\spxentry{local\_element\_displacements()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.local_element_displacements}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{local\_element\_displacements}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.local_element_displacements}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{local\_element\_displacements}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Simulation results for local element displacements as pandas Dataframe with following columns:
 {[}‘Element Nr.’, ‘xi’, ‘u’, ‘v’, ‘w’, ‘phi’{]}
 \begin{quote}\begin{description}
@@ -900,7 +898,7 @@ pandas Dataframe
 \index{local\_element\_section\_forces() (beamon.simulation.Simulation method)@\spxentry{local\_element\_section\_forces()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.local_element_section_forces}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{local\_element\_section\_forces}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.local_element_section_forces}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{local\_element\_section\_forces}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Simulation results for local element section forces as pandas Dataframe with following columns:
 {[}‘Element Nr.’, ‘xi’, ‘N’, ‘Vy’, ‘Vz’, ‘T’, ‘My’,’Mz’{]}
 \begin{quote}\begin{description}
@@ -917,7 +915,7 @@ pandas Dataframe
 \index{nodes\_results() (beamon.simulation.Simulation method)@\spxentry{nodes\_results()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.nodes_results}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{nodes\_results}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.nodes_results}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{nodes\_results}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
 Simulation results for global nodes displacements (ax,ay,az,aphi\_x,aphi\_y,a\_phiz) with nodes coordinates
 (x,y,z) and normal forces (Qx,Qy,Qz,Qphi\_x,Qphi\_y,Qphi\_z) as pandas Dataframe with following columns:
 {[}‘Node Nr.’, ‘ax’, ‘ay’, ‘az’, ‘aphi\_x’, ‘aphi\_y’, ‘aphi\_z’, ‘x’, ‘y’, ‘z’, ‘Qx’, ‘Qy’, ‘Qz’, ‘Qphi\_x’,
@@ -936,12 +934,17 @@ pandas Dataframe
 \index{simulate() (beamon.simulation.Simulation method)@\spxentry{simulate()}\spxextra{beamon.simulation.Simulation method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.simulate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{simulate}}}{\emph{\DUrole{n}{n}\DUrole{o}{=}\DUrole{default_value}{20}}, \emph{\DUrole{n}{scale}\DUrole{o}{=}\DUrole{default_value}{2}}}{}
+\phantomsection\label{\detokenize{api:beamon.simulation.Simulation.simulate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{simulate}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{n}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}} \DUrole{o}{=} \DUrole{default_value}{20}}}{}
 Run the simulation according to data in the database.
-\sphinxstylestrong{Warning}: Elements with no defined profiles will cause an error
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{n}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} number of evaluation points
+
+\end{itemize}
 
 \end{description}\end{quote}
 
@@ -953,23 +956,26 @@ Run the simulation according to data in the database.
 
 
 \subsection{Database}
-\label{\detokenize{api:module-beamon.database}}\label{\detokenize{api:database}}\index{module@\spxentry{module}!beamon.database@\spxentry{beamon.database}}\index{beamon.database@\spxentry{beamon.database}!module@\spxentry{module}}\index{Database (class in beamon.database)@\spxentry{Database}\spxextra{class in beamon.database}}
+\label{\detokenize{api:module-beamon.database.database}}\label{\detokenize{api:database}}\index{module@\spxentry{module}!beamon.database.database@\spxentry{beamon.database.database}}\index{beamon.database.database@\spxentry{beamon.database.database}!module@\spxentry{module}}\index{Database (class in beamon.database.database)@\spxentry{Database}\spxextra{class in beamon.database.database}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.database.}}\sphinxbfcode{\sphinxupquote{Database}}}{\emph{\DUrole{n}{path\_to\_database}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{check}\DUrole{o}{=}\DUrole{default_value}{True}}, \emph{\DUrole{n}{ram}\DUrole{o}{=}\DUrole{default_value}{False}}, \emph{\DUrole{n}{path\_to\_save\_database}\DUrole{o}{=}\DUrole{default_value}{\textquotesingle{}\textquotesingle{}}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.database.database.}}\sphinxbfcode{\sphinxupquote{Database}}}{\emph{\DUrole{n}{path\_to\_database}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{check}\DUrole{o}{=}\DUrole{default_value}{True}}, \emph{\DUrole{n}{ram}\DUrole{o}{=}\DUrole{default_value}{False}}, \emph{\DUrole{n}{path\_to\_save\_database}\DUrole{o}{=}\DUrole{default_value}{\textquotesingle{}\textquotesingle{}}}}{}
 A data set to save all the data for constructing Elements in Visualization and for calculations in Beamon
 \sphinxstylestrong{Warning}: This class should follow singleton pattern.
 
 conn: SQLite3 connection object
 
 cur: cursor for SQLite queries
-\index{add\_lineload() (beamon.database.Database method)@\spxentry{add\_lineload()}\spxextra{beamon.database.Database method}}
+\index{add\_lineload() (beamon.database.database.Database method)@\spxentry{add\_lineload()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_lineload}}}{\emph{\DUrole{n}{l\_index}}, \emph{\DUrole{n}{qx}}, \emph{\DUrole{n}{qy}}, \emph{\DUrole{n}{qz}}, \emph{\DUrole{n}{qw}}}{}
-Add a load to lineload table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_lineload}}}{\emph{\DUrole{n}{m\_id}}, \emph{\DUrole{n}{l\_index}}, \emph{\DUrole{n}{qx}}, \emph{\DUrole{n}{qy}}, \emph{\DUrole{n}{qz}}, \emph{\DUrole{n}{qw}}}{}
+Add a lineload to a specified model.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{l\_index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} link index number
 
@@ -988,18 +994,17 @@ Add a load to lineload table.
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-True
+False/lineload index
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{add\_link() (beamon.database.Database method)@\spxentry{add\_link()}\spxextra{beamon.database.Database method}}
+\index{add\_link() (beamon.database.database.Database method)@\spxentry{add\_link()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_link}}}{\emph{\DUrole{n}{index1}}, \emph{\DUrole{n}{index2}}, \emph{\DUrole{n}{dof}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{profile\_id}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_z}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
-Addes a link from node with index 1 to node with index2 and profile with profile\_id
-if append is False a Link with specified values will be added.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_link}}}{\emph{\DUrole{n}{index1}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{index2}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{dof}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{profile\_id}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{v\_z}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
+Adds a link from node with id index1 to node with id index2 and profile with profile\_id to a model with m\_id.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1009,13 +1014,13 @@ if append is False a Link with specified values will be added.
 \sphinxstyleliteralstrong{\sphinxupquote{index2}} \textendash{} ending node index
 
 \item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
+\item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{dof}} \textendash{} degrees of freedom {[}ux1, uy1, uz1, phix1, … , uz2, phix2, phiy2, phiz2{]}
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{profile\_id}} \textendash{} optional index of the profile
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{append}} \textendash{} default True. Decide if the given Values should be appended to the database or not
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{v\_x}} \textendash{} x component of the direction determiner of the z local axes
@@ -1029,23 +1034,24 @@ if append is False a Link with specified values will be added.
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-True: if successfully added a link, False: if one of the indexes don’t exist
+True: if successfully added a link, False: if one of the given indices don’t exist
 
 \end{description}\end{quote}
 
-or the profile index don’t exist
-
 \end{fulllineitems}
 
-\index{add\_load() (beamon.database.Database method)@\spxentry{add\_load()}\spxextra{beamon.database.Database method}}
+\index{add\_load() (beamon.database.database.Database method)@\spxentry{add\_load()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_load}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{m\_x}}, \emph{\DUrole{n}{m\_y}}, \emph{\DUrole{n}{m\_z}}, \emph{\DUrole{n}{lineload\_id}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
-adds a load on the node with index
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_load}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{m\_x}}, \emph{\DUrole{n}{m\_y}}, \emph{\DUrole{n}{m\_z}}, \emph{\DUrole{n}{lineload\_id}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
+adds a load on the node specified with index and model number.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node index number
+\sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node sub index number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{x}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} first component of the force vector
@@ -1080,39 +1086,107 @@ boolean
 
 \end{fulllineitems}
 
-\index{add\_node() (beamon.database.Database method)@\spxentry{add\_node()}\spxextra{beamon.database.Database method}}
+\index{add\_model() (beamon.database.database.Database method)@\spxentry{add\_model()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_node}}}{\emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{n\_type}\DUrole{o}{=}\DUrole{default_value}{1}}}{}
-adds a node with coordinates x,y,z and the freedom of movement for all 6 degrees of freedom (dof)
-default values for {[}u\_x, .. ,phi\_z{]} is e vector {[}1,…,1{]}.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_model}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_model}}}{\emph{\DUrole{n}{m\_name}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}}}}{{ $\rightarrow$ \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}
+Adds a new model to db and returns newly added model number
 \begin{quote}\begin{description}
-\item[{Return False}] \leavevmode
-if node already exists, True: if node has been added
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_name}} (\sphinxstyleliteralemphasis{\sphinxupquote{string}}) \textendash{} new model name
+
+\item[{Returns}] \leavevmode
+model number
+
+\item[{Return type}] \leavevmode
+integer
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{add\_profile() (beamon.database.Database method)@\spxentry{add\_profile()}\spxextra{beamon.database.Database method}}
+\index{add\_node() (beamon.database.database.Database method)@\spxentry{add\_node()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.add_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_profile}}}{\emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_node}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{1}}}{}
+adds a node with coordinates x,y,z and the freedom of movement for all 6 degrees of freedom (dof) to a model
+with given model number.
+
+If dof numbers where not given default values will be used.
+Default values for dof values {[}u\_x, .. ,phi\_z{]} is a vector with ones {[}1,…,1{]}.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Model id
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{x}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} x coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{y}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} y coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{z}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} z coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_x}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in x direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_y}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in y direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_z}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in z direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_x}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_x direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_y}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_y direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_z}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_z direction
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+False: if node already exists, m\_id if new node was added
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{add\_profile() (beamon.database.database.Database method)@\spxentry{add\_profile()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.add_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{add\_profile}}}{\emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
 Adds a profile
 
 \end{fulllineitems}
 
-\index{change\_dof() (beamon.database.Database method)@\spxentry{change\_dof()}\spxextra{beamon.database.Database method}}
+\index{backup() (beamon.database.database.Database method)@\spxentry{backup()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_dof}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{None}}}{}~\begin{description}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.backup}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{backup}}}{\emph{\DUrole{n}{destination\_path}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}}}}{}
+Creates Backup to Database with specified path
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{destination\_path}} (\sphinxstyleliteralemphasis{\sphinxupquote{string}}) \textendash{} Backup database path
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{change\_dof() (beamon.database.database.Database method)@\spxentry{change\_dof()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_dof}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{None}}}{}~\begin{description}
 \item[{change the degree of freedom for a given node with specified node index. DOF specification:}] \leavevmode
-1 is completely free, 0 is locked.
+1 is for free movement and 0 is for locked movement in a specified direction.
 
 \end{description}
 
 for example (index=300, u\_x=1, u\_y=1, u\_z=1, phi\_x=1, phi\_y=1, phi\_z=0) locks the rotation
-in the z axes of node 300.
+in global z\sphinxhyphen{}axes direction of node 300.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1145,12 +1219,12 @@ True: if successfully changed/ False: if node not found
 
 \end{fulllineitems}
 
-\index{change\_edof() (beamon.database.Database method)@\spxentry{change\_edof()}\spxextra{beamon.database.Database method}}
+\index{change\_edof() (beamon.database.database.Database method)@\spxentry{change\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_edof}}}{\emph{\DUrole{n}{edof}}, \emph{\DUrole{n}{n\_index}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{e\_index}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_edof}}}{\emph{\DUrole{n}{edof}}, \emph{\DUrole{n}{n\_index}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{e\_index}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
 Changes given degrees of freedom for all elements connected to the node with n\_index.
-If e\_index is given instead only the degrees of freedom for that element will be changed.
+If e\_index is given instead, only the degrees of freedom for that element will be changed.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1168,11 +1242,11 @@ If e\_index is given instead only the degrees of freedom for that element will b
 
 \end{fulllineitems}
 
-\index{change\_lineload() (beamon.database.Database method)@\spxentry{change\_lineload()}\spxextra{beamon.database.Database method}}
+\index{change\_lineload() (beamon.database.database.Database method)@\spxentry{change\_lineload()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_lineload}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{l\_index}}, \emph{\DUrole{n}{qx}}, \emph{\DUrole{n}{qy}}, \emph{\DUrole{n}{qz}}, \emph{\DUrole{n}{qw}}}{}
-Change lineload data with certain lineload index.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_lineload}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{l\_index}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{qx}}, \emph{\DUrole{n}{qy}}, \emph{\DUrole{n}{qz}}, \emph{\DUrole{n}{qw}}}{}
+Change lineload data with specified lineload index.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1180,6 +1254,9 @@ Change lineload data with certain lineload index.
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{l\_index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} link index number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{qx}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} constant force in x direction
@@ -1202,11 +1279,11 @@ True
 
 \end{fulllineitems}
 
-\index{change\_link() (beamon.database.Database method)@\spxentry{change\_link()}\spxextra{beamon.database.Database method}}
+\index{change\_link() (beamon.database.database.Database method)@\spxentry{change\_link()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_link}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{n1\_id}}, \emph{\DUrole{n}{n2\_id}}, \emph{\DUrole{n}{v\_x}}, \emph{\DUrole{n}{v\_y}}, \emph{\DUrole{n}{v\_z}}, \emph{\DUrole{n}{profile\_id}}}{}
-Changes specific link values with index number.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_link}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{n1\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{n2\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{v\_x}}, \emph{\DUrole{n}{v\_y}}, \emph{\DUrole{n}{v\_z}}, \emph{\DUrole{n}{profile\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Changes link values with specific index and model number
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 True/False
@@ -1215,18 +1292,22 @@ True/False
 
 \end{fulllineitems}
 
-\index{change\_load() (beamon.database.Database method)@\spxentry{change\_load()}\spxextra{beamon.database.Database method}}
+\index{change\_load() (beamon.database.database.Database method)@\spxentry{change\_load()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_load}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{n\_index}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{m\_x}}, \emph{\DUrole{n}{m\_y}}, \emph{\DUrole{n}{m\_z}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_load}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{n\_index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{m\_x}}, \emph{\DUrole{n}{m\_y}}, \emph{\DUrole{n}{m\_z}}}{}
 Change load information with specific index number.
+n\_index is nodes sub index number
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} load index to be changed
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{n\_index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node index number
+\sphinxstyleliteralstrong{\sphinxupquote{n\_index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node sub index number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{x}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} x\sphinxhyphen{}component
@@ -1255,12 +1336,45 @@ True
 
 \end{fulllineitems}
 
-\index{change\_node() (beamon.database.Database method)@\spxentry{change\_node()}\spxextra{beamon.database.Database method}}
+\index{change\_node() (beamon.database.database.Database method)@\spxentry{change\_node()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_node}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{1}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_node}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}, \emph{\DUrole{n}{u\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{u\_z}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_x}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_y}\DUrole{o}{=}\DUrole{default_value}{1}}, \emph{\DUrole{n}{phi\_z}\DUrole{o}{=}\DUrole{default_value}{1}}}{}
 Changes node information with specified index number.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node id
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{x}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} x coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{y}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} y coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{z}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} z coordinate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_x}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in x direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_y}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in y direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{u\_z}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in z direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_x}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_x direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_y}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_y direction
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{phi\_z}} (\sphinxstyleliteralemphasis{\sphinxupquote{0}}\sphinxstyleliteralemphasis{\sphinxupquote{ or }}\sphinxstyleliteralemphasis{\sphinxupquote{1}}) \textendash{} dof translation in phi\_z direction
+
+\end{itemize}
+
 \item[{Returns}] \leavevmode
 True/False
 
@@ -1268,10 +1382,10 @@ True/False
 
 \end{fulllineitems}
 
-\index{change\_profile() (beamon.database.Database method)@\spxentry{change\_profile()}\spxextra{beamon.database.Database method}}
+\index{change\_profile() (beamon.database.database.Database method)@\spxentry{change\_profile()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.change_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_profile}}}{\emph{\DUrole{n}{index}}, \emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.change_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_profile}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{E}}, \emph{\DUrole{n}{G}}, \emph{\DUrole{n}{A}}, \emph{\DUrole{n}{Iy}}, \emph{\DUrole{n}{Iz}}, \emph{\DUrole{n}{kv}}}{}
 Changes certain profile values with index
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1281,10 +1395,10 @@ True/False
 
 \end{fulllineitems}
 
-\index{check\_database() (beamon.database.Database method)@\spxentry{check\_database()}\spxextra{beamon.database.Database method}}
+\index{check\_database() (beamon.database.database.Database method)@\spxentry{check\_database()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.check_database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{check\_database}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.check_database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{check\_database}}}{}{}
 Checks if the database has already been created or fails integrity check. Also checks if the following tables
 has dublicate entries: Nodes, Links
 \begin{quote}\begin{description}
@@ -1295,61 +1409,21 @@ True/False
 
 \end{fulllineitems}
 
-\index{clear\_database() (beamon.database.Database method)@\spxentry{clear\_database()}\spxextra{beamon.database.Database method}}
+\index{clear\_database() (beamon.database.database.Database method)@\spxentry{clear\_database()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_database}}}{}{}
-Delete/erase all the data from the database tables
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.clear_database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_database}}}{\emph{\DUrole{n}{m\_id}}}{}
+Delete/erase all the data from the database tables of a specified model
 
 \end{fulllineitems}
 
-\index{clear\_lineloads() (beamon.database.Database method)@\spxentry{clear\_lineloads()}\spxextra{beamon.database.Database method}}
+\index{contains\_link() (beamon.database.database.Database method)@\spxentry{contains\_link()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_lineloads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_lineloads}}}{}{}
-Delete all the data from the table Lineload. ON DELTE CASCADE will deal with delete anomalies
-
-\end{fulllineitems}
-
-\index{clear\_links() (beamon.database.Database method)@\spxentry{clear\_links()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_links}}}{}{}
-Delete all the data from the table Links
-
-\end{fulllineitems}
-
-\index{clear\_node\_loads() (beamon.database.Database method)@\spxentry{clear\_node\_loads()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_node_loads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_node\_loads}}}{}{}
-Delete all the data from the table Force
-
-\end{fulllineitems}
-
-\index{clear\_nodes\_table() (beamon.database.Database method)@\spxentry{clear\_nodes\_table()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_nodes_table}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_nodes\_table}}}{}{}
-Delete all the data from the table Profile
-
-\end{fulllineitems}
-
-\index{clear\_profile\_table() (beamon.database.Database method)@\spxentry{clear\_profile\_table()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.clear_profile_table}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{clear\_profile\_table}}}{}{}
-Delete all the data from the table Profile
-
-\end{fulllineitems}
-
-\index{contains\_link() (beamon.database.Database method)@\spxentry{contains\_link()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.contains_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_link}}}{\emph{\DUrole{n}{index1}}, \emph{\DUrole{n}{index2}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.contains_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_link}}}{\emph{\DUrole{n}{index1}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{index2}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}}{}
 If only index1 is given: see if a link with index1 exists.
-
-If index1 and index2 are given: see if a link with the nodes index1 and index2 exists.
+if index1 and m\_id are given: see if a link with sub index exists in model with specified model number
+If index1, index2 and model number are given: see if a link with the nodes sub index1 and sub index2 exists.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1357,6 +1431,9 @@ If index1 and index2 are given: see if a link with the nodes index1 and index2 e
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{index2}} \textendash{} Integer
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \end{itemize}
 
@@ -1367,25 +1444,19 @@ True/False
 
 \end{fulllineitems}
 
-\index{contains\_node() (beamon.database.Database method)@\spxentry{contains\_node()}\spxextra{beamon.database.Database method}}
+\index{contains\_node() (beamon.database.database.Database method)@\spxentry{contains\_node()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.contains_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_node}}}{\emph{\DUrole{n}{x}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{y}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{z}\DUrole{o}{=}\DUrole{default_value}{None}}, \emph{\DUrole{n}{index}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
-See if node with x,y,z coordinates exists. If index is given the index will be used to search
-if nothing was given then has\_nodes() will be called.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.contains_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_node}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}}{{ $\rightarrow$ \sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}}}
+Check if node with specific index number exists.
+If model number is given node sub index number will be searched instead.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{x}} \textendash{} coordinate
+\sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} node id inside a model (not pk)
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{y}} \textendash{} coordinate
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{z}} \textendash{} coordinate
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} of the node
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \end{itemize}
 
@@ -1396,11 +1467,11 @@ True if node exist, False if nodes doesnt exist
 
 \end{fulllineitems}
 
-\index{contains\_profile() (beamon.database.Database method)@\spxentry{contains\_profile()}\spxextra{beamon.database.Database method}}
+\index{contains\_profile() (beamon.database.database.Database method)@\spxentry{contains\_profile()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.contains_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_profile}}}{\emph{\DUrole{n}{index}}}{}
-Check if profile with index exists.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.contains_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_profile}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Check if profile with a specified index exists.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} profile index number
@@ -1415,24 +1486,20 @@ boolean
 
 \end{fulllineitems}
 
-\index{erase\_lost\_profiles\_in\_links() (beamon.database.Database method)@\spxentry{erase\_lost\_profiles\_in\_links()}\spxextra{beamon.database.Database method}}
+\index{export\_text() (beamon.database.database.Database method)@\spxentry{export\_text()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.erase_lost_profiles_in_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{erase\_lost\_profiles\_in\_links}}}{}{}
-Remove all profile foreign keys in table Links that has no reference.
-This is mainly used to reset all lost foreign keys in table links after deleting a profile tha have been used
-in links
-
-\end{fulllineitems}
-
-\index{export\_text() (beamon.database.Database method)@\spxentry{export\_text()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.export_text}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{export\_text}}}{\emph{\DUrole{n}{path}}}{}
-Exports geometry to text file
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.export_text}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{export\_text}}}{\emph{\DUrole{n}{path}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Exports geometry of a specified model to text file
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{path}} \textendash{} the path including the File name to be saved (ex. filename.csv)
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\end{itemize}
 
 \item[{Returns}] \leavevmode
 True if saved, False if not saved
@@ -1441,12 +1508,15 @@ True if saved, False if not saved
 
 \end{fulllineitems}
 
-\index{get\_all\_dof() (beamon.database.Database method)@\spxentry{get\_all\_dof()}\spxextra{beamon.database.Database method}}
+\index{get\_all\_dof() (beamon.database.database.Database method)@\spxentry{get\_all\_dof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_all_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_dof}}}{}{}
-Gets all nodes information which has at least one dof number equals 1 (locked)
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_dof}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all nodes information that has at least one dof number equals to 1 (locked) from a specified model.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 {[}x,y,z,u\_x,u\_y,u\_z,phi\_x,phi\_y,phi\_z{]}
 
@@ -1454,11 +1524,11 @@ Gets all nodes information which has at least one dof number equals 1 (locked)
 
 \end{fulllineitems}
 
-\index{get\_all\_lineloads() (beamon.database.Database method)@\spxentry{get\_all\_lineloads()}\spxextra{beamon.database.Database method}}
+\index{get\_all\_lineloads() (beamon.database.database.Database method)@\spxentry{get\_all\_lineloads()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_all_lineloads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_lineloads}}}{}{}
-Gets all lineloads from Lineload table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_lineloads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_lineloads}}}{\emph{\DUrole{n}{m\_id}}}{}
+Gets all lineloads from Lineload table of a specified model.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}link\_id, qx, qy, qz, qw{]}
@@ -1470,13 +1540,36 @@ float matrix
 
 \end{fulllineitems}
 
-\index{get\_all\_links() (beamon.database.Database method)@\spxentry{get\_all\_links()}\spxextra{beamon.database.Database method}}
+\index{get\_all\_lineloads\_for\_simulation() (beamon.database.database.Database method)@\spxentry{get\_all\_lineloads\_for\_simulation()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_all_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_links}}}{}{}
-Gets all links in the links table.
-Delivers the table as it is.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_lineloads_for_simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_lineloads\_for\_simulation}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
+Gets all lineloads from Lineload table of a specified model.
+link\_id are links sub index in the specified model.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item[{Returns}] \leavevmode
+following data columns: {[}link\_id, qx, qy, qz, qw{]}
+
+\item[{Return type}] \leavevmode
+DataFrame
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_all\_links() (beamon.database.database.Database method)@\spxentry{get\_all\_links()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_links}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all links in the links table for a specified model.
+Delivers the table with node’s sub indices.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 matrix
 
@@ -1484,11 +1577,11 @@ matrix
 
 \end{fulllineitems}
 
-\index{get\_all\_links\_profile\_indexes() (beamon.database.Database method)@\spxentry{get\_all\_links\_profile\_indexes()}\spxextra{beamon.database.Database method}}
+\index{get\_all\_links\_profile\_indexes() (beamon.database.database.Database method)@\spxentry{get\_all\_links\_profile\_indexes()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_all_links_profile_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_links\_profile\_indexes}}}{}{}
-Gets all the profiles indexes of the existing links.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_links_profile_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_links\_profile\_indexes}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all the profiles indexes of the existing links in a specified model.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 None: if link index don’t exist. Otherwise index of the profile
@@ -1497,21 +1590,31 @@ None: if link index don’t exist. Otherwise index of the profile
 
 \end{fulllineitems}
 
-\index{get\_all\_nodes() (beamon.database.Database method)@\spxentry{get\_all\_nodes()}\spxextra{beamon.database.Database method}}
+\index{get\_all\_nodes() (beamon.database.database.Database method)@\spxentry{get\_all\_nodes()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_all_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_nodes}}}{}{}
-Gets all nodes information in the DataSet. Used for the GUI\sphinxhyphen{}Table
-:return: table {[}x, y, z, u\_x, u\_y, u\_z, phi\_x, phi\_y, phi\_z{]}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_all_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_nodes}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{{ $\rightarrow$ pandas.core.frame.DataFrame}}
+Gets all nodes information in the DataSet from a specified model. Used for the GUI\sphinxhyphen{}Table
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
+\item[{Returns}] \leavevmode
+table {[}x, y, z, u\_x, u\_y, u\_z, phi\_x, phi\_y, phi\_z{]}
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{get\_bc() (beamon.database.Database method)@\spxentry{get\_bc()}\spxextra{beamon.database.Database method}}
+\index{get\_bc() (beamon.database.database.Database method)@\spxentry{get\_bc()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_bc}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bc}}}{}{}
-Get only bc information from nodes.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_bc}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bc}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Get only bc information from nodes for a specified model.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 {[}u\_x,u\_y,u\_z,phi\_x,phi\_y,phi\_z{]}
 
@@ -1519,14 +1622,20 @@ Get only bc information from nodes.
 
 \end{fulllineitems}
 
-\index{get\_default\_edof() (beamon.database.Database method)@\spxentry{get\_default\_edof()}\spxextra{beamon.database.Database method}}
+\index{get\_default\_edof() (beamon.database.database.Database method)@\spxentry{get\_default\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_default_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_edof}}}{\emph{\DUrole{n}{index}}}{}
-Gets default element degrees of freedom numbers for a specific link.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_default_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_edof}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets default element degrees of freedom numbers for a specific link in a specified model
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} link index number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\end{itemize}
 
 \item[{Returns}] \leavevmode
 1 x 12 array
@@ -1538,10 +1647,10 @@ integer array
 
 \end{fulllineitems}
 
-\index{get\_default\_link\_orientation() (beamon.database.Database method)@\spxentry{get\_default\_link\_orientation()}\spxextra{beamon.database.Database method}}
+\index{get\_default\_link\_orientation() (beamon.database.database.Database method)@\spxentry{get\_default\_link\_orientation()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_default_link_orientation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_link\_orientation}}}{\emph{\DUrole{n}{index1}}, \emph{\DUrole{n}{index2}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_default_link_orientation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_link\_orientation}}}{\emph{\DUrole{n}{index1}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{index2}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Gets the default orientation vector of the element from starting node with index1 and ending node with index2
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
@@ -1560,11 +1669,12 @@ Gets the default orientation vector of the element from starting node with index
 
 \end{fulllineitems}
 
-\index{get\_default\_static\_edof() (beamon.database.Database method)@\spxentry{get\_default\_static\_edof()}\spxextra{beamon.database.Database method}}
+\index{get\_default\_static\_edof() (beamon.database.database.Database method)@\spxentry{get\_default\_static\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_default_static_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_static\_edof}}}{\emph{\DUrole{n}{id1}}, \emph{\DUrole{n}{id2}}}{}
-Gets the default element degrees of freedom. Default means that all degrees of freedom are locked
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_default_static_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_default\_static\_edof}}}{\emph{\DUrole{n}{id1}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{id2}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets the default element degrees of freedom for a specific element defined with starting and
+ending node indices of a specified model. Default means that all degrees of freedom are locked
 (stiff connections).
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
@@ -1573,6 +1683,9 @@ Gets the default element degrees of freedom. Default means that all degrees of f
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{id2}} \textendash{} index of ending node
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
 
 \end{itemize}
 
@@ -1583,11 +1696,11 @@ integer list {[}ux1, uy1, uz1, phix1, … , uz2, phix2, phiy2, phiz2{]}
 
 \end{fulllineitems}
 
-\index{get\_dof() (beamon.database.Database method)@\spxentry{get\_dof()}\spxextra{beamon.database.Database method}}
+\index{get\_dof() (beamon.database.database.Database method)@\spxentry{get\_dof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_dof}}}{\emph{\DUrole{n}{index}}}{}
-Get the dof values of the node with index.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_dof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_dof}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Get the dof values of a specified node.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} of the node
@@ -1599,11 +1712,11 @@ Get the dof values of the node with index.
 
 \end{fulllineitems}
 
-\index{get\_edof() (beamon.database.Database method)@\spxentry{get\_edof()}\spxextra{beamon.database.Database method}}
+\index{get\_edof() (beamon.database.database.Database method)@\spxentry{get\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_edof}}}{}{}
-Gets all links indices and degrees of freedom from links table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_edof}}}{\emph{\DUrole{n}{m\_id}}}{}
+Gets all links indices and degrees of freedom from links of a specified model.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}id, ux1,uy1,uz1,phix1,phiy1,phiz1,ux2,uy2,uz2,phix2,phiy2,phiz2{]}
@@ -1615,11 +1728,11 @@ integer matrix
 
 \end{fulllineitems}
 
-\index{get\_edof\_for\_simulation() (beamon.database.Database method)@\spxentry{get\_edof\_for\_simulation()}\spxextra{beamon.database.Database method}}
+\index{get\_edof\_for\_simulation() (beamon.database.database.Database method)@\spxentry{get\_edof\_for\_simulation()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_edof_for_simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_edof\_for\_simulation}}}{}{}
-Gets all links starting and ending nodes indices with degrees of freedom from links table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_edof_for_simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_edof\_for\_simulation}}}{\emph{\DUrole{n}{m\_id}}}{}
+Gets all links starting and ending nodes indices with degrees of freedom from links of a specified model.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}n1\_id, n2\_id, ux1,uy1,uz1,phix1,phiy1,phiz1,ux2,uy2,uz2,phix2,phiy2,phiz2{]}
@@ -1631,10 +1744,10 @@ integer matrix
 
 \end{fulllineitems}
 
-\index{get\_grid\_settings() (beamon.database.Database method)@\spxentry{get\_grid\_settings()}\spxextra{beamon.database.Database method}}
+\index{get\_grid\_settings() (beamon.database.database.Database method)@\spxentry{get\_grid\_settings()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_grid_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_grid\_settings}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_grid_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_grid\_settings}}}{}{}
 Gets latest grid settings from table VisualizerSettings.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1644,11 +1757,12 @@ list of params / None if table is empty
 
 \end{fulllineitems}
 
-\index{get\_joints() (beamon.database.Database method)@\spxentry{get\_joints()}\spxextra{beamon.database.Database method}}
+\index{get\_joints() (beamon.database.database.Database method)@\spxentry{get\_joints()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_joints}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_joints}}}{}{}
-Get joints locations. Those are nodes coordinates + v. v is the direction of links from joints.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_joints}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_joints}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Get joints locations for a specified model.
+Those are nodes coordinates + v. v is the direction of links from joints.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}x,y,z{]}
@@ -1660,12 +1774,12 @@ float array
 
 \end{fulllineitems}
 
-\index{get\_lineloads\_for\_plotting() (beamon.database.Database method)@\spxentry{get\_lineloads\_for\_plotting()}\spxextra{beamon.database.Database method}}
+\index{get\_lineloads\_for\_plotting() (beamon.database.database.Database method)@\spxentry{get\_lineloads\_for\_plotting()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_lineloads_for_plotting}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_lineloads\_for\_plotting}}}{}{}~\begin{description}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_lineloads_for_plotting}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_lineloads\_for\_plotting}}}{\emph{\DUrole{n}{m\_id}}}{}~\begin{description}
 \item[{Gets lineloads index with starting and ending node coordinates}] \leavevmode
-and lineload forces for plotting.
+and lineload forces from a specified model for plotting.
 
 \end{description}
 \begin{quote}\begin{description}
@@ -1679,11 +1793,12 @@ float matrix
 
 \end{fulllineitems}
 
-\index{get\_link\_direction() (beamon.database.Database method)@\spxentry{get\_link\_direction()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_direction() (beamon.database.database.Database method)@\spxentry{get\_link\_direction()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_direction}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_direction}}}{\emph{\DUrole{n}{index1}}, \emph{\DUrole{n}{index2}}}{}
-Get the normalized direction of the Link specified by starting and ending node indices.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_direction}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_direction}}}{\emph{\DUrole{n}{index1}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{index2}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Get the normalized direction of the Link (local x\sphinxhyphen{}axis). Link is specified by starting and
+ending node indices.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1701,14 +1816,14 @@ Get the normalized direction of the Link specified by starting and ending node i
 
 \end{fulllineitems}
 
-\index{get\_link\_length() (beamon.database.Database method)@\spxentry{get\_link\_length()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_length() (beamon.database.database.Database method)@\spxentry{get\_link\_length()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_length}}}{\emph{\DUrole{n}{index}}}{}
-Gets the length of the link with the index.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_length}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets the length of a specified link.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} of the link in the table Links
+\sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} index of the link
 
 \item[{Returns}] \leavevmode
 float
@@ -1717,10 +1832,10 @@ float
 
 \end{fulllineitems}
 
-\index{get\_link\_nodes() (beamon.database.Database method)@\spxentry{get\_link\_nodes()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_nodes() (beamon.database.database.Database method)@\spxentry{get\_link\_nodes()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_nodes}}}{\emph{\DUrole{n}{link\_id}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_nodes}}}{\emph{\DUrole{n}{link\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Gets links starting and ending nodes indices.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -1733,10 +1848,10 @@ Gets links starting and ending nodes indices.
 
 \end{fulllineitems}
 
-\index{get\_link\_orientation() (beamon.database.Database method)@\spxentry{get\_link\_orientation()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_orientation() (beamon.database.database.Database method)@\spxentry{get\_link\_orientation()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_orientation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_orientation}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_orientation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_orientation}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 gets all local z\sphinxhyphen{}axes orientation information \sphinxhyphen{} plane normal vector (x axes) and v vector components
 (orientation definition vector for z axes).
 \begin{quote}\begin{description}
@@ -1750,12 +1865,12 @@ x,y,z vectors for local system of the link
 
 \end{fulllineitems}
 
-\index{get\_link\_orientations() (beamon.database.Database method)@\spxentry{get\_link\_orientations()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_orientations() (beamon.database.database.Database method)@\spxentry{get\_link\_orientations()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_orientations}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_orientations}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_orientations}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_orientations}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 gets all local z\sphinxhyphen{}axes orientation information \sphinxhyphen{} plane normal vector (x axes) and v vector components
-(orientation definition vector for z axes).
+(orientation definition vector for z axes) \sphinxhyphen{} from a specified model.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 x,y,z vectors for local system of all links
@@ -1764,10 +1879,10 @@ x,y,z vectors for local system of all links
 
 \end{fulllineitems}
 
-\index{get\_link\_with\_id() (beamon.database.Database method)@\spxentry{get\_link\_with\_id()}\spxextra{beamon.database.Database method}}
+\index{get\_link\_with\_id() (beamon.database.database.Database method)@\spxentry{get\_link\_with\_id()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_link_with_id}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_with\_id}}}{\emph{\DUrole{n}{link\_id}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_link_with_id}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_link\_with\_id}}}{\emph{\DUrole{n}{link\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Gets link data with a certain id
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -1780,12 +1895,16 @@ link data
 
 \end{fulllineitems}
 
-\index{get\_links() (beamon.database.Database method)@\spxentry{get\_links()}\spxextra{beamon.database.Database method}}
+\index{get\_links() (beamon.database.database.Database method)@\spxentry{get\_links()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links}}}{}{}
-Gets Links information for visualization puposes as line segment information.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets Links information for visualization purposes as line segment information for a specified model.
+See PyVista line segments definition.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 numpy array for line segments with the form {[}x, y, z{]}
 
@@ -1793,11 +1912,11 @@ numpy array for line segments with the form {[}x, y, z{]}
 
 \end{fulllineitems}
 
-\index{get\_links\_ending\_points() (beamon.database.Database method)@\spxentry{get\_links\_ending\_points()}\spxextra{beamon.database.Database method}}
+\index{get\_links\_ending\_points() (beamon.database.database.Database method)@\spxentry{get\_links\_ending\_points()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links_ending_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_ending\_points}}}{}{}
-gets x,y,z coordinates of all links ending points.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_links_ending_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_ending\_points}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+gets x,y,z coordinates of all links ending points of a specified model.
 This could be used to plot local coordinate systems of the links.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1807,24 +1926,11 @@ This could be used to plot local coordinate systems of the links.
 
 \end{fulllineitems}
 
-\index{get\_links\_indexes() (beamon.database.Database method)@\spxentry{get\_links\_indexes()}\spxextra{beamon.database.Database method}}
+\index{get\_links\_middle\_points() (beamon.database.database.Database method)@\spxentry{get\_links\_middle\_points()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_indexes}}}{}{}
-Gets the column ‘id’ of the Links table in the database.
-\begin{quote}\begin{description}
-\item[{Returns}] \leavevmode
-numpy array {[}id{]}
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
-\index{get\_links\_middle\_points() (beamon.database.Database method)@\spxentry{get\_links\_middle\_points()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links_middle_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_middle\_points}}}{}{}
-gets x,y,z coordinates of all links middle points.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_links_middle_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_middle\_points}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+gets x,y,z coordinates of all links middle points of a specified model.
 This could be used to plot local coordinate systems of the links
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1834,11 +1940,11 @@ This could be used to plot local coordinate systems of the links
 
 \end{fulllineitems}
 
-\index{get\_links\_profiles() (beamon.database.Database method)@\spxentry{get\_links\_profiles()}\spxextra{beamon.database.Database method}}
+\index{get\_links\_profiles() (beamon.database.database.Database method)@\spxentry{get\_links\_profiles()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links_profiles}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_profiles}}}{}{}
-Gets profile data from links provided their profile id is set.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_links_profiles}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_profiles}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets profile data from links of a specified model provided their profile id is set.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}E, G, A, Iy, Iz, Kv{]}
@@ -1847,12 +1953,12 @@ Gets profile data from links provided their profile id is set.
 
 \end{fulllineitems}
 
-\index{get\_links\_starting\_points() (beamon.database.Database method)@\spxentry{get\_links\_starting\_points()}\spxextra{beamon.database.Database method}}
+\index{get\_links\_starting\_points() (beamon.database.database.Database method)@\spxentry{get\_links\_starting\_points()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_links_starting_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_starting\_points}}}{}{}
-gets x,y,z coordinates of all links start points.
-This is being used to plot local coordinate systems of the links.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_links_starting_points}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_links\_starting\_points}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+gets x,y,z coordinates of all links start points of a specified model.
+This is being used to plot local coordinate systems of links.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 {[}x,y,z{]}
@@ -1861,25 +1967,32 @@ This is being used to plot local coordinate systems of the links.
 
 \end{fulllineitems}
 
-\index{get\_loads() (beamon.database.Database method)@\spxentry{get\_loads()}\spxextra{beamon.database.Database method}}
+\index{get\_loads() (beamon.database.database.Database method)@\spxentry{get\_loads()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_loads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_loads}}}{}{}
-Gets all the nodes forces from Load table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_loads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_loads}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all the nodes forces from Load table of a specified model.
+node\_id are sub indices of nodes in the specified model.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
 \item[{Returns}] \leavevmode
-list matrix
+following data columns: {[}id, node\_id, x, y, z, m\_x, m\_y, m\_z{]}
+
+\item[{Return type}] \leavevmode
+DataFrame
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{get\_loads\_for\_plotting() (beamon.database.Database method)@\spxentry{get\_loads\_for\_plotting()}\spxextra{beamon.database.Database method}}
+\index{get\_loads\_for\_plotting() (beamon.database.database.Database method)@\spxentry{get\_loads\_for\_plotting()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_loads_for_plotting}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_loads\_for\_plotting}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_loads_for_plotting}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_loads\_for\_plotting}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Make a 9 column matrix containing (x,y,z,u,v,w, m\_x,m\_y,m\_z) which are the positions and components of the
-forces applied to nodes.
+forces applied to nodes of a specified model.
 This method is necessary for plotting the node loads accordingly.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1889,24 +2002,52 @@ numpy array with {[}x,y,z,u,v,w, m\_x,m\_y,m\_z{]}/ None: if empty loads table
 
 \end{fulllineitems}
 
-\index{get\_lost\_dependencies() (beamon.database.Database method)@\spxentry{get\_lost\_dependencies()}\spxextra{beamon.database.Database method}}
+\index{get\_loads\_for\_simulation() (beamon.database.database.Database method)@\spxentry{get\_loads\_for\_simulation()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_lost_dependencies}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_lost\_dependencies}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_loads_for_simulation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_loads\_for\_simulation}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all the nodes forces from Load table of a specified model.
+node\_id are nodes sub indices in the specified model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item[{Returns}] \leavevmode
+following data columns: {[}node\_id, x, y, z, m\_x, m\_y, m\_z{]}
+
+\item[{Return type}] \leavevmode
+DataFrame
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_lost\_dependencies() (beamon.database.database.Database method)@\spxentry{get\_lost\_dependencies()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_lost_dependencies}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_lost\_dependencies}}}{}{}
 This method gets nodes indexes from Links and node loads that are not connected anymore.
 Warning: Using this method means you could have lost data and generated a delete anomaly in the database
 TODO: use this method in integrity check
 
 \end{fulllineitems}
 
-\index{get\_node() (beamon.database.Database method)@\spxentry{get\_node()}\spxextra{beamon.database.Database method}}
+\index{get\_models() (beamon.database.database.Database method)@\spxentry{get\_models()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_node}}}{\emph{\DUrole{n}{index}}}{}
-gets the nodes x,y,z coordinates.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_models}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_models}}}{}{}
+Get all models as pandas dataframe
+
+\end{fulllineitems}
+
+\index{get\_node() (beamon.database.database.Database method)@\spxentry{get\_node()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_node}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+gets the nodes coordinates (x,y,z)
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} of the node
+\sphinxstyleliteralstrong{\sphinxupquote{index}} \textendash{} node id
 
 \item[{Returns}] \leavevmode
 None if node not found / numpy array with {[}x,y,z{]}
@@ -1915,53 +2056,15 @@ None if node not found / numpy array with {[}x,y,z{]}
 
 \end{fulllineitems}
 
-\index{get\_node\_id() (beamon.database.Database method)@\spxentry{get\_node\_id()}\spxextra{beamon.database.Database method}}
+\index{get\_nodes() (beamon.database.database.Database method)@\spxentry{get\_nodes()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_node_id}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_node\_id}}}{\emph{\DUrole{n}{raw\_index}}}{}
-gets the index of the node from row number.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nodes}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Gets all nodes coordinates from a specific model
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{raw\_index}} \textendash{} the index of the raw
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
 
-\item[{Returns}] \leavevmode
-\sphinxhyphen{}1 if not found. Otherwise node id will be given
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
-\index{get\_node\_index() (beamon.database.Database method)@\spxentry{get\_node\_index()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_node_index}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_node\_index}}}{\emph{\DUrole{n}{x}}, \emph{\DUrole{n}{y}}, \emph{\DUrole{n}{z}}}{}
-gets the index of the node from its given coordinates.
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{x}} \textendash{} coordinate
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{y}} \textendash{} coordinate
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{z}} \textendash{} coordinate
-
-\end{itemize}
-
-\item[{Returns}] \leavevmode
-\sphinxhyphen{}1 if not found. Otherwise node index will be given
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
-\index{get\_nodes() (beamon.database.Database method)@\spxentry{get\_nodes()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nodes}}}{\emph{\DUrole{n}{type}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
-Gets all nodes coordinates with/without a certain type.
-\begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
 numpy array for each node with the form {[}x, y, z{]}
 
@@ -1969,13 +2072,18 @@ numpy array for each node with the form {[}x, y, z{]}
 
 \end{fulllineitems}
 
-\index{get\_nodes\_indexes\_with\_bc() (beamon.database.Database method)@\spxentry{get\_nodes\_indexes\_with\_bc()}\spxextra{beamon.database.Database method}}
+\index{get\_nodes\_indexes\_with\_bc() (beamon.database.database.Database method)@\spxentry{get\_nodes\_indexes\_with\_bc()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_nodes_indexes_with_bc}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nodes\_indexes\_with\_bc}}}{}{}
-Gets all nodes id numbers which have boundary conditions defined on them. Similar to get\_all\_dof but delivers
-nodes indices instead of all nodes information.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_nodes_indexes_with_bc}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nodes\_indexes\_with\_bc}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}~\begin{description}
+\item[{Gets all nodes id numbers which have boundary conditions defined on them for a specified model.}] \leavevmode
+Similar to get\_all\_dof but delivers nodes indices instead of all nodes information.
+
+\end{description}
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 nodes indices
 
@@ -1986,10 +2094,10 @@ integer vector
 
 \end{fulllineitems}
 
-\index{get\_profiles() (beamon.database.Database method)@\spxentry{get\_profiles()}\spxextra{beamon.database.Database method}}
+\index{get\_profiles() (beamon.database.database.Database method)@\spxentry{get\_profiles()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_profiles}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_profiles}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_profiles}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_profiles}}}{}{}
 Gets all the profiles which are element properties {[}E G A I\_y I\_z K\_z{]}.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -1999,10 +2107,10 @@ list
 
 \end{fulllineitems}
 
-\index{get\_results\_view\_settings() (beamon.database.Database method)@\spxentry{get\_results\_view\_settings()}\spxextra{beamon.database.Database method}}
+\index{get\_results\_view\_settings() (beamon.database.database.Database method)@\spxentry{get\_results\_view\_settings()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_results_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_results\_view\_settings}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_results_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_results\_view\_settings}}}{}{}
 Get all results view settings from table VisualizerSettings.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -2015,10 +2123,29 @@ results view map
 
 \end{fulllineitems}
 
-\index{get\_view\_settings() (beamon.database.Database method)@\spxentry{get\_view\_settings()}\spxextra{beamon.database.Database method}}
+\index{get\_static\_edof() (beamon.database.database.Database method)@\spxentry{get\_static\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.get_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_view\_settings}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_static_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_static\_edof}}}{\emph{\DUrole{n}{m\_id}}}{}
+Gets edof matrix for all elements from a specified model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item[{Returns}] \leavevmode
+n x 12 integer matrix
+
+\item[{Return type}] \leavevmode
+integer{[}{]}{[}{]}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_view\_settings() (beamon.database.database.Database method)@\spxentry{get\_view\_settings()}\spxextra{beamon.database.database.Database method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.get_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_view\_settings}}}{}{}
 Get all view settings from table VisualizerSettings.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -2028,12 +2155,15 @@ list of params / None if table is empty
 
 \end{fulllineitems}
 
-\index{has\_links() (beamon.database.Database method)@\spxentry{has\_links()}\spxextra{beamon.database.Database method}}
+\index{has\_links() (beamon.database.database.Database method)@\spxentry{has\_links()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.has_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{has\_links}}}{}{}
-Checks if there is any links in Links table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.has_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{has\_links}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Checks if there is any links in a model.
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 True/False
 
@@ -2041,12 +2171,15 @@ True/False
 
 \end{fulllineitems}
 
-\index{has\_nodes() (beamon.database.Database method)@\spxentry{has\_nodes()}\spxextra{beamon.database.Database method}}
+\index{has\_nodes() (beamon.database.database.Database method)@\spxentry{has\_nodes()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.has_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{has\_nodes}}}{}{}
-Checks if there is any nodes in Nodes table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.has_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{has\_nodes}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Checks if there is any nodes in a model
 \begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model id
+
 \item[{Returns}] \leavevmode
 True/False
 
@@ -2054,25 +2187,40 @@ True/False
 
 \end{fulllineitems}
 
-\index{import\_text() (beamon.database.Database method)@\spxentry{import\_text()}\spxextra{beamon.database.Database method}}
+\index{import\_text() (beamon.database.database.Database method)@\spxentry{import\_text()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.import_text}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{import\_text}}}{\emph{\DUrole{n}{path}}}{}
-This method is for importing geometry files to the database according to specified syntax in documentation.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.import_text}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{import\_text}}}{\emph{\DUrole{n}{path}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}, \emph{\DUrole{n}{m\_name}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}, \emph{\DUrole{n}{overwrite}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}} \DUrole{o}{=} \DUrole{default_value}{False}}}{}
+Import geometry files to the database. If model number is given, geometry will be appended to the existing
+model. If model name was given geometry will be added to a new model.
+If model number is given and overwrite is True geometry in the specified model will be overwritten.
+View specified geometry syntax in documentation.
 Keywords: {\color{red}\bfseries{}*}node, {\color{red}\bfseries{}*}element, {\color{red}\bfseries{}*}profile, {\color{red}\bfseries{}*}load, {\color{red}\bfseries{}*}lineload, {\color{red}\bfseries{}*}joint
 Tables will be checked for integrity after import.
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{path}} \textendash{} of the text file to be imported
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_name}} (\sphinxstyleliteralemphasis{\sphinxupquote{string}}) \textendash{} model name
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{overwrite}} (\sphinxstyleliteralemphasis{\sphinxupquote{boolean}}) \textendash{} overwrite geometry if valid model number was given
+
+\end{itemize}
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{is\_settings\_preset() (beamon.database.Database method)@\spxentry{is\_settings\_preset()}\spxextra{beamon.database.Database method}}
+\index{is\_settings\_preset() (beamon.database.database.Database method)@\spxentry{is\_settings\_preset()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.is_settings_preset}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{is\_settings\_preset}}}{}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.is_settings_preset}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{is\_settings\_preset}}}{}{}
 Checks if settings table has already been changed or not.
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
@@ -2082,10 +2230,10 @@ True / False
 
 \end{fulllineitems}
 
-\index{make\_dummy\_file() (beamon.database.Database method)@\spxentry{make\_dummy\_file()}\spxextra{beamon.database.Database method}}
+\index{make\_dummy\_file() (beamon.database.database.Database method)@\spxentry{make\_dummy\_file()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.make_dummy_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{make\_dummy\_file}}}{\emph{\DUrole{n}{ram}}, \emph{\DUrole{n}{name}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.make_dummy_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{make\_dummy\_file}}}{\emph{\DUrole{n}{ram}}, \emph{\DUrole{n}{name}}}{}
 Create a new sqlite database according to given settings. This method contains CREATE queries for database
 tables.
 \begin{quote}\begin{description}
@@ -2103,23 +2251,20 @@ Database\_dd\sphinxhyphen{}mm\sphinxhyphen{}yyyy\_hh\sphinxhyphen{}mm\sphinxhyph
 
 \end{fulllineitems}
 
-\index{make\_edof() (beamon.database.Database method)@\spxentry{make\_edof()}\spxextra{beamon.database.Database method}}
+\index{make\_edof() (beamon.database.database.Database method)@\spxentry{make\_edof()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.make_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{make\_edof}}}{}{}
-Create element degrees of freedom numbers by iterating over nodes.
-This method sorts all dof numbers according to connectivity information
-This method is used when reading input files
-TODO: consider Joints
-:return:
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.make_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{make\_edof}}}{\emph{\DUrole{n}{m\_id}}}{}
+Create element degrees of freedom numbers for a specified model
+This method is used when static topology is initiated.
 
 \end{fulllineitems}
 
-\index{remove\_lineload() (beamon.database.Database method)@\spxentry{remove\_lineload()}\spxextra{beamon.database.Database method}}
+\index{remove\_lineload() (beamon.database.database.Database method)@\spxentry{remove\_lineload()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_lineload}}}{\emph{\DUrole{n}{index}}}{}
-Removes a certain load with index from lineload table.
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_lineload}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_lineload}}}{\emph{\DUrole{n}{index}}}{}
+Remove a specified lineload.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{\sphinxupquote{index}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} lineload index number
@@ -2128,10 +2273,10 @@ Removes a certain load with index from lineload table.
 
 \end{fulllineitems}
 
-\index{remove\_link() (beamon.database.Database method)@\spxentry{remove\_link()}\spxextra{beamon.database.Database method}}
+\index{remove\_link() (beamon.database.database.Database method)@\spxentry{remove\_link()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_link}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_link}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_link}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Drops a link from the links table.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2144,21 +2289,10 @@ True: if link has been successfully droppend, False: otherwise
 
 \end{fulllineitems}
 
-\index{remove\_link\_with\_node() (beamon.database.Database method)@\spxentry{remove\_link\_with\_node()}\spxextra{beamon.database.Database method}}
+\index{remove\_load() (beamon.database.database.Database method)@\spxentry{remove\_load()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_link_with_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_link\_with\_node}}}{\emph{\DUrole{n}{index}}}{}
-Drops a link from the Links table in relation with the node with index.
-
-Warning: Link should definitely have the node with index
-:param index: of the node
-
-\end{fulllineitems}
-
-\index{remove\_load() (beamon.database.Database method)@\spxentry{remove\_load()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_load}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_load}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_load}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Remove load with certain index number.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2168,10 +2302,10 @@ Remove load with certain index number.
 
 \end{fulllineitems}
 
-\index{remove\_loads\_with\_node() (beamon.database.Database method)@\spxentry{remove\_loads\_with\_node()}\spxextra{beamon.database.Database method}}
+\index{remove\_loads\_with\_node() (beamon.database.database.Database method)@\spxentry{remove\_loads\_with\_node()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_loads_with_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_loads\_with\_node}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_loads_with_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_loads\_with\_node}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 remove all forces and moments in relation with the node.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2184,10 +2318,10 @@ True
 
 \end{fulllineitems}
 
-\index{remove\_node() (beamon.database.Database method)@\spxentry{remove\_node()}\spxextra{beamon.database.Database method}}
+\index{remove\_node() (beamon.database.database.Database method)@\spxentry{remove\_node()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_node}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_node}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Drops a node from the nodes table.
 \sphinxstylestrong{Warning}: Dependent links and loads entries will be deleted.
 \begin{quote}\begin{description}
@@ -2201,10 +2335,10 @@ True: if node has been successfully dropped, False: otherwise
 
 \end{fulllineitems}
 
-\index{remove\_profile() (beamon.database.Database method)@\spxentry{remove\_profile()}\spxextra{beamon.database.Database method}}
+\index{remove\_profile() (beamon.database.database.Database method)@\spxentry{remove\_profile()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.remove_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_profile}}}{\emph{\DUrole{n}{index}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.remove_profile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{remove\_profile}}}{\emph{\DUrole{n}{index}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
 Removes the profile with index
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2217,10 +2351,10 @@ True: successful / False: not successful
 
 \end{fulllineitems}
 
-\index{set\_grid\_settings() (beamon.database.Database method)@\spxentry{set\_grid\_settings()}\spxextra{beamon.database.Database method}}
+\index{set\_grid\_settings() (beamon.database.database.Database method)@\spxentry{set\_grid\_settings()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.set_grid_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_grid\_settings}}}{\emph{\DUrole{n}{params}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.set_grid_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_grid\_settings}}}{\emph{\DUrole{n}{params}}}{}
 Sets all grid settings to the table VisualizerSettings.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2230,23 +2364,23 @@ Sets all grid settings to the table VisualizerSettings.
 
 \end{fulllineitems}
 
-\index{set\_results\_view\_settings() (beamon.database.Database method)@\spxentry{set\_results\_view\_settings()}\spxextra{beamon.database.Database method}}
+\index{set\_results\_view\_settings() (beamon.database.database.Database method)@\spxentry{set\_results\_view\_settings()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.set_results_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_results\_view\_settings}}}{\emph{\DUrole{n}{map}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.set_results_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_results\_view\_settings}}}{\emph{\DUrole{n}{mapping}}}{}
 Sets all results view settings to the table VisualizerSettings
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{map}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}) \textendash{} dictionary to map each parameter
+\sphinxstyleliteralstrong{\sphinxupquote{mapping}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}) \textendash{} dictionary to map each parameter
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{set\_view\_settings() (beamon.database.Database method)@\spxentry{set\_view\_settings()}\spxextra{beamon.database.Database method}}
+\index{set\_view\_settings() (beamon.database.database.Database method)@\spxentry{set\_view\_settings()}\spxextra{beamon.database.database.Database method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.set_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_view\_settings}}}{\emph{\DUrole{n}{params}}}{}
+\phantomsection\label{\detokenize{api:beamon.database.database.Database.set_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_view\_settings}}}{\emph{\DUrole{n}{params}}}{}
 Sets all view settings to the table VisualizerSettings.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -2256,64 +2390,464 @@ Sets all view settings to the table VisualizerSettings.
 
 \end{fulllineitems}
 
-\index{sort\_edof() (beamon.database.Database method)@\spxentry{sort\_edof()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_edof}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_edof}}}{}{}
-Resets edof numbers counting to 1 while keeping previous connection information.
 
 \end{fulllineitems}
 
-\index{sort\_lineload\_indexes() (beamon.database.Database method)@\spxentry{sort\_lineload\_indexes()}\spxextra{beamon.database.Database method}}
+
+
+\subsection{UI.Main}
+\label{\detokenize{api:module-beamon.ui.main}}\label{\detokenize{api:ui-main}}\index{module@\spxentry{module}!beamon.ui.main@\spxentry{beamon.ui.main}}\index{beamon.ui.main@\spxentry{beamon.ui.main}!module@\spxentry{module}}\index{Main (class in beamon.ui.main)@\spxentry{Main}\spxextra{class in beamon.ui.main}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_lineload_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_lineload\_indexes}}}{}{}
-Reset id column in Lineload table.
-All Lineloads primary keys will be resorted to ascending ordered integers from 1 to n (n is number of Lineloads).
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.ui.main.}}\sphinxbfcode{\sphinxupquote{Main}}}{\emph{\DUrole{n}{input}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}, \emph{\DUrole{n}{m\_name}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}, \emph{\DUrole{n}{testmode}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}} \DUrole{o}{=} \DUrole{default_value}{False}}, \emph{\DUrole{n}{ram}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}} \DUrole{o}{=} \DUrole{default_value}{False}}, \emph{\DUrole{n}{database\_path}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}}{}
+Main User Interface class for backend implementation.
+Note:this class calls the compiled main\_ui.py which contains the GUI of Beamon
+\index{about() (beamon.ui.main.Main method)@\spxentry{about()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.about}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{about}}}{}{}
+Opens info page with user manual in the dock widget
 
 \end{fulllineitems}
 
-\index{sort\_link\_indexes() (beamon.database.Database method)@\spxentry{sort\_link\_indexes()}\spxextra{beamon.database.Database method}}
+\index{append\_to\_log() (beamon.ui.main.Main method)@\spxentry{append\_to\_log()}\spxextra{beamon.ui.main.Main method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_link_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_link\_indexes}}}{}{}
-Reset id column in Links table.
-All Links primary keys will be resorted to ascending ordered integers from 1 to n (n is number of links).
-Warning: This method also resets foreign keys in Lineload table that reference Links
-
-\end{fulllineitems}
-
-\index{sort\_load\_indexes() (beamon.database.Database method)@\spxentry{sort\_load\_indexes()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_load_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_load\_indexes}}}{}{}
-Reset id column in Load table.
-All Load primary keys will be resorted to ascending ordered integers from 1 to n (n is number of Load).
-
-\end{fulllineitems}
-
-\index{sort\_node\_indexes() (beamon.database.Database method)@\spxentry{sort\_node\_indexes()}\spxextra{beamon.database.Database method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_node_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_node\_indexes}}}{}{}
-Reset id column in Nodes table.
-All nodes primary keys will be resorted to ascending ordered integers from 1 to n (n is number of nodes).
-Warning: This method also resets foreign keys in Links and Loads tables that reference Nodes.
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.append_to_log}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{append\_to\_log}}}{\emph{\DUrole{n}{msg}}}{}
+Appends a given message to log and timestampes it with current datetime
 \begin{quote}\begin{description}
-\item[{Returns}] \leavevmode
-True: success/False: did not reset anything
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{msg}} \textendash{} string
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{sort\_profile\_indexes() (beamon.database.Database method)@\spxentry{sort\_profile\_indexes()}\spxextra{beamon.database.Database method}}
+\index{cascadeView() (beamon.ui.main.Main method)@\spxentry{cascadeView()}\spxextra{beamon.ui.main.Main method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{api:beamon.database.Database.sort_profile_indexes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sort\_profile\_indexes}}}{}{}
-Reset id column in Profile table.
-All profiles primary keys will be resorted to ascending ordered integers from 1 to n (n is number of nodes).
-Warning: This method also resets foreign keys in Links table that reference Profile
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.cascadeView}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{cascadeView}}}{}{}
+Changes Subwindows order to CascadeView
+
+\end{fulllineitems}
+
+\index{closeEvent() (beamon.ui.main.Main method)@\spxentry{closeEvent()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.closeEvent}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{closeEvent}}}{\emph{\DUrole{n}{event}}}{}
+controls closing signal
+:param event: the closing event
+
+\end{fulllineitems}
+
+\index{display\_message() (beamon.ui.main.Main method)@\spxentry{display\_message()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.display_message}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{display\_message}}}{\emph{\DUrole{n}{msg}}, \emph{\DUrole{n}{time}\DUrole{o}{=}\DUrole{default_value}{5000}}}{}
+Display a message in status bar for a duration (default 5 seconds)
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{msg}} (\sphinxstyleliteralemphasis{\sphinxupquote{string}}) \textendash{} Message to display
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{time}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} milliseconds
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{export\_csv() (beamon.ui.main.Main method)@\spxentry{export\_csv()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.export_csv}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{export\_csv}}}{\emph{\DUrole{n}{dataframe}}}{}
+Open user interface to export specific Dataset to a CSV file
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{dataframe}} (\sphinxstyleliteralemphasis{\sphinxupquote{DataFrame}}) \textendash{} Dataset as Pandas DataFrame to be exported
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{export\_excel() (beamon.ui.main.Main method)@\spxentry{export\_excel()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.export_excel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{export\_excel}}}{\emph{\DUrole{n}{dataframe}}}{}
+Open user interface to export specific Dataset to n Excel file
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{dataframe}} (\sphinxstyleliteralemphasis{\sphinxupquote{DataFrame}}) \textendash{} Dataset as Pandas DataFrame to be exported
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{keyPressEvent() (beamon.ui.main.Main method)@\spxentry{keyPressEvent()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.keyPressEvent}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{keyPressEvent}}}{\emph{\DUrole{n}{event}}}{}
+Gets triggered when a key is pressed
+
+\end{fulllineitems}
+
+\index{onCustomContextMenuRequested() (beamon.ui.main.Main method)@\spxentry{onCustomContextMenuRequested()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.onCustomContextMenuRequested}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{onCustomContextMenuRequested}}}{\emph{\DUrole{n}{pos}}}{}
+Context Menu callback method
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{pos}} (\sphinxstyleliteralemphasis{\sphinxupquote{QPosition}}) \textendash{} position of the context menu event that the widget receives
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{open\_database() (beamon.ui.main.Main method)@\spxentry{open\_database()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.open_database}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{open\_database}}}{\emph{\DUrole{n}{path}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str}}}, \emph{\DUrole{n}{overwrite}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}} \DUrole{o}{=} \DUrole{default_value}{False}}}{}
+Opens a database in path. Opens a new empty Database if overwrite is true. if File do not exist and overwrite
+is false an exception will be thrown.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{path}} (\sphinxstyleliteralemphasis{\sphinxupquote{string}}) \textendash{} path to database file
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{overwrite}} (\sphinxstyleliteralemphasis{\sphinxupquote{boolean}}) \textendash{} True/False
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{open\_database\_diag() (beamon.ui.main.Main method)@\spxentry{open\_database\_diag()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.open_database_diag}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{open\_database\_diag}}}{}{}
+Opens a user interface to load a database file
+
+\end{fulllineitems}
+
+\index{open\_log() (beamon.ui.main.Main method)@\spxentry{open\_log()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.open_log}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{open\_log}}}{}{}
+Opens a Dialog with log history inside
+
+\end{fulllineitems}
+
+\index{save\_database\_as\_diag() (beamon.ui.main.Main method)@\spxentry{save\_database\_as\_diag()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.save_database_as_diag}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{save\_database\_as\_diag}}}{}{}
+Saves the database to a database file
+
+\end{fulllineitems}
+
+\index{startBeamSize() (beamon.ui.main.Main method)@\spxentry{startBeamSize()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.startBeamSize}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{startBeamSize}}}{}{}
+starts the application BeamSize as a subwindow
+
+\end{fulllineitems}
+
+\index{startQswHelp() (beamon.ui.main.Main method)@\spxentry{startQswHelp()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.startQswHelp}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{startQswHelp}}}{}{}
+starts a web browser from QtWebEngineView and displays the readme page
+
+\end{fulllineitems}
+
+\index{startVisualizer() (beamon.ui.main.Main method)@\spxentry{startVisualizer()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.startVisualizer}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{startVisualizer}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{Optional\DUrole{p}{{[}}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}\DUrole{p}{{]}}} \DUrole{o}{=} \DUrole{default_value}{None}}}{}
+starts the application for visualising models.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{start\_visualizer\_manual() (beamon.ui.main.Main method)@\spxentry{start\_visualizer\_manual()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.start_visualizer_manual}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start\_visualizer\_manual}}}{}{}
+Starts visualizer\sphinxhyphen{}scene keybindings help table
+
+\end{fulllineitems}
+
+\index{tileView() (beamon.ui.main.Main method)@\spxentry{tileView()}\spxextra{beamon.ui.main.Main method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.main.Main.tileView}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{tileView}}}{}{}
+Changes Subwindows order to TileView
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\subsection{UI.Visualizer}
+\label{\detokenize{api:module-beamon.ui.callVisualizer}}\label{\detokenize{api:ui-visualizer}}\index{module@\spxentry{module}!beamon.ui.callVisualizer@\spxentry{beamon.ui.callVisualizer}}\index{beamon.ui.callVisualizer@\spxentry{beamon.ui.callVisualizer}!module@\spxentry{module}}\index{VisualizerMainForm (class in beamon.ui.callVisualizer)@\spxentry{VisualizerMainForm}\spxextra{class in beamon.ui.callVisualizer}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.ui.callVisualizer.}}\sphinxbfcode{\sphinxupquote{VisualizerMainForm}}}{\emph{\DUrole{n}{parent\_ui}}, \emph{\DUrole{n}{parent}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+a class calls the compiled visualiser.py file and contains the backend functionality of the GUI
+
+Author: Maher Albezem (maher.albezem{[}at{]}sla.rwth\sphinxhyphen{}aachen.de)
+This class calls the compiled GUI visualiser.
+The GUI is compiled with pyuic5 from {\color{red}\bfseries{}*}.ui to {\color{red}\bfseries{}*}.py extension
+This class also contains all the back\sphinxhyphen{}end functionality of visualiser.
+
+Warning: it is important to set the parent class as QWidget only because of QMdiArea functionality
+in the referencing class
+\index{change\_joints() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{change\_joints()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.change_joints}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_joints}}}{}{}
+Calls the joints table
+
+\end{fulllineitems}
+
+\index{change\_links() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{change\_links()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.change_links}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_links}}}{}{}
+Calls the links table
+
+\end{fulllineitems}
+
+\index{change\_nodes() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{change\_nodes()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.change_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{change\_nodes}}}{}{}
+Calls the nodes table
+
+\end{fulllineitems}
+
+\index{closeEvent() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{closeEvent()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.closeEvent}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{closeEvent}}}{\emph{\DUrole{n}{self}}, \emph{\DUrole{n}{QCloseEvent}}}{}
+\end{fulllineitems}
+
+\index{context\_menu\_requested() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{context\_menu\_requested()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.context_menu_requested}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{context\_menu\_requested}}}{}{}
+Context menu for visualizer
+
+\end{fulllineitems}
+
+\index{display\_log() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{display\_log()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.display_log}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{display\_log}}}{\emph{\DUrole{n}{message}}}{}
+Displays a log message on the status bar of the Main window and saves the message to the log
+@param message: String
+
+\end{fulllineitems}
+
+\index{init\_settings() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{init\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.init_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{init\_settings}}}{}{}
+Reads the settings from dataset and adjust visualization settings accordingly
+If ther is no predefined settings default settings will be loaded
+
+\end{fulllineitems}
+
+\index{keyPressEvent() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{keyPressEvent()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.keyPressEvent}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{keyPressEvent}}}{\emph{\DUrole{n}{self}}, \emph{\DUrole{n}{QKeyEvent}}}{}
+\end{fulllineitems}
+
+\index{reset\_inputfields() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{reset\_inputfields()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.reset_inputfields}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{reset\_inputfields}}}{}{}
+Sets all buttons in the GUI to normal state again
+
+\end{fulllineitems}
+
+\index{start\_grid\_settings() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{start\_grid\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.start_grid_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start\_grid\_settings}}}{}{}
+Call grid settings ui and block the main ui
+
+\end{fulllineitems}
+
+\index{start\_results\_view\_settings() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{start\_results\_view\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.start_results_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start\_results\_view\_settings}}}{}{}
+Call results view settings ui and block the main ui
+
+\end{fulllineitems}
+
+\index{start\_view\_settings() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{start\_view\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.start_view_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start\_view\_settings}}}{}{}
+Call view settings ui and block the main ui
+
+\end{fulllineitems}
+
+\index{table\_state\_changed() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{table\_state\_changed()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.table_state_changed}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{table\_state\_changed}}}{\emph{\DUrole{n}{state}}}{}
+This gets called when dock widget gets toggled
+:param state: visibility state of the dock widget
+
+\end{fulllineitems}
+
+\index{treeClicked() (beamon.ui.callVisualizer.VisualizerMainForm method)@\spxentry{treeClicked()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.callVisualizer.VisualizerMainForm.treeClicked}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{treeClicked}}}{\emph{\DUrole{n}{index}}}{}
+Gets called when an item in the tree is clicked or entered
+:param index: QModelItem
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\subsection{UI.Visualization}
+\label{\detokenize{api:module-beamon.ui.pyvista_widget}}\label{\detokenize{api:ui-visualization}}\index{module@\spxentry{module}!beamon.ui.pyvista\_widget@\spxentry{beamon.ui.pyvista\_widget}}\index{beamon.ui.pyvista\_widget@\spxentry{beamon.ui.pyvista\_widget}!module@\spxentry{module}}\index{PyVistaWidget (class in beamon.ui.pyvista\_widget)@\spxentry{PyVistaWidget}\spxextra{class in beamon.ui.pyvista\_widget}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{beamon.ui.pyvista\_widget.}}\sphinxbfcode{\sphinxupquote{PyVistaWidget}}}{\emph{\DUrole{n}{parent}}}{}~\index{init\_plot() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{init\_plot()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.init_plot}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{init\_plot}}}{}{}
+Initiates the plots vital objects like the grid and the coordinate system
+
+\end{fulllineitems}
+
+\index{init\_settings() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{init\_settings()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.init_settings}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{init\_settings}}}{}{}
+init default settings and states
+
+\end{fulllineitems}
+
+\index{update\_boundary\_conditions() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_boundary\_conditions()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_boundary_conditions}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_boundary\_conditions}}}{\emph{\DUrole{n}{m\_id}}}{}
+scatter two blue cones for momentum and orange blue cones for translation on each node with bc
+
+\end{fulllineitems}
+
+\index{update\_displaced\_nodes() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_displaced\_nodes()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_displaced_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_displaced\_nodes}}}{}{}
+Updates displaced nodes from displaced nodes coordinates in database
+
+\end{fulllineitems}
+
+\index{update\_element\_displacements() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_element\_displacements()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_element_displacements}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_element\_displacements}}}{}{}
+Updates elements displacements
+
+\end{fulllineitems}
+
+\index{update\_elements() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_elements()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_elements}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_elements}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{opacity}\DUrole{o}{=}\DUrole{default_value}{1.0}}}{}
+Updates elements according to new nodes coordinates from database
+
+\end{fulllineitems}
+
+\index{update\_elements\_orientation() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_elements\_orientation()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_elements_orientation}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_elements\_orientation}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Updates elements local coordinate systems according to element orientation from database
+
+\end{fulllineitems}
+
+\index{update\_global() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_global()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_global}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_global}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}, \emph{\DUrole{n}{reset\_view}\DUrole{o}{=}\DUrole{default_value}{True}}}{}
+Central update for all visualization objects based on their hierarchic dependencies and their data sets.
+@see machine state diagram ‘user interaction’ in documentation
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{m\_id}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} model number
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{reset\_view}} (\sphinxstyleliteralemphasis{\sphinxupquote{boolean}}) \textendash{} reset camera view
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{update\_grid() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_grid()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_grid}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_grid}}}{}{}
+Update grid data according to grid settings such as vector normal, size, tick and type
+
+\end{fulllineitems}
+
+\index{update\_labels() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_labels()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_labels}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_labels}}}{\emph{\DUrole{n}{reset\_view}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#bool}{bool}}}, \emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Updates label positions if they should be shown
+
+\end{fulllineitems}
+
+\index{update\_nodes() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_nodes()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_nodes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_nodes}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Updates nodes coordinates from database
+
+\end{fulllineitems}
+
+\index{update\_section\_forces() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_section\_forces()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_section_forces}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_section\_forces}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Updates elements section forces
+
+\end{fulllineitems}
+
+\index{update\_support\_forces() (beamon.ui.pyvista\_widget.PyVistaWidget method)@\spxentry{update\_support\_forces()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{api:beamon.ui.pyvista_widget.PyVistaWidget.update_support_forces}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{update\_support\_forces}}}{\emph{\DUrole{n}{m\_id}\DUrole{p}{:} \DUrole{n}{\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}}}}{}
+Updates nodes support forces
 
 \end{fulllineitems}
 
@@ -2763,9 +3297,9 @@ The Database is implemented using SQLite3 in Python. Using SQLite database files
 Therefore we will be referring to database files with project files.
 
 
-\paragraph{Database Structure (alpha release)}
-\label{\detokenize{implementation:database-structure-alpha-release}}
-The following diagram shows an entity\sphinxhyphen{}relationship diagram (ER\sphinxhyphen{}Diagram) of the alpha release.
+\paragraph{Database Structure \sphinxhyphen{} Original Idea and It’s Problems}
+\label{\detokenize{implementation:database-structure-original-idea-and-it-s-problems}}
+The following is an entity\sphinxhyphen{}relationship diagram (ER\sphinxhyphen{}Diagram) of the first sketch introduced in the bachelor thesis.
 
 \begin{figure}[htbp]
 \centering
@@ -2778,6 +3312,43 @@ Some entities have composite attributes. For example, Links has attribute \(\vec
 have to be divided up into v\_x, v\_y, and v\_z.
 \sphinxstyleemphasis{dof} represents which degree of freedom is locked/unlocked (0/1) on a node to save boundary conditions.
 \sphinxstyleemphasis{edof} is element degree of freedom which consists of 12 integer numbers.
+
+This design is problematic due to the following reasons:
+\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+Models should be parent of Nodes and not of Elements. If Models are defined only over Elements, all nodes that are not connected to any elements will be excluded from all models.
+
+\item {} 
+Visualizer settings should be child from Models.
+
+\item {} 
+Simulation results have no entities.
+
+\item {} 
+Names are to be renamed according to the naming convention. Also Links should be named Elements.
+
+\end{enumerate}
+
+After solving the above issues and modeling the database in \sphinxhref{https://www.jetbrains.com/datagrip/}{DataGrip} the database
+will be more normalized.
+
+The following diagram illustrates the modified version in an EER\sphinxhyphen{}Diagram.
+The central table \sphinxstyleemphasis{model} is root of most other tables (except \sphinxstyleemphasis{profile} and \sphinxstyleemphasis{sqlite\_master}).
+For each model there is \sphinxstyleemphasis{setting} and \sphinxstyleemphasis{node}. This way \sphinxstyleemphasis{node}
+plays a central role in identifying models structure. That’s because everything else in a structure, ex. \sphinxstyleemphasis{element},
+depends on \sphinxstyleemphasis{node} to be defined.
+
+\sphinxstyleemphasis{node\_result} and \sphinxstyleemphasis{e\_result} are children of \sphinxstyleemphasis{node} and \sphinxstyleemphasis{element} respectively. All foreign keys of all tables except
+\sphinxstyleemphasis{profile\_id} in \sphinxstyleemphasis{element} have cascade delete option. \sphinxstyleemphasis{profile\_id} in \sphinxstyleemphasis{element} have Null on delete option because
+elements still exist if there are no element properties defined. Those elements will be excluded from simulation easily
+as well as nodes with no elements attached to them.
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{EER-Diagramm-Beta}.png}
+\end{figure}
 
 
 \paragraph{SQLite Queries}
@@ -2811,6 +3382,45 @@ data tables.
 \end{sphinxVerbatim}
 
 
+\paragraph{Problems with SQL Queries}
+\label{\detokenize{implementation:problems-with-sql-queries}}
+The Database class is heavily dependent on underlying database design. This is problematic and could cause high costs and efficiency problems in the future.  Each change in the Database causes a chain of changes in SQL Queries.
+I tried to use some design patterns to solve this issue.
+
+Using Command in association with Memento resulted in a too complex design that solved some future issues but not the dependency problem.
+Memento pattern helps saving the state of the database on each change. This way undo/redo implementation will be possible.
+Command pattern could help making all commands the database saved in separate classes. This way each command has it’s
+own responsibility and decouple the database from the business logic.
+
+The following diagram illustrates this approach.
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{Command_Memento}.png}
+\end{figure}
+
+Invoker Class is responsible for firing the execution method of each command. A history of commands can be saved in a stack to record each change to the database and undo those changes when necessary.
+This way the business logic of the original database Class is split between invoker and commands. But this will result in too many command classes.
+
+A different Design could solve this problem. I made For each entity in the database a class using the interface Table and used it with the Command pattern (see diagram below). This way only Tables know how to use commands and only commands know how to access the database. But this is also problematic because Tables are very dependent. Changing one Table could cause a cascade of changes in other tables.
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{Database_System_v1}.png}
+\end{figure}
+
+Approaching this problem from a different angle resulted in using an ORM\sphinxhyphen{}Solution. ORM stands for Object Relational Mapping and is intended to tackle a common issue called \sphinxhref{https://en.wikipedia.org/wiki/Object\%E2\%80\%93relational\_impedance\_mismatch}{Object\sphinxhyphen{}relational impedance mismatch}.
+The following design illustrates how this could be implemented.
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{Database_ORM}.png}
+\end{figure}
+
+
 \paragraph{Reading Geometry Files Efficiently}
 \label{\detokenize{implementation:reading-geometry-files-efficiently}}
 Geometry files are, for modifiability purposes, text files with ASCII characters.
@@ -2825,32 +3435,7 @@ The following activity diagram summarizes the steps taken in \sphinxstyleemphasi
 \capstart
 
 \noindent\sphinxincludegraphics{{activity_import_text}.png}
-\caption{UML activity diagram showing steps to import geometry files in acitvity import\_text.}\label{\detokenize{implementation:id2}}\end{figure}
-
-
-\paragraph{Resetting Primary Keys}
-\label{\detokenize{implementation:resetting-primary-keys}}
-After deleting rows in SQLite3 tables, primary keys would have gaps. To prevent that from happening, primary keys have to be altered.
-Resetting primary keys involves changing foreign keys as well.
-
-The following methods reset primary keys for each table:
-\begin{itemize}
-\item {} 
-\sphinxstyleemphasis{sort\_node\_indexes}
-
-\item {} 
-\sphinxstyleemphasis{sort\_profile\_indexes}
-
-\item {} 
-\sphinxstyleemphasis{sort\_link\_indexes}
-
-\item {} 
-\sphinxstyleemphasis{sort\_load\_indexes}
-
-\item {} 
-\sphinxstyleemphasis{sort\_lineload\_indexes}
-
-\end{itemize}
+\caption{UML activity diagram showing steps to import geometry files in activity import\_text.}\label{\detokenize{implementation:id2}}\end{figure}
 
 
 \subsubsection{PySide2 or PyQt5}
@@ -2908,14 +3493,94 @@ Furthermore, the visualizer can call helper dialogs like \sphinxstyleemphasis{Gr
 should therefore reside in the \sphinxstyleemphasis{expansions} package. \sphinxstyleemphasis{BeamSizeMainform} contains a PyQtGraph plot widget. \sphinxstyleemphasis{PlotWidget}
 should therefore inherit from \sphinxstyleemphasis{QGraphicsView}.
 
-\sphinxstyleemphasis{QDockWidget} can be triggered from \sphinxstyleemphasis{Main} and contains a widget that could be dynamically changed. \sphinxstyleemphasis{QDockWidget}
-shows either \sphinxstyleemphasis{IntroMainForm} or \sphinxstyleemphasis{TableMainForm}.
+\sphinxstyleemphasis{QDockWidget} can be triggered from \sphinxstyleemphasis{Main} and contains a widget that could be dynamically changed.
 
 \sphinxstyleemphasis{IntroMainForm} contains a web browser that shows this documentation in PDF\sphinxhyphen{}format.
 
 Inside \sphinxstyleemphasis{tables} package you will find classes that follow the model\sphinxhyphen{}view\sphinxhyphen{}controller design pattern. \sphinxstyleemphasis{TableMainForm}
 contains the view, which is QTableView. \sphinxstyleemphasis{InLineEditDelegate} is the controller. All models like \sphinxstyleemphasis{NodeTableModel} inherit
 from \sphinxstyleemphasis{QAbstractTableModel}.
+
+\sphinxstyleemphasis{LoadingMainForm} is responsible for triggering the simulation with a dedicated thread \sphinxstyleemphasis{Worker} that runs the simulation
+in the background.
+
+\sphinxstyleemphasis{ProjectBrowserMainForm} is an overview of all Models and have a table with a view from \sphinxstyleemphasis{QTableView} that uses the model
+\sphinxstyleemphasis{ModelsTableModel}. This UI calls \sphinxstyleemphasis{LoadProjectMainForm} that triggers the loading process in the background using a
+thread.
+
+
+\subsubsection{Applied and Suitable Design Patterns}
+\label{\detokenize{implementation:applied-and-suitable-design-patterns}}
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|}
+\hline
+\sphinxstyletheadfamily 
+Problem: Multiple table forms can be displayed in the table widget. Each table has its business logic.
+\\
+\hline
+Solution: Implement a Strategy pattern to switch tables dynamically.
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{TableStrategy}.jpg}
+\end{figure}
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|}
+\hline
+\sphinxstyletheadfamily 
+Problem: Too many UI classes for tables causing duplicate code parts. Table classes are also dependent
+on the calling class.
+\\
+\hline
+Solution: Implement the MVC pattern separating business logic into models, views, and controllers.
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{TableMVC}.jpg}
+\end{figure}
+
+The following design pattern could be used and has not yet been implemented.
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|}
+\hline
+\sphinxstyletheadfamily 
+Database imports and exports data in different formats using slightly different algorithms.
+This causes duplicate code parts and a dependency problem
+\\
+\hline
+Solution: Implement the Template Method design pattern to avoid code duplication by pulling
+the duplicate code into a superclass.
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\begin{figure}[htbp]
+\centering
+
+\noindent\sphinxincludegraphics{{ExportTemplateMethod}.jpg}
+\end{figure}
 
 
 \subsubsection{How The UI Is Built}
@@ -2945,17 +3610,26 @@ Main class should be initiated like this.
 
 \subsubsection{The Simulation}
 \label{\detokenize{implementation:the-simulation}}
+\begin{figure}[htbp]
+\centering
+\capstart
+
+\noindent\sphinxincludegraphics{{SimulationSteps}.jpg}
+\caption{The Simulation is summarized in four steps. Calculating the stiffness matrix for each element, assembling
+element stiffness matrices in a global stiffness matrix, solving the systems of equations, and calculating
+results.}\label{\detokenize{implementation:id5}}\end{figure}
+
 The following diagram shows how the simulation in Beamon is implemented. Three parts are involved in the Simulation,
 \sphinxstyleemphasis{Database}, \sphinxstyleemphasis{Core} and \sphinxstyleemphasis{CALFEM}. Each part has it’s own responsibility. \sphinxstyleemphasis{Database} is responsible for obtaining and
 saving data. \sphinxstyleemphasis{Core} is responsible for the calculations implemented in Beamon. \sphinxstyleemphasis{CALFEM} is the Calfem\sphinxhyphen{}Python Package
-which is responsible for the most complex calculation.
+which is responsible for the most complex calculations.
 
 \begin{figure}[htbp]
 \centering
 \capstart
 
 \noindent\sphinxincludegraphics{{activity_simulation}.jpg}
-\caption{UML activity diagram showing static simulation steps.}\label{\detokenize{implementation:id5}}\end{figure}
+\caption{UML activity diagram showing static simulation steps.}\label{\detokenize{implementation:id6}}\end{figure}
 
 
 \subsection{How TOs}
@@ -2979,8 +3653,11 @@ Install sphinx package in your Python environment
 
 \end{enumerate}
 
-On your environment command line run following command from project root directory:
+On your environment command line run following commands from project root directory.
 
+
+\paragraph{Latex Build}
+\label{\detokenize{howto:latex-build}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{python} \PYG{o}{\PYGZhy{}}\PYG{n}{m} \PYG{n}{sphinx} \PYG{o}{\PYGZhy{}}\PYG{n}{b} \PYG{n}{latex} \PYG{n}{docs}\PYGZbs{}\PYG{n}{source} \PYG{n}{docs}\PYGZbs{}\PYG{n}{build}\PYGZbs{}\PYG{n}{latex}
 \end{sphinxVerbatim}
@@ -2993,13 +3670,39 @@ to build the latex version of the documentation. And then run
 
 to compile the latex documentation.
 
-Or run:
 
+\paragraph{HTML Build}
+\label{\detokenize{howto:html-build}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{python} \PYG{o}{\PYGZhy{}}\PYG{n}{m} \PYG{n}{sphinx} \PYG{o}{\PYGZhy{}}\PYG{n}{b} \PYG{n}{html} \PYG{n}{docs}\PYGZbs{}\PYG{n}{source} \PYG{n}{docs}\PYGZbs{}\PYG{n}{build}\PYGZbs{}\PYG{n}{html}
 \end{sphinxVerbatim}
 
 to build the html version of the documentation.
+
+
+\paragraph{Epub Build}
+\label{\detokenize{howto:epub-build}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{python} \PYG{o}{\PYGZhy{}}\PYG{n}{m} \PYG{n}{sphinx} \PYG{o}{\PYGZhy{}}\PYG{n}{b} \PYG{n}{epub} \PYG{n}{docs}\PYGZbs{}\PYG{n}{source} \PYG{n}{docs}\PYGZbs{}\PYG{n}{build}\PYGZbs{}\PYG{n}{epub}
+\end{sphinxVerbatim}
+
+
+\paragraph{PDF Build}
+\label{\detokenize{howto:pdf-build}}
+Rhino doesn’t support latex math. That’s why LATEX Build is better.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{sphinx}\PYG{o}{\PYGZhy{}}\PYG{n}{build} \PYG{o}{\PYGZhy{}}\PYG{n}{b} \PYG{n}{rinoh} \PYG{n}{docs}\PYGZbs{}\PYG{n}{source} \PYG{n}{docs}\PYGZbs{}\PYG{n}{build}\PYGZbs{}\PYG{n}{pdf}
+\end{sphinxVerbatim}
+
+
+\paragraph{Build All}
+\label{\detokenize{howto:build-all}}
+To build all documentation versions run the following command on your root directory
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{make} \PYG{n}{build\PYGZus{}doc}
+\end{sphinxVerbatim}
 
 
 \subsubsection{How to Style QTableView Cells}
@@ -3012,8 +3715,11 @@ to build the html version of the documentation.
 \let\bigletter\sphinxstyleindexlettergroup
 \bigletter{b}
 \item\relax\sphinxstyleindexentry{beamon.core}\sphinxstyleindexpageref{api:\detokenize{module-beamon.core}}
-\item\relax\sphinxstyleindexentry{beamon.database}\sphinxstyleindexpageref{api:\detokenize{module-beamon.database}}
+\item\relax\sphinxstyleindexentry{beamon.database.database}\sphinxstyleindexpageref{api:\detokenize{module-beamon.database.database}}
 \item\relax\sphinxstyleindexentry{beamon.simulation}\sphinxstyleindexpageref{api:\detokenize{module-beamon.simulation}}
+\item\relax\sphinxstyleindexentry{beamon.ui.callVisualizer}\sphinxstyleindexpageref{api:\detokenize{module-beamon.ui.callVisualizer}}
+\item\relax\sphinxstyleindexentry{beamon.ui.main}\sphinxstyleindexpageref{api:\detokenize{module-beamon.ui.main}}
+\item\relax\sphinxstyleindexentry{beamon.ui.pyvista\_widget}\sphinxstyleindexpageref{api:\detokenize{module-beamon.ui.pyvista_widget}}
 \end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}

@@ -5,180 +5,306 @@
 \let\spxextra \sphinxstyleindexextra
 
   \bigletter A
-  \item \spxentry{add\_lineload()}\spxextra{beamon.database.Database method}, \hyperpage{19}
-  \item \spxentry{add\_link()}\spxextra{beamon.database.Database method}, \hyperpage{20}
-  \item \spxentry{add\_load()}\spxextra{beamon.database.Database method}, \hyperpage{20}
-  \item \spxentry{add\_node()}\spxextra{beamon.database.Database method}, \hyperpage{20}
-  \item \spxentry{add\_profile()}\spxextra{beamon.database.Database method}, \hyperpage{20}
-  \item \spxentry{assemble\_bc()}\spxextra{in module beamon.core}, \hyperpage{15}
-  \item \spxentry{assemble\_element\_loads()}\spxextra{in module beamon.core}, \hyperpage{17}
-  \item \spxentry{assemble\_global\_f()}\spxextra{in module beamon.core}, \hyperpage{17}
-  \item \spxentry{assemble\_nodes\_results()}\spxextra{in module beamon.core}, \hyperpage{17}
+  \item \spxentry{about()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{add\_lineload()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{21}
+  \item \spxentry{add\_link()}\spxextra{beamon.database.database.Database method}, \hyperpage{21}
+  \item \spxentry{add\_load()}\spxextra{beamon.database.database.Database method}, \hyperpage{22}
+  \item \spxentry{add\_model()}\spxextra{beamon.database.database.Database method}, \hyperpage{22}
+  \item \spxentry{add\_node()}\spxextra{beamon.database.database.Database method}, \hyperpage{22}
+  \item \spxentry{add\_profile()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{23}
+  \item \spxentry{append\_to\_log()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{assemble\_bc()}\spxextra{in module beamon.core}, \hyperpage{17}
+  \item \spxentry{assemble\_element\_loads()}\spxextra{in module beamon.core}, \hyperpage{19}
+  \item \spxentry{assemble\_global\_f()}\spxextra{in module beamon.core}, \hyperpage{19}
+  \item \spxentry{assemble\_nodes\_results()}\spxextra{in module beamon.core}, \hyperpage{19}
 
   \indexspace
   \bigletter B
+  \item \spxentry{backup()}\spxextra{beamon.database.database.Database method}, \hyperpage{23}
   \item \spxentry{beamon.core}
-    \subitem \spxentry{module}, \hyperpage{15}
-  \item \spxentry{beamon.database}
-    \subitem \spxentry{module}, \hyperpage{19}
+    \subitem \spxentry{module}, \hyperpage{17}
+  \item \spxentry{beamon.database.database}
+    \subitem \spxentry{module}, \hyperpage{21}
   \item \spxentry{beamon.simulation}
-    \subitem \spxentry{module}, \hyperpage{18}
+    \subitem \spxentry{module}, \hyperpage{20}
+  \item \spxentry{beamon.ui.callVisualizer}
+    \subitem \spxentry{module}, \hyperpage{33}
+  \item \spxentry{beamon.ui.main}
+    \subitem \spxentry{module}, \hyperpage{32}
+  \item \spxentry{beamon.ui.pyvista\_widget}
+    \subitem \spxentry{module}, \hyperpage{34}
 
   \indexspace
   \bigletter C
-  \item \spxentry{change\_dof()}\spxextra{beamon.database.Database method}, \hyperpage{20}
-  \item \spxentry{change\_edof()}\spxextra{beamon.database.Database method}, \hyperpage{21}
-  \item \spxentry{change\_lineload()}\spxextra{beamon.database.Database method}, \hyperpage{21}
-  \item \spxentry{change\_link()}\spxextra{beamon.database.Database method}, \hyperpage{21}
-  \item \spxentry{change\_load()}\spxextra{beamon.database.Database method}, \hyperpage{21}
-  \item \spxentry{change\_node()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{change\_profile()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{check\_database()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_database()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_lineloads()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_links()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_node\_loads()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_nodes\_table()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{clear\_profile\_table()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{22}
-  \item \spxentry{contains\_link()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{contains\_node()}\spxextra{beamon.database.Database method}, \hyperpage{22}
-  \item \spxentry{contains\_profile()}\spxextra{beamon.database.Database method}, \hyperpage{23}
+  \item \spxentry{cascadeView()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{change\_dof()}\spxextra{beamon.database.database.Database method}, \hyperpage{23}
+  \item \spxentry{change\_edof()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{23}
+  \item \spxentry{change\_joints()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{change\_lineload()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{23}
+  \item \spxentry{change\_link()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{24}
+  \item \spxentry{change\_links()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{change\_load()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{24}
+  \item \spxentry{change\_node()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{24}
+  \item \spxentry{change\_nodes()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{change\_profile()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{24}
+  \item \spxentry{check\_database()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
+  \item \spxentry{clear\_database()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
+  \item \spxentry{closeEvent()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{closeEvent()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{contains\_link()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
+  \item \spxentry{contains\_node()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
+  \item \spxentry{contains\_profile()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
+  \item \spxentry{context\_menu\_requested()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
 
   \indexspace
   \bigletter D
-  \item \spxentry{Database}\spxextra{class in beamon.database}, \hyperpage{19}
+  \item \spxentry{Database}\spxextra{class in beamon.database.database}, \hyperpage{21}
+  \item \spxentry{display\_log()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{display\_message()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
 
   \indexspace
   \bigletter E
-  \item \spxentry{element\_stats()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{18}
-  \item \spxentry{erase\_lost\_profiles\_in\_links()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{23}
-  \item \spxentry{export\_text()}\spxextra{beamon.database.Database method}, \hyperpage{23}
+  \item \spxentry{element\_stats()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{20}
+  \item \spxentry{export\_csv()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{export\_excel()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{export\_text()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{25}
 
   \indexspace
   \bigletter G
-  \item \spxentry{get\_all\_dof()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_all\_lineloads()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_all\_links()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_all\_links\_profile\_indexes()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{23}
-  \item \spxentry{get\_all\_nodes()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_bc()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_default\_edof()}\spxextra{beamon.database.Database method}, \hyperpage{23}
-  \item \spxentry{get\_default\_link\_orientation()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{23}
-  \item \spxentry{get\_default\_static\_edof()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{24}
-  \item \spxentry{get\_dof()}\spxextra{beamon.database.Database method}, \hyperpage{24}
-  \item \spxentry{get\_edof()}\spxextra{beamon.database.Database method}, \hyperpage{24}
-  \item \spxentry{get\_edof\_for\_simulation()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{24}
-  \item \spxentry{get\_grid\_settings()}\spxextra{beamon.database.Database method}, \hyperpage{24}
-  \item \spxentry{get\_joints()}\spxextra{beamon.database.Database method}, \hyperpage{24}
-  \item \spxentry{get\_lineloads\_for\_plotting()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{24}
-  \item \spxentry{get\_link\_direction()}\spxextra{beamon.database.Database method}, \hyperpage{24}
-  \item \spxentry{get\_link\_length()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_link\_nodes()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_link\_orientation()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_dof()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{25}
-  \item \spxentry{get\_link\_orientations()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_lineloads()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{25}
-  \item \spxentry{get\_link\_with\_id()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_links()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_links\_ending\_points()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{25}
-  \item \spxentry{get\_links\_indexes()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_links\_middle\_points()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{25}
-  \item \spxentry{get\_links\_profiles()}\spxextra{beamon.database.Database method}, \hyperpage{25}
-  \item \spxentry{get\_links\_starting\_points()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_lineloads\_for\_simulation()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{26}
-  \item \spxentry{get\_loads()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_loads\_for\_plotting()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_links()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{26}
-  \item \spxentry{get\_local\_orientation()}\spxextra{in module beamon.core}, \hyperpage{17}
-  \item \spxentry{get\_lost\_dependencies()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_links\_profile\_indexes()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{26}
-  \item \spxentry{get\_node()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_node\_id()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_node\_index()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_nodes()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_nodes\_indexes\_with\_bc()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_all\_nodes()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{26}
-  \item \spxentry{get\_profiles()}\spxextra{beamon.database.Database method}, \hyperpage{26}
-  \item \spxentry{get\_results\_view\_settings()}\spxextra{beamon.database.Database method}, 
+  \item \spxentry{get\_bc()}\spxextra{beamon.database.database.Database method}, \hyperpage{26}
+  \item \spxentry{get\_default\_edof()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{26}
+  \item \spxentry{get\_default\_link\_orientation()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{26}
+  \item \spxentry{get\_default\_static\_edof()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{26}
+  \item \spxentry{get\_dof()}\spxextra{beamon.database.database.Database method}, \hyperpage{27}
+  \item \spxentry{get\_edof()}\spxextra{beamon.database.database.Database method}, \hyperpage{27}
+  \item \spxentry{get\_edof\_for\_simulation()}\spxextra{beamon.database.database.Database method}, 
 		\hyperpage{27}
-  \item \spxentry{get\_rmat()}\spxextra{in module beamon.core}, \hyperpage{17}
-  \item \spxentry{get\_view\_settings()}\spxextra{beamon.database.Database method}, \hyperpage{27}
+  \item \spxentry{get\_grid\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{27}
+  \item \spxentry{get\_joints()}\spxextra{beamon.database.database.Database method}, \hyperpage{27}
+  \item \spxentry{get\_lineloads\_for\_plotting()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{27}
+  \item \spxentry{get\_link\_direction()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{27}
+  \item \spxentry{get\_link\_length()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{27}
+  \item \spxentry{get\_link\_nodes()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_link\_orientation()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_link\_orientations()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_link\_with\_id()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_links()}\spxextra{beamon.database.database.Database method}, \hyperpage{28}
+  \item \spxentry{get\_links\_ending\_points()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_links\_middle\_points()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_links\_profiles()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_links\_starting\_points()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{28}
+  \item \spxentry{get\_loads()}\spxextra{beamon.database.database.Database method}, \hyperpage{28}
+  \item \spxentry{get\_loads\_for\_plotting()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_loads\_for\_simulation()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_local\_orientation()}\spxextra{in module beamon.core}, \hyperpage{19}
+  \item \spxentry{get\_lost\_dependencies()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_models()}\spxextra{beamon.database.database.Database method}, \hyperpage{29}
+  \item \spxentry{get\_node()}\spxextra{beamon.database.database.Database method}, \hyperpage{29}
+  \item \spxentry{get\_nodes()}\spxextra{beamon.database.database.Database method}, \hyperpage{29}
+  \item \spxentry{get\_nodes\_indexes\_with\_bc()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_profiles()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_results\_view\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{29}
+  \item \spxentry{get\_rmat()}\spxextra{in module beamon.core}, \hyperpage{19}
+  \item \spxentry{get\_static\_edof()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{30}
+  \item \spxentry{get\_view\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{30}
   \item \spxentry{global\_element\_displaced\_points()}\spxextra{beamon.simulation.Simulation method}, 
-		\hyperpage{18}
+		\hyperpage{20}
+  \item \spxentry{global\_element\_displacements()}\spxextra{beamon.simulation.Simulation method}, 
+		\hyperpage{20}
   \item \spxentry{global\_element\_evaluation\_points()}\spxextra{beamon.simulation.Simulation method}, 
-		\hyperpage{18}
+		\hyperpage{20}
 
   \indexspace
   \bigletter H
-  \item \spxentry{has\_links()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{has\_nodes()}\spxextra{beamon.database.Database method}, \hyperpage{27}
+  \item \spxentry{has\_links()}\spxextra{beamon.database.database.Database method}, \hyperpage{30}
+  \item \spxentry{has\_nodes()}\spxextra{beamon.database.database.Database method}, \hyperpage{30}
 
   \indexspace
   \bigletter I
-  \item \spxentry{import\_text()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{is\_settings\_preset()}\spxextra{beamon.database.Database method}, \hyperpage{27}
+  \item \spxentry{import\_text()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{30}
+  \item \spxentry{init\_plot()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{init\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{init\_settings()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{is\_settings\_preset()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{30}
+
+  \indexspace
+  \bigletter K
+  \item \spxentry{keyPressEvent()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{keyPressEvent()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
 
   \indexspace
   \bigletter L
   \item \spxentry{local\_element\_displacements()}\spxextra{beamon.simulation.Simulation method}, 
-		\hyperpage{19}
+		\hyperpage{20}
   \item \spxentry{local\_element\_section\_forces()}\spxextra{beamon.simulation.Simulation method}, 
-		\hyperpage{19}
+		\hyperpage{20}
 
   \indexspace
   \bigletter M
-  \item \spxentry{make\_dummy\_file()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{make\_edof()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{make\_joints()}\spxextra{in module beamon.core}, \hyperpage{18}
+  \item \spxentry{Main}\spxextra{class in beamon.ui.main}, \hyperpage{32}
+  \item \spxentry{make\_dummy\_file()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{30}
+  \item \spxentry{make\_edof()}\spxextra{beamon.database.database.Database method}, \hyperpage{30}
   \item \spxentry{module}
-    \subitem \spxentry{beamon.core}, \hyperpage{15}
-    \subitem \spxentry{beamon.database}, \hyperpage{19}
-    \subitem \spxentry{beamon.simulation}, \hyperpage{18}
+    \subitem \spxentry{beamon.core}, \hyperpage{17}
+    \subitem \spxentry{beamon.database.database}, \hyperpage{21}
+    \subitem \spxentry{beamon.simulation}, \hyperpage{20}
+    \subitem \spxentry{beamon.ui.callVisualizer}, \hyperpage{33}
+    \subitem \spxentry{beamon.ui.main}, \hyperpage{32}
+    \subitem \spxentry{beamon.ui.pyvista\_widget}, \hyperpage{34}
 
   \indexspace
   \bigletter N
-  \item \spxentry{nodes\_results()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{19}
+  \item \spxentry{nodes\_results()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{21}
+
+  \indexspace
+  \bigletter O
+  \item \spxentry{onCustomContextMenuRequested()}\spxextra{beamon.ui.main.Main method}, 
+		\hyperpage{32}
+  \item \spxentry{open\_database()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{open\_database\_diag()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{open\_log()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+
+  \indexspace
+  \bigletter P
+  \item \spxentry{PyVistaWidget}\spxextra{class in beamon.ui.pyvista\_widget}, \hyperpage{34}
 
   \indexspace
   \bigletter R
-  \item \spxentry{remove\_lineload()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{remove\_link()}\spxextra{beamon.database.Database method}, \hyperpage{27}
-  \item \spxentry{remove\_link\_with\_node()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{27}
-  \item \spxentry{remove\_load()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{remove\_loads\_with\_node()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{28}
-  \item \spxentry{remove\_node()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{remove\_profile()}\spxextra{beamon.database.Database method}, \hyperpage{28}
+  \item \spxentry{remove\_lineload()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{remove\_link()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{remove\_load()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{remove\_loads\_with\_node()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{remove\_node()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{remove\_profile()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{reset\_inputfields()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
 
   \indexspace
   \bigletter S
-  \item \spxentry{set\_grid\_settings()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{set\_results\_view\_settings()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{28}
-  \item \spxentry{set\_view\_settings()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{simulate()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{19}
-  \item \spxentry{Simulation}\spxextra{class in beamon.simulation}, \hyperpage{18}
-  \item \spxentry{sort\_edof()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{sort\_lineload\_indexes()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{28}
-  \item \spxentry{sort\_link\_indexes()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{sort\_load\_indexes()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{sort\_node\_indexes()}\spxextra{beamon.database.Database method}, \hyperpage{28}
-  \item \spxentry{sort\_profile\_indexes()}\spxextra{beamon.database.Database method}, 
-		\hyperpage{29}
+  \item \spxentry{save\_database\_as\_diag()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{set\_grid\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{set\_results\_view\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{set\_view\_settings()}\spxextra{beamon.database.database.Database method}, 
+		\hyperpage{31}
+  \item \spxentry{simulate()}\spxextra{beamon.simulation.Simulation method}, \hyperpage{21}
+  \item \spxentry{Simulation}\spxextra{class in beamon.simulation}, \hyperpage{20}
+  \item \spxentry{start\_grid\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{start\_results\_view\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{start\_view\_settings()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{33}
+  \item \spxentry{start\_visualizer\_manual()}\spxextra{beamon.ui.main.Main method}, \hyperpage{33}
+  \item \spxentry{startBeamSize()}\spxextra{beamon.ui.main.Main method}, \hyperpage{32}
+  \item \spxentry{startQswHelp()}\spxextra{beamon.ui.main.Main method}, \hyperpage{33}
+  \item \spxentry{startVisualizer()}\spxextra{beamon.ui.main.Main method}, \hyperpage{33}
 
   \indexspace
   \bigletter T
-  \item \spxentry{transform()}\spxextra{in module beamon.core}, \hyperpage{18}
+  \item \spxentry{table\_state\_changed()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{34}
+  \item \spxentry{tileView()}\spxextra{beamon.ui.main.Main method}, \hyperpage{33}
+  \item \spxentry{transform()}\spxextra{in module beamon.core}, \hyperpage{20}
+  \item \spxentry{treeClicked()}\spxextra{beamon.ui.callVisualizer.VisualizerMainForm method}, 
+		\hyperpage{34}
+
+  \indexspace
+  \bigletter U
+  \item \spxentry{update\_boundary\_conditions()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_displaced\_nodes()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_element\_displacements()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_elements()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_elements\_orientation()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_global()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_grid()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_labels()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_nodes()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_section\_forces()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+  \item \spxentry{update\_support\_forces()}\spxextra{beamon.ui.pyvista\_widget.PyVistaWidget method}, 
+		\hyperpage{34}
+
+  \indexspace
+  \bigletter V
+  \item \spxentry{VisualizerMainForm}\spxextra{class in beamon.ui.callVisualizer}, \hyperpage{33}
 
 \end{sphinxtheindex}

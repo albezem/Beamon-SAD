@@ -3,78 +3,89 @@
 \contentsline {chapter}{\numberline {2}Documentations Contents}{5}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Getting Started}{5}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}Installation}{5}{subsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.1.1}Windows Executable}{5}{subsubsection.2.1.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.1.2}Python Package (for developers and testers)}{5}{subsubsection.2.1.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.1.1}Windows Installer}{5}{subsubsection.2.1.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.1.2}Windows Portable Version}{5}{subsubsection.2.1.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.1.3}Python Package (for developers and testers)}{5}{subsubsection.2.1.1.3}%
 \contentsline {subsection}{\numberline {2.1.2}Starting Beamon}{5}{subsection.2.1.2}%
-\contentsline {subsubsection}{\numberline {2.1.2.1}How to use beamon package}{5}{subsubsection.2.1.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.2.2}Beamon’s comman line arguments}{5}{subsubsection.2.1.2.2}%
+\contentsline {subsubsection}{\numberline {2.1.2.1}How To Use \sphinxstyleemphasis {beamon} Package}{5}{subsubsection.2.1.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.2.2}Beamon’s command Line Arguments}{6}{subsubsection.2.1.2.2}%
 \contentsline {subsection}{\numberline {2.1.3}Using Beamon}{6}{subsection.2.1.3}%
-\contentsline {subsubsection}{\numberline {2.1.3.1}Loading a Project and Geometry files}{6}{subsubsection.2.1.3.1}%
-\contentsline {section}{\numberline {2.2}Making A Model}{6}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Nodes And Boundry Conditions}{6}{subsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.1.1}With Geometry File}{6}{subsubsection.2.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.2.1.2}With User Interface}{7}{subsubsection.2.2.1.2}%
-\contentsline {subsubsection}{\numberline {2.2.1.3}Nodes and Boundry Conditions Visualization}{7}{subsubsection.2.2.1.3}%
-\contentsline {subsection}{\numberline {2.2.2}Elements}{8}{subsection.2.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.2.1}With Geometry File}{8}{subsubsection.2.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2.2}With User Interface}{9}{subsubsection.2.2.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.2.3}Elements Visualization}{9}{subsubsection.2.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.3}Nodes Joints}{9}{subsection.2.2.3}%
-\contentsline {subsubsection}{\numberline {2.2.3.1}With Geometry File}{9}{subsubsection.2.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.2.3.2}With User Interface}{10}{subsubsection.2.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.2.3.3}Joints Visualization}{10}{subsubsection.2.2.3.3}%
-\contentsline {subsection}{\numberline {2.2.4}Nodes Loads}{11}{subsection.2.2.4}%
-\contentsline {subsubsection}{\numberline {2.2.4.1}With Geometry File}{11}{subsubsection.2.2.4.1}%
-\contentsline {subsubsection}{\numberline {2.2.4.2}With User Interface}{11}{subsubsection.2.2.4.2}%
-\contentsline {subsubsection}{\numberline {2.2.4.3}Nodes Loads Visualization}{11}{subsubsection.2.2.4.3}%
-\contentsline {subsection}{\numberline {2.2.5}Element Loads}{12}{subsection.2.2.5}%
-\contentsline {subsubsection}{\numberline {2.2.5.1}With Geometry File}{12}{subsubsection.2.2.5.1}%
-\contentsline {subsubsection}{\numberline {2.2.5.2}With User Interface}{13}{subsubsection.2.2.5.2}%
-\contentsline {subsubsection}{\numberline {2.2.5.3}Element Loads Visualization}{13}{subsubsection.2.2.5.3}%
-\contentsline {subsection}{\numberline {2.2.6}Profiles and BeamSize}{13}{subsection.2.2.6}%
-\contentsline {subsubsection}{\numberline {2.2.6.1}With Geometry File}{14}{subsubsection.2.2.6.1}%
-\contentsline {subsubsection}{\numberline {2.2.6.2}With User Interface}{14}{subsubsection.2.2.6.2}%
-\contentsline {subsubsection}{\numberline {2.2.6.3}With BeamSize}{14}{subsubsection.2.2.6.3}%
-\contentsline {section}{\numberline {2.3}Theory}{14}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Element Orientation}{15}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}CALFEM}{15}{subsection.2.3.2}%
-\contentsline {section}{\numberline {2.4}API}{15}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Core}{15}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Simulation}{18}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Database}{19}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Indices and tables}{29}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Contributing}{29}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Programming Environment}{29}{subsection.2.5.1}%
-\contentsline {subsubsection}{\numberline {2.5.1.1}Python Environment}{29}{subsubsection.2.5.1.1}%
-\contentsline {subsubsection}{\numberline {2.5.1.2}IDE}{29}{subsubsection.2.5.1.2}%
-\contentsline {subsubsection}{\numberline {2.5.1.3}Project Requirements}{30}{subsubsection.2.5.1.3}%
-\contentsline {subsection}{\numberline {2.5.2}Project Structure}{30}{subsection.2.5.2}%
-\contentsline {subsubsection}{\numberline {2.5.2.1}Directives Structure}{30}{subsubsection.2.5.2.1}%
-\contentsline {subsubsection}{\numberline {2.5.2.2}Discription}{31}{subsubsection.2.5.2.2}%
-\contentsline {paragraph}{\numberline {2.5.2.2.1}The Actual Module}{31}{paragraph.2.5.2.2.1}%
-\contentsline {paragraph}{\numberline {2.5.2.2.2}Release Files}{31}{paragraph.2.5.2.2.2}%
-\contentsline {paragraph}{\numberline {2.5.2.2.3}Resources}{31}{paragraph.2.5.2.2.3}%
-\contentsline {paragraph}{\numberline {2.5.2.2.4}License}{32}{paragraph.2.5.2.2.4}%
-\contentsline {paragraph}{\numberline {2.5.2.2.5}Setup.py}{32}{paragraph.2.5.2.2.5}%
-\contentsline {paragraph}{\numberline {2.5.2.2.6}Make}{32}{paragraph.2.5.2.2.6}%
-\contentsline {paragraph}{\numberline {2.5.2.2.7}PyInstaller Specification:}{32}{paragraph.2.5.2.2.7}%
-\contentsline {paragraph}{\numberline {2.5.2.2.8}Distribution files}{32}{paragraph.2.5.2.2.8}%
-\contentsline {paragraph}{\numberline {2.5.2.2.9}Requirements File}{32}{paragraph.2.5.2.2.9}%
-\contentsline {paragraph}{\numberline {2.5.2.2.10}Documentation}{33}{paragraph.2.5.2.2.10}%
-\contentsline {paragraph}{\numberline {2.5.2.2.11}Test Suite}{33}{paragraph.2.5.2.2.11}%
-\contentsline {subsection}{\numberline {2.5.3}Implementation Details}{33}{subsection.2.5.3}%
-\contentsline {subsubsection}{\numberline {2.5.3.1}The Database}{33}{subsubsection.2.5.3.1}%
-\contentsline {paragraph}{\numberline {2.5.3.1.1}Database Structure (alpha release)}{33}{paragraph.2.5.3.1.1}%
-\contentsline {paragraph}{\numberline {2.5.3.1.2}SQLite Queries}{33}{paragraph.2.5.3.1.2}%
-\contentsline {paragraph}{\numberline {2.5.3.1.3}Reading Geometry Files Efficiently}{35}{paragraph.2.5.3.1.3}%
-\contentsline {paragraph}{\numberline {2.5.3.1.4}Resetting Primary Keys}{35}{paragraph.2.5.3.1.4}%
-\contentsline {subsubsection}{\numberline {2.5.3.2}PySide2 or PyQt5}{36}{subsubsection.2.5.3.2}%
-\contentsline {subsubsection}{\numberline {2.5.3.3}Package vs. Executable}{36}{subsubsection.2.5.3.3}%
-\contentsline {subsubsection}{\numberline {2.5.3.4}Class Structure (alpha release)}{36}{subsubsection.2.5.3.4}%
-\contentsline {subsubsection}{\numberline {2.5.3.5}How The UI Is Built}{37}{subsubsection.2.5.3.5}%
-\contentsline {subsubsection}{\numberline {2.5.3.6}The Simulation}{38}{subsubsection.2.5.3.6}%
-\contentsline {subsection}{\numberline {2.5.4}How TOs}{38}{subsection.2.5.4}%
-\contentsline {subsubsection}{\numberline {2.5.4.1}How To Build This Documentation}{38}{subsubsection.2.5.4.1}%
-\contentsline {subsubsection}{\numberline {2.5.4.2}How to Style QTableView Cells}{38}{subsubsection.2.5.4.2}%
-\contentsline {chapter}{Python Module Index}{41}{section*.104}%
-\contentsline {chapter}{Index}{43}{section*.105}%
+\contentsline {subsubsection}{\numberline {2.1.3.1}Browsing Models}{6}{subsubsection.2.1.3.1}%
+\contentsline {subsection}{\numberline {2.1.4}Using the Visualizer}{8}{subsection.2.1.4}%
+\contentsline {section}{\numberline {2.2}Making A Model}{8}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Nodes And Boundry Conditions}{8}{subsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.1.1}With Geometry File}{8}{subsubsection.2.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.2.1.2}With User Interface}{9}{subsubsection.2.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.2.1.3}Nodes and Boundry Conditions Visualization}{9}{subsubsection.2.2.1.3}%
+\contentsline {subsection}{\numberline {2.2.2}Elements}{10}{subsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.2.1}With Geometry File}{10}{subsubsection.2.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2.2}With User Interface}{11}{subsubsection.2.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.2.3}Elements Visualization}{11}{subsubsection.2.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.3}Nodes Joints}{11}{subsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.3.1}With Geometry File}{11}{subsubsection.2.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.2.3.2}With User Interface}{12}{subsubsection.2.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.2.3.3}Joints Visualization}{12}{subsubsection.2.2.3.3}%
+\contentsline {subsection}{\numberline {2.2.4}Nodes Loads}{13}{subsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.4.1}With Geometry File}{13}{subsubsection.2.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.2.4.2}With User Interface}{13}{subsubsection.2.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.2.4.3}Nodes Loads Visualization}{13}{subsubsection.2.2.4.3}%
+\contentsline {subsection}{\numberline {2.2.5}Element Loads}{14}{subsection.2.2.5}%
+\contentsline {subsubsection}{\numberline {2.2.5.1}With Geometry File}{14}{subsubsection.2.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.2.5.2}With User Interface}{15}{subsubsection.2.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.2.5.3}Element Loads Visualization}{15}{subsubsection.2.2.5.3}%
+\contentsline {subsection}{\numberline {2.2.6}Profiles and BeamSize}{15}{subsection.2.2.6}%
+\contentsline {subsubsection}{\numberline {2.2.6.1}With Geometry File}{16}{subsubsection.2.2.6.1}%
+\contentsline {subsubsection}{\numberline {2.2.6.2}With User Interface}{16}{subsubsection.2.2.6.2}%
+\contentsline {subsubsection}{\numberline {2.2.6.3}With BeamSize}{16}{subsubsection.2.2.6.3}%
+\contentsline {section}{\numberline {2.3}Theory}{16}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Element Orientation}{17}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}CALFEM}{17}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}API}{17}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Core}{17}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Simulation}{20}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Database}{21}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}UI.Main}{32}{subsection.2.4.4}%
+\contentsline {subsection}{\numberline {2.4.5}UI.Visualizer}{33}{subsection.2.4.5}%
+\contentsline {subsection}{\numberline {2.4.6}UI.Visualization}{34}{subsection.2.4.6}%
+\contentsline {subsection}{\numberline {2.4.7}Indices and tables}{35}{subsection.2.4.7}%
+\contentsline {section}{\numberline {2.5}Contributing}{35}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Programming Environment}{35}{subsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.1.1}Python Environment}{35}{subsubsection.2.5.1.1}%
+\contentsline {subsubsection}{\numberline {2.5.1.2}IDE}{35}{subsubsection.2.5.1.2}%
+\contentsline {subsubsection}{\numberline {2.5.1.3}Project Requirements}{35}{subsubsection.2.5.1.3}%
+\contentsline {subsection}{\numberline {2.5.2}Project Structure}{36}{subsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.2.1}Directives Structure}{36}{subsubsection.2.5.2.1}%
+\contentsline {subsubsection}{\numberline {2.5.2.2}Discription}{36}{subsubsection.2.5.2.2}%
+\contentsline {paragraph}{\numberline {2.5.2.2.1}The Actual Module}{36}{paragraph.2.5.2.2.1}%
+\contentsline {paragraph}{\numberline {2.5.2.2.2}Release Files}{37}{paragraph.2.5.2.2.2}%
+\contentsline {paragraph}{\numberline {2.5.2.2.3}Resources}{37}{paragraph.2.5.2.2.3}%
+\contentsline {paragraph}{\numberline {2.5.2.2.4}License}{37}{paragraph.2.5.2.2.4}%
+\contentsline {paragraph}{\numberline {2.5.2.2.5}Setup.py}{37}{paragraph.2.5.2.2.5}%
+\contentsline {paragraph}{\numberline {2.5.2.2.6}Make}{37}{paragraph.2.5.2.2.6}%
+\contentsline {paragraph}{\numberline {2.5.2.2.7}PyInstaller Specification:}{38}{paragraph.2.5.2.2.7}%
+\contentsline {paragraph}{\numberline {2.5.2.2.8}Distribution files}{38}{paragraph.2.5.2.2.8}%
+\contentsline {paragraph}{\numberline {2.5.2.2.9}Requirements File}{38}{paragraph.2.5.2.2.9}%
+\contentsline {paragraph}{\numberline {2.5.2.2.10}Documentation}{38}{paragraph.2.5.2.2.10}%
+\contentsline {paragraph}{\numberline {2.5.2.2.11}Test Suite}{38}{paragraph.2.5.2.2.11}%
+\contentsline {subsection}{\numberline {2.5.3}Implementation Details}{38}{subsection.2.5.3}%
+\contentsline {subsubsection}{\numberline {2.5.3.1}The Database}{39}{subsubsection.2.5.3.1}%
+\contentsline {paragraph}{\numberline {2.5.3.1.1}Database Structure \sphinxhyphen {} Original Idea and It’s Problems}{39}{paragraph.2.5.3.1.1}%
+\contentsline {paragraph}{\numberline {2.5.3.1.2}SQLite Queries}{40}{paragraph.2.5.3.1.2}%
+\contentsline {paragraph}{\numberline {2.5.3.1.3}Problems with SQL Queries}{40}{paragraph.2.5.3.1.3}%
+\contentsline {paragraph}{\numberline {2.5.3.1.4}Reading Geometry Files Efficiently}{44}{paragraph.2.5.3.1.4}%
+\contentsline {subsubsection}{\numberline {2.5.3.2}PySide2 or PyQt5}{45}{subsubsection.2.5.3.2}%
+\contentsline {subsubsection}{\numberline {2.5.3.3}Package vs. Executable}{45}{subsubsection.2.5.3.3}%
+\contentsline {subsubsection}{\numberline {2.5.3.4}Class Structure (alpha release)}{45}{subsubsection.2.5.3.4}%
+\contentsline {subsubsection}{\numberline {2.5.3.5}Applied and Suitable Design Patterns}{46}{subsubsection.2.5.3.5}%
+\contentsline {subsubsection}{\numberline {2.5.3.6}How The UI Is Built}{47}{subsubsection.2.5.3.6}%
+\contentsline {subsubsection}{\numberline {2.5.3.7}The Simulation}{49}{subsubsection.2.5.3.7}%
+\contentsline {subsection}{\numberline {2.5.4}How TOs}{49}{subsection.2.5.4}%
+\contentsline {subsubsection}{\numberline {2.5.4.1}How To Build This Documentation}{49}{subsubsection.2.5.4.1}%
+\contentsline {paragraph}{\numberline {2.5.4.1.1}Latex Build}{51}{paragraph.2.5.4.1.1}%
+\contentsline {paragraph}{\numberline {2.5.4.1.2}HTML Build}{51}{paragraph.2.5.4.1.2}%
+\contentsline {paragraph}{\numberline {2.5.4.1.3}Epub Build}{51}{paragraph.2.5.4.1.3}%
+\contentsline {paragraph}{\numberline {2.5.4.1.4}PDF Build}{51}{paragraph.2.5.4.1.4}%
+\contentsline {paragraph}{\numberline {2.5.4.1.5}Build All}{51}{paragraph.2.5.4.1.5}%
+\contentsline {subsubsection}{\numberline {2.5.4.2}How to Style QTableView Cells}{51}{subsubsection.2.5.4.2}%
+\contentsline {chapter}{Python Module Index}{53}{section*.142}%
+\contentsline {chapter}{Index}{55}{section*.143}%
