@@ -1,0 +1,1891 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contrib.html" />
+    <link rel="prev" title="Theory" href="theory.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-beamon.core">
+<span id="core"></span><h2>Core<a class="headerlink" href="#module-beamon.core" title="Permalink to this headline">¶</a></h2>
+<p>Core functions for beamon</p>
+<dl class="py function">
+<dt id="beamon.core.assemble_bc">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_bc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes_bc</span></em>, <em class="sig-param"><span class="n">Dof</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#assemble_bc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.assemble_bc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble boundary condition information in a vector.
+nodes_bc should contain [u_x,u_y,u_z,phi_x,phi_y,phi_z] for each node, which can only contain
+0 (free) or 1 (locked).
+The assembled bc vector could be ex. [1,2,5,6] that locks movement in those numbered directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_bc</strong> (<em>integer matrix</em>) – boundary condition information from database</p></li>
+<li><p><strong>Dof</strong> (<em>integer matrix</em>) – nodes degrees of freedom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bc vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer 1 x n vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.assemble_element_loads">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_element_loads</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loads</span></em>, <em class="sig-param"><span class="n">Edof</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#assemble_element_loads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.assemble_element_loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble element local loads vector from element loads.
+Loads should contain [link_id, qx, qy, qz, qw]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loads</strong> (<em>float matrix</em>) – element loads</p></li>
+<li><p><strong>Edof</strong> (<em>integer matrix</em>) – Element degree of freedom (Topology matrix)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>local forces</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.assemble_global_f">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_global_f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loads</span></em>, <em class="sig-param"><span class="n">Dof</span></em>, <em class="sig-param"><span class="n">ndof</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#assemble_global_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.assemble_global_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble global loads vector from nodes loads.
+Loads should contain nodes coordinates and the forces applied to each node [x,y,z, u,v,w, m_x,m_y,m_z]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loads</strong> (<em>float matrix</em>) – Nodes loads array</p></li>
+<li><p><strong>Dof</strong> (<em>integer matrix</em>) – nodes degrees of freedom</p></li>
+<li><p><strong>ndof</strong> (<em>integer</em>) – number of dofs n (defines the dimension of f)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>global force vector (n x 1 vector)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.assemble_nodes_results">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">assemble_nodes_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">o_edof</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">Q</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#assemble_nodes_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.assemble_nodes_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble nodes displacements and support forces according without joints dof results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>o_edof</strong> (<em>integer matrix</em>) – origin edof containing zeros for free dof</p></li>
+<li><p><strong>nodes</strong> (<em>float matrix</em>) – nodes coordinates</p></li>
+<li><p><strong>a</strong> (<em>numpy float vector</em>) – nodes displacements</p></li>
+<li><p><strong>Q</strong> (<em>numpy float vector</em>) – nodes support forces</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table with columns [‘Node Nr.’, ‘ax’, ‘ay’, ‘az’, ‘aphi_x’, ‘aphi_y’, ‘aphi_z’, ‘x’, ‘y’, ‘z’, ‘Qx’,</p>
+</dd>
+</dl>
+<p>‘Qy’,’Qz’, ‘Qphi_x’, ‘Qphi_y’, ‘Qphi_z’]
+:rtype: pandas Dataframe</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.get_local_orientation">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">get_local_orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orientation</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#get_local_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.get_local_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Calculates all local axes orientation vectors according to v vector and</dt><dd><p>normal vectors n = (node2-node1)/abs(node2-node1)</p>
+</dd>
+</dl>
+<p>Z axes is the projection of v on the plane with orthogonal vector X axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>x,y,z directions in each row</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.get_rmat">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">get_rmat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">M</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#get_rmat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.get_rmat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the 3D Rotation matrix of a plane defined with vector normal M.
+N will be the vector normal to the plane you want to rotate into.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> (<em>double</em>) – 3 component list</p></li>
+<li><p><strong>N</strong> (<em>double</em>) – 3 component list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3x3 matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="beamon.core.transform">
+<code class="sig-prename descclassname">beamon.core.</code><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/core.html#transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.core.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms each point in points matrix using the transformation matrix T.
+points should have row wise point coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>double</em><em>[</em><em>]</em><em>[</em><em>]</em>) – 3x3 Transformation Matrix</p></li>
+<li><p><strong>points</strong> (<em>double</em><em>[</em><em>]</em><em>[</em><em>]</em>) – nx3 points matrix</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>nx3 points matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beamon.simulation">
+<span id="simulation"></span><h2>Simulation<a class="headerlink" href="#module-beamon.simulation" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="beamon.simulation.Simulation">
+<em class="property">class </em><code class="sig-prename descclassname">beamon.simulation.</code><code class="sig-name descname">Simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#beamon.database.database.Database" title="beamon.database.database.Database">beamon.database.database.Database</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/simulation.html#Simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main simulation module. Uses core and database to do calculations.</p>
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.element_stats">
+<code class="sig-name descname">element_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.element_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.element_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Statistics about Simulation results for elements as pandas Dataframe with following columns:
+[‘Element Nr.’, ‘Min N’, ‘Max N’, ‘Min Vy’, ‘Max Vy’, ‘Min Vz’, ‘Max Vz’, ‘Min T’, ‘Max T’, ‘Min My’, ‘Max My’,
+‘Min Mz’, ‘Max Mz’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Simulation results statistics matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.global_element_displaced_points">
+<code class="sig-name descname">global_element_displaced_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.global_element_displaced_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.global_element_displaced_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns displaced points coordinates in global coordinate system for each evaluation point on elements
+as pandas Dataframe with following columns:
+[‘Element Nr.’, ‘x’, ‘y’, ‘z’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>global element evaluation points matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.global_element_displacements">
+<code class="sig-name descname">global_element_displacements</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.global_element_displacements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.global_element_displacements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation results for global element displacements for translation as pandas
+Dataframe with following columns:
+[‘Element Nr.’, ‘u’, ‘v’, ‘w’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local element displacements matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.global_element_evaluation_points">
+<code class="sig-name descname">global_element_evaluation_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.global_element_evaluation_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.global_element_evaluation_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns simulation evaluation point coordinates in global coordinate system
+as pandas Dataframe with following columns:
+[‘Element Nr.’, ‘x’, ‘y’, ‘z’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>global element evaluation points matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.local_element_displacements">
+<code class="sig-name descname">local_element_displacements</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.local_element_displacements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.local_element_displacements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation results for local element displacements as pandas Dataframe with following columns:
+[‘Element Nr.’, ‘xi’, ‘u’, ‘v’, ‘w’, ‘phi’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local element displacements matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.local_element_section_forces">
+<code class="sig-name descname">local_element_section_forces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.local_element_section_forces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.local_element_section_forces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation results for local element section forces as pandas Dataframe with following columns:
+[‘Element Nr.’, ‘xi’, ‘N’, ‘Vy’, ‘Vz’, ‘T’, ‘My’,’Mz’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local element section forces matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.nodes_results">
+<code class="sig-name descname">nodes_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/simulation.html#Simulation.nodes_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.nodes_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation results for global nodes displacements (ax,ay,az,aphi_x,aphi_y,a_phiz) with nodes coordinates
+(x,y,z) and normal forces (Qx,Qy,Qz,Qphi_x,Qphi_y,Qphi_z) as pandas Dataframe with following columns:
+[‘Node Nr.’, ‘ax’, ‘ay’, ‘az’, ‘aphi_x’, ‘aphi_y’, ‘aphi_z’, ‘x’, ‘y’, ‘z’, ‘Qx’, ‘Qy’, ‘Qz’, ‘Qphi_x’,
+‘Qphi_y’, ‘Qphi_z’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local element displacements matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.simulation.Simulation.simulate">
+<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">20</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/simulation.html#Simulation.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.simulation.Simulation.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the simulation according to data in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>n</strong> (<em>integer</em>) – number of evaluation points</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beamon.database.database">
+<span id="database"></span><h2>Database<a class="headerlink" href="#module-beamon.database.database" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="beamon.database.database.Database">
+<em class="property">class </em><code class="sig-prename descclassname">beamon.database.database.</code><code class="sig-name descname">Database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_to_database</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">check</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ram</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">path_to_save_database</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data set to save all the data for constructing Elements in Visualization and for calculations in Beamon
+<strong>Warning</strong>: This class should follow singleton pattern.</p>
+<p>conn: SQLite3 connection object</p>
+<p>cur: cursor for SQLite queries</p>
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_lineload">
+<code class="sig-name descname">add_lineload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em>, <em class="sig-param"><span class="n">l_index</span></em>, <em class="sig-param"><span class="n">qx</span></em>, <em class="sig-param"><span class="n">qy</span></em>, <em class="sig-param"><span class="n">qz</span></em>, <em class="sig-param"><span class="n">qw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_lineload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_lineload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a lineload to a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>l_index</strong> (<em>integer</em>) – link index number</p></li>
+<li><p><strong>qx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in x direction</p></li>
+<li><p><strong>qy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in y direction</p></li>
+<li><p><strong>qz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in z direction</p></li>
+<li><p><strong>qw</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant momentum in x direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>False/lineload index</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_link">
+<code class="sig-name descname">add_link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">index2</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">dof</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">profile_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">v_x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">v_y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">v_z</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a link from node with id index1 to node with id index2 and profile with profile_id to a model with m_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> – starting node index</p></li>
+<li><p><strong>index2</strong> – ending node index</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model id</p></li>
+<li><p><strong>dof</strong> – degrees of freedom [ux1, uy1, uz1, phix1, … , uz2, phix2, phiy2, phiz2]</p></li>
+<li><p><strong>profile_id</strong> – optional index of the profile</p></li>
+<li><p><strong>v_x</strong> – x component of the direction determiner of the z local axes</p></li>
+<li><p><strong>v_y</strong> – y component of the direction determiner of the z local axes</p></li>
+<li><p><strong>v_z</strong> – z component of the direction determiner of the z local axes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: if successfully added a link, False: if one of the given indices don’t exist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_load">
+<code class="sig-name descname">add_load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">m_x</span></em>, <em class="sig-param"><span class="n">m_y</span></em>, <em class="sig-param"><span class="n">m_z</span></em>, <em class="sig-param"><span class="n">lineload_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a load on the node specified with index and model number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – node sub index number</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – first component of the force vector</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – second component of the force vector</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – third component of the force vector</p></li>
+<li><p><strong>m_x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – first component of the momentum vector</p></li>
+<li><p><strong>m_y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – second component of the momentum vector</p></li>
+<li><p><strong>m_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – third component of the momentum vector</p></li>
+<li><p><strong>lineload_id</strong> (<em>integer</em>) – optional number of reference lineload</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: if successfully added or updated / False: if node doesnt exist</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_model">
+<code class="sig-name descname">add_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new model to db and returns newly added model number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_name</strong> (<em>string</em>) – new model name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>model number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_node">
+<code class="sig-name descname">add_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">u_x</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">u_y</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">u_z</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_x</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_y</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_z</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a node with coordinates x,y,z and the freedom of movement for all 6 degrees of freedom (dof) to a model
+with given model number.</p>
+<p>If dof numbers where not given default values will be used.
+Default values for dof values [u_x, .. ,phi_z] is a vector with ones [1,…,1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_id</strong> (<em>integer</em>) – Model id</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – x coordinate</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – y coordinate</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – z coordinate</p></li>
+<li><p><strong>u_x</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in x direction</p></li>
+<li><p><strong>u_y</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in y direction</p></li>
+<li><p><strong>u_z</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in z direction</p></li>
+<li><p><strong>phi_x</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_x direction</p></li>
+<li><p><strong>phi_y</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_y direction</p></li>
+<li><p><strong>phi_z</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_z direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>False: if node already exists, m_id if new node was added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.add_profile">
+<code class="sig-name descname">add_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.add_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.add_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a profile</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.backup">
+<code class="sig-name descname">backup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.backup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.backup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates Backup to Database with specified path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>destination_path</strong> (<em>string</em>) – Backup database path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_dof">
+<code class="sig-name descname">change_dof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">u_x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">u_y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">u_z</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi_x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi_y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi_z</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_dof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_dof" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>change the degree of freedom for a given node with specified node index. DOF specification:</dt><dd><p>1 is for free movement and 0 is for locked movement in a specified direction.</p>
+</dd>
+</dl>
+<p>for example (index=300, u_x=1, u_y=1, u_z=1, phi_x=1, phi_y=1, phi_z=0) locks the rotation
+in global z-axes direction of node 300.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – index of the node</p></li>
+<li><p><strong>u_x</strong> – movement in x direction</p></li>
+<li><p><strong>u_y</strong> – movement in y direction</p></li>
+<li><p><strong>u_z</strong> – movement in z direction</p></li>
+<li><p><strong>phi_x</strong> – rotation in x axes</p></li>
+<li><p><strong>phi_y</strong> – rotation in y axes</p></li>
+<li><p><strong>phi_z</strong> – rotation in z axes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: if successfully changed/ False: if node not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_edof">
+<code class="sig-name descname">change_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edof</span></em>, <em class="sig-param"><span class="n">n_index</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes given degrees of freedom for all elements connected to the node with n_index.
+If e_index is given instead, only the degrees of freedom for that element will be changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_index</strong> – index of the node | integer</p></li>
+<li><p><strong>edof</strong> – list of integers [ux1, uy1, uz1, phix1, … , uz2, phix2, phiy2, phiz2]</p></li>
+<li><p><strong>e_index</strong> – index of the element | integer</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_lineload">
+<code class="sig-name descname">change_lineload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">l_index</span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">qx</span></em>, <em class="sig-param"><span class="n">qy</span></em>, <em class="sig-param"><span class="n">qz</span></em>, <em class="sig-param"><span class="n">qw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_lineload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_lineload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change lineload data with specified lineload index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – lineload index number</p></li>
+<li><p><strong>l_index</strong> (<em>integer</em>) – link index number</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>qx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in x direction</p></li>
+<li><p><strong>qy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in y direction</p></li>
+<li><p><strong>qz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant force in z direction</p></li>
+<li><p><strong>qw</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – constant momentum in x direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_link">
+<code class="sig-name descname">change_link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">n1_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">n2_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">v_x</span></em>, <em class="sig-param"><span class="n">v_y</span></em>, <em class="sig-param"><span class="n">v_z</span></em>, <em class="sig-param"><span class="n">profile_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes link values with specific index and model number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_load">
+<code class="sig-name descname">change_load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">n_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">m_x</span></em>, <em class="sig-param"><span class="n">m_y</span></em>, <em class="sig-param"><span class="n">m_z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change load information with specific index number.
+n_index is nodes sub index number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – load index to be changed</p></li>
+<li><p><strong>n_index</strong> (<em>integer</em>) – node sub index number</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – x-component</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – y-component</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – z-component</p></li>
+<li><p><strong>m_x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – momentum in x-direction</p></li>
+<li><p><strong>m_y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – momentum in y-direction</p></li>
+<li><p><strong>m_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – momentum in z-direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_node">
+<code class="sig-name descname">change_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">u_x</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">u_y</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">u_z</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_x</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_y</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">phi_z</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes node information with specified index number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – node id</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – x coordinate</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – y coordinate</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – z coordinate</p></li>
+<li><p><strong>u_x</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in x direction</p></li>
+<li><p><strong>u_y</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in y direction</p></li>
+<li><p><strong>u_z</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in z direction</p></li>
+<li><p><strong>phi_x</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_x direction</p></li>
+<li><p><strong>phi_y</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_y direction</p></li>
+<li><p><strong>phi_z</strong> (<em>0</em><em> or </em><em>1</em>) – dof translation in phi_z direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.change_profile">
+<code class="sig-name descname">change_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">Iy</span></em>, <em class="sig-param"><span class="n">Iz</span></em>, <em class="sig-param"><span class="n">kv</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.change_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.change_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes certain profile values with index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.check_database">
+<code class="sig-name descname">check_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.check_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.check_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the database has already been created or fails integrity check. Also checks if the following tables
+has dublicate entries: Nodes, Links</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.clear_database">
+<code class="sig-name descname">clear_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.clear_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.clear_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete/erase all the data from the database tables of a specified model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.contains_link">
+<code class="sig-name descname">contains_link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">index2</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.contains_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.contains_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>If only index1 is given: see if a link with index1 exists.
+if index1 and m_id are given: see if a link with sub index exists in model with specified model number
+If index1, index2 and model number are given: see if a link with the nodes sub index1 and sub index2 exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> – Integer</p></li>
+<li><p><strong>index2</strong> – Integer</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.contains_node">
+<code class="sig-name descname">contains_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a><a class="reference internal" href="_modules/beamon/database/database.html#Database.contains_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.contains_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if node with specific index number exists.
+If model number is given node sub index number will be searched instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – node id inside a model (not pk)</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if node exist, False if nodes doesnt exist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.contains_profile">
+<code class="sig-name descname">contains_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.contains_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.contains_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if profile with a specified index exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>integer</em>) – profile index number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True/False</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.export_text">
+<code class="sig-name descname">export_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.export_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.export_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports geometry of a specified model to text file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – the path including the File name to be saved (ex. filename.csv)</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if saved, False if not saved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_dof">
+<code class="sig-name descname">get_all_dof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_dof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_dof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all nodes information that has at least one dof number equals to 1 (locked) from a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[x,y,z,u_x,u_y,u_z,phi_x,phi_y,phi_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_lineloads">
+<code class="sig-name descname">get_all_lineloads</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_lineloads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_lineloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all lineloads from Lineload table of a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[link_id, qx, qy, qz, qw]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_lineloads_for_simulation">
+<code class="sig-name descname">get_all_lineloads_for_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_lineloads_for_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_lineloads_for_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all lineloads from Lineload table of a specified model.
+link_id are links sub index in the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>following data columns: [link_id, qx, qy, qz, qw]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_links">
+<code class="sig-name descname">get_all_links</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all links in the links table for a specified model.
+Delivers the table with node’s sub indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_links_profile_indexes">
+<code class="sig-name descname">get_all_links_profile_indexes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_links_profile_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_links_profile_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the profiles indexes of the existing links in a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None: if link index don’t exist. Otherwise index of the profile</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_all_nodes">
+<code class="sig-name descname">get_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/beamon/database/database.html#Database.get_all_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all nodes information in the DataSet from a specified model. Used for the GUI-Table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>table [x, y, z, u_x, u_y, u_z, phi_x, phi_y, phi_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_bc">
+<code class="sig-name descname">get_bc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_bc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_bc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get only bc information from nodes for a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[u_x,u_y,u_z,phi_x,phi_y,phi_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_default_edof">
+<code class="sig-name descname">get_default_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_default_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_default_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets default element degrees of freedom numbers for a specific link in a specified model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>integer</em>) – link index number</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 x 12 array</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_default_link_orientation">
+<code class="sig-name descname">get_default_link_orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">index2</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_default_link_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_default_link_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the default orientation vector of the element from starting node with index1 and ending node with index2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> – index of the starting node</p></li>
+<li><p><strong>index2</strong> – index of the ending node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[v_x, v_y, v_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_default_static_edof">
+<code class="sig-name descname">get_default_static_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">id2</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_default_static_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_default_static_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the default element degrees of freedom for a specific element defined with starting and
+ending node indices of a specified model. Default means that all degrees of freedom are locked
+(stiff connections).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id1</strong> – index of starting node</p></li>
+<li><p><strong>id2</strong> – index of ending node</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>integer list [ux1, uy1, uz1, phix1, … , uz2, phix2, phiy2, phiz2]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_dof">
+<code class="sig-name descname">get_dof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_dof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_dof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dof values of a specified node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – of the node</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[u_x,u_y,u_z,phi_x,phi_y,phi_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_edof">
+<code class="sig-name descname">get_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all links indices and degrees of freedom from links of a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[id, ux1,uy1,uz1,phix1,phiy1,phiz1,ux2,uy2,uz2,phix2,phiy2,phiz2]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>integer matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_edof_for_simulation">
+<code class="sig-name descname">get_edof_for_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_edof_for_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_edof_for_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all links starting and ending nodes indices with degrees of freedom from links of a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[n1_id, n2_id, ux1,uy1,uz1,phix1,phiy1,phiz1,ux2,uy2,uz2,phix2,phiy2,phiz2]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>integer matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_grid_settings">
+<code class="sig-name descname">get_grid_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_grid_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_grid_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets latest grid settings from table VisualizerSettings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of params / None if table is empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_joints">
+<code class="sig-name descname">get_joints</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_joints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_joints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get joints locations for a specified model.
+Those are nodes coordinates + v. v is the direction of links from joints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[x,y,z]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_lineloads_for_plotting">
+<code class="sig-name descname">get_lineloads_for_plotting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_lineloads_for_plotting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_lineloads_for_plotting" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Gets lineloads index with starting and ending node coordinates</dt><dd><p>and lineload forces from a specified model for plotting.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[link_id, x1,y1,z1,x2,y2,z2, qx,qy,qz,qw]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_direction">
+<code class="sig-name descname">get_link_direction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">index2</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the normalized direction of the Link (local x-axis). Link is specified by starting and
+ending node indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> – index of the starting node</p></li>
+<li><p><strong>index2</strong> – index of the ending node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[n_x, n_y, n_z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_length">
+<code class="sig-name descname">get_link_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the length of a specified link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – index of the link</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_nodes">
+<code class="sig-name descname">get_link_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets links starting and ending nodes indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>link_id</strong> (<em>integer</em>) – link id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[n1_id, n2_id]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_orientation">
+<code class="sig-name descname">get_link_orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets all local z-axes orientation information - plane normal vector (x axes) and v vector components
+(orientation definition vector for z axes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>integer</em>) – link index number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x,y,z vectors for local system of the link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_orientations">
+<code class="sig-name descname">get_link_orientations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_orientations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_orientations" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets all local z-axes orientation information - plane normal vector (x axes) and v vector components
+(orientation definition vector for z axes) - from a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>x,y,z vectors for local system of all links</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_link_with_id">
+<code class="sig-name descname">get_link_with_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_link_with_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_link_with_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets link data with a certain id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>link_id</strong> (<em>integer</em>) – link id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>link data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_links">
+<code class="sig-name descname">get_links</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets Links information for visualization purposes as line segment information for a specified model.
+See PyVista line segments definition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array for line segments with the form [x, y, z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_links_ending_points">
+<code class="sig-name descname">get_links_ending_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_links_ending_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_links_ending_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets x,y,z coordinates of all links ending points of a specified model.
+This could be used to plot local coordinate systems of the links.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[x,y,z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_links_middle_points">
+<code class="sig-name descname">get_links_middle_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_links_middle_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_links_middle_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets x,y,z coordinates of all links middle points of a specified model.
+This could be used to plot local coordinate systems of the links</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[x,y,z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_links_profiles">
+<code class="sig-name descname">get_links_profiles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_links_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_links_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets profile data from links of a specified model provided their profile id is set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[E, G, A, Iy, Iz, Kv]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_links_starting_points">
+<code class="sig-name descname">get_links_starting_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_links_starting_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_links_starting_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets x,y,z coordinates of all links start points of a specified model.
+This is being used to plot local coordinate systems of links.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[x,y,z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_loads">
+<code class="sig-name descname">get_loads</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_loads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the nodes forces from Load table of a specified model.
+node_id are sub indices of nodes in the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>following data columns: [id, node_id, x, y, z, m_x, m_y, m_z]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_loads_for_plotting">
+<code class="sig-name descname">get_loads_for_plotting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_loads_for_plotting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_loads_for_plotting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a 9 column matrix containing (x,y,z,u,v,w, m_x,m_y,m_z) which are the positions and components of the
+forces applied to nodes of a specified model.
+This method is necessary for plotting the node loads accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>numpy array with [x,y,z,u,v,w, m_x,m_y,m_z]/ None: if empty loads table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_loads_for_simulation">
+<code class="sig-name descname">get_loads_for_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_loads_for_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_loads_for_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the nodes forces from Load table of a specified model.
+node_id are nodes sub indices in the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>following data columns: [node_id, x, y, z, m_x, m_y, m_z]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_lost_dependencies">
+<code class="sig-name descname">get_lost_dependencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_lost_dependencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_lost_dependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method gets nodes indexes from Links and node loads that are not connected anymore.
+Warning: Using this method means you could have lost data and generated a delete anomaly in the database
+TODO: use this method in integrity check</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_models">
+<code class="sig-name descname">get_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all models as pandas dataframe</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_node">
+<code class="sig-name descname">get_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the nodes coordinates (x,y,z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – node id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None if node not found / numpy array with [x,y,z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_nodes">
+<code class="sig-name descname">get_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all nodes coordinates from a specific model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array for each node with the form [x, y, z]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_nodes_indexes_with_bc">
+<code class="sig-name descname">get_nodes_indexes_with_bc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_nodes_indexes_with_bc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_nodes_indexes_with_bc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Gets all nodes id numbers which have boundary conditions defined on them for a specified model.</dt><dd><p>Similar to get_all_dof but delivers nodes indices instead of all nodes information.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>nodes indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_profiles">
+<code class="sig-name descname">get_profiles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the profiles which are element properties [E G A I_y I_z K_z].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_results_view_settings">
+<code class="sig-name descname">get_results_view_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_results_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_results_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all results view settings from table VisualizerSettings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>results view map</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_static_edof">
+<code class="sig-name descname">get_static_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_static_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_static_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets edof matrix for all elements from a specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>n x 12 integer matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer[][]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.get_view_settings">
+<code class="sig-name descname">get_view_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.get_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.get_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all view settings from table VisualizerSettings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of params / None if table is empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.has_links">
+<code class="sig-name descname">has_links</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.has_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.has_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there is any links in a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.has_nodes">
+<code class="sig-name descname">has_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.has_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.has_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there is any nodes in a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True/False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.import_text">
+<code class="sig-name descname">import_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">m_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.import_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.import_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import geometry files to the database. If model number is given, geometry will be appended to the existing
+model. If model name was given geometry will be added to a new model.
+If model number is given and overwrite is True geometry in the specified model will be overwritten.
+View specified geometry syntax in documentation.
+Keywords: <a href="#id1"><span class="problematic" id="id2">*</span></a>node, <a href="#id3"><span class="problematic" id="id4">*</span></a>element, <a href="#id5"><span class="problematic" id="id6">*</span></a>profile, <a href="#id7"><span class="problematic" id="id8">*</span></a>load, <a href="#id9"><span class="problematic" id="id10">*</span></a>lineload, <a href="#id11"><span class="problematic" id="id12">*</span></a>joint
+Tables will be checked for integrity after import.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – of the text file to be imported</p></li>
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>m_name</strong> (<em>string</em>) – model name</p></li>
+<li><p><strong>overwrite</strong> (<em>boolean</em>) – overwrite geometry if valid model number was given</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.is_settings_preset">
+<code class="sig-name descname">is_settings_preset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.is_settings_preset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.is_settings_preset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if settings table has already been changed or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True / False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.make_dummy_file">
+<code class="sig-name descname">make_dummy_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ram</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.make_dummy_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.make_dummy_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new sqlite database according to given settings. This method contains CREATE queries for database
+tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – name of the database file. Default name is a string containing a timestamp as follows:
+Database_dd-mm-yyyy_hh-mm-ss</p></li>
+<li><p><strong>ram</strong> – default:False. if True the database wil be loaded into the ram and not saved to hard drive</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.make_edof">
+<code class="sig-name descname">make_edof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.make_edof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.make_edof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create element degrees of freedom numbers for a specified model
+This method is used when static topology is initiated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_lineload">
+<code class="sig-name descname">remove_lineload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_lineload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_lineload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specified lineload.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>integer</em>) – lineload index number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_link">
+<code class="sig-name descname">remove_link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops a link from the links table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – index of the link</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: if link has been successfully droppend, False: otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_load">
+<code class="sig-name descname">remove_load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove load with certain index number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>integer</em>) – load index.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_loads_with_node">
+<code class="sig-name descname">remove_loads_with_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_loads_with_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_loads_with_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove all forces and moments in relation with the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – of the node</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_node">
+<code class="sig-name descname">remove_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops a node from the nodes table.
+<strong>Warning</strong>: Dependent links and loads entries will be deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – index of the node</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: if node has been successfully dropped, False: otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.remove_profile">
+<code class="sig-name descname">remove_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.remove_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.remove_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the profile with index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – of the profile</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: successful / False: not successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.set_grid_settings">
+<code class="sig-name descname">set_grid_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.set_grid_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.set_grid_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all grid settings to the table VisualizerSettings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>doubles list</em>) – (grid_x1origin,grid_x2origin, grid_x3origin, grid_n1, grid_n2, grid_n3, grid_xtick, grid_ytick)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.set_results_view_settings">
+<code class="sig-name descname">set_results_view_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mapping</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.set_results_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.set_results_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all results view settings to the table VisualizerSettings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – dictionary to map each parameter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.database.database.Database.set_view_settings">
+<code class="sig-name descname">set_view_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/database/database.html#Database.set_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.database.database.Database.set_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all view settings to the table VisualizerSettings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>doubles list</em>) – list with 1 numbers following order (view_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beamon.ui.main">
+<span id="ui-main"></span><h2>UI.Main<a class="headerlink" href="#module-beamon.ui.main" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="beamon.ui.main.Main">
+<em class="property">class </em><code class="sig-prename descclassname">beamon.ui.main.</code><code class="sig-name descname">Main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">m_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">testmode</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ram</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">database_path</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main User Interface class for backend implementation.
+Note:this class calls the compiled main_ui.py which contains the GUI of Beamon</p>
+<dl class="py method">
+<dt id="beamon.ui.main.Main.about">
+<code class="sig-name descname">about</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.about" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens info page with user manual in the dock widget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.append_to_log">
+<code class="sig-name descname">append_to_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.append_to_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.append_to_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends a given message to log and timestampes it with current datetime</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> – string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.cascadeView">
+<code class="sig-name descname">cascadeView</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.cascadeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.cascadeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes Subwindows order to CascadeView</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>controls closing signal
+:param event: the closing event</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.display_message">
+<code class="sig-name descname">display_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span></em>, <em class="sig-param"><span class="n">time</span><span class="o">=</span><span class="default_value">5000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.display_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.display_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a message in status bar for a duration (default 5 seconds)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>string</em>) – Message to display</p></li>
+<li><p><strong>time</strong> (<em>integer</em>) – milliseconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.export_csv">
+<code class="sig-name descname">export_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataframe</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.export_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.export_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open user interface to export specific Dataset to a CSV file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>DataFrame</em>) – Dataset as Pandas DataFrame to be exported</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.export_excel">
+<code class="sig-name descname">export_excel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataframe</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.export_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.export_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open user interface to export specific Dataset to n Excel file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataframe</strong> (<em>DataFrame</em>) – Dataset as Pandas DataFrame to be exported</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets triggered when a key is pressed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.onCustomContextMenuRequested">
+<code class="sig-name descname">onCustomContextMenuRequested</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.onCustomContextMenuRequested"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.onCustomContextMenuRequested" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context Menu callback method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>QPosition</em>) – position of the context menu event that the widget receives</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.open_database">
+<code class="sig-name descname">open_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.open_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.open_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a database in path. Opens a new empty Database if overwrite is true. if File do not exist and overwrite
+is false an exception will be thrown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – path to database file</p></li>
+<li><p><strong>overwrite</strong> (<em>boolean</em>) – True/False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.open_database_diag">
+<code class="sig-name descname">open_database_diag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.open_database_diag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.open_database_diag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a user interface to load a database file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.open_log">
+<code class="sig-name descname">open_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.open_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.open_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a Dialog with log history inside</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.save_database_as_diag">
+<code class="sig-name descname">save_database_as_diag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.save_database_as_diag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.save_database_as_diag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the database to a database file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.startBeamSize">
+<code class="sig-name descname">startBeamSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.startBeamSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.startBeamSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>starts the application BeamSize as a subwindow</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.startQswHelp">
+<code class="sig-name descname">startQswHelp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.startQswHelp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.startQswHelp" title="Permalink to this definition">¶</a></dt>
+<dd><p>starts a web browser from QtWebEngineView and displays the readme page</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.startVisualizer">
+<code class="sig-name descname">startVisualizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.startVisualizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.startVisualizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>starts the application for visualising models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m_id</strong> (<em>integer</em>) – model number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.start_visualizer_manual">
+<code class="sig-name descname">start_visualizer_manual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.start_visualizer_manual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.start_visualizer_manual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts visualizer-scene keybindings help table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.main.Main.tileView">
+<code class="sig-name descname">tileView</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/main.html#Main.tileView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.main.Main.tileView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes Subwindows order to TileView</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beamon.ui.callVisualizer">
+<span id="ui-visualizer"></span><h2>UI.Visualizer<a class="headerlink" href="#module-beamon.ui.callVisualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm">
+<em class="property">class </em><code class="sig-prename descclassname">beamon.ui.callVisualizer.</code><code class="sig-name descname">VisualizerMainForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent_ui</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>a class calls the compiled visualiser.py file and contains the backend functionality of the GUI</p>
+<p>Author: Maher Albezem (maher.albezem[at]sla.rwth-aachen.de)
+This class calls the compiled GUI visualiser.
+The GUI is compiled with pyuic5 from <a href="#id13"><span class="problematic" id="id14">*</span></a>.ui to <a href="#id15"><span class="problematic" id="id16">*</span></a>.py extension
+This class also contains all the back-end functionality of visualiser.</p>
+<p>Warning: it is important to set the parent class as QWidget only because of QMdiArea functionality
+in the referencing class</p>
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.change_joints">
+<code class="sig-name descname">change_joints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.change_joints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.change_joints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the joints table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.change_links">
+<code class="sig-name descname">change_links</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.change_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.change_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the links table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.change_nodes">
+<code class="sig-name descname">change_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.change_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.change_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the nodes table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QCloseEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.context_menu_requested">
+<code class="sig-name descname">context_menu_requested</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.context_menu_requested"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.context_menu_requested" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context menu for visualizer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.display_log">
+<code class="sig-name descname">display_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.display_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.display_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays a log message on the status bar of the Main window and saves the message to the log
+&#64;param message: String</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.init_settings">
+<code class="sig-name descname">init_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.init_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.init_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the settings from dataset and adjust visualization settings accordingly
+If ther is no predefined settings default settings will be loaded</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.keyPressEvent">
+<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QKeyEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.reset_inputfields">
+<code class="sig-name descname">reset_inputfields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.reset_inputfields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.reset_inputfields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all buttons in the GUI to normal state again</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.start_grid_settings">
+<code class="sig-name descname">start_grid_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.start_grid_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.start_grid_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call grid settings ui and block the main ui</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.start_results_view_settings">
+<code class="sig-name descname">start_results_view_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.start_results_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.start_results_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call results view settings ui and block the main ui</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.start_view_settings">
+<code class="sig-name descname">start_view_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.start_view_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.start_view_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call view settings ui and block the main ui</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.table_state_changed">
+<code class="sig-name descname">table_state_changed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.table_state_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.table_state_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This gets called when dock widget gets toggled
+:param state: visibility state of the dock widget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.callVisualizer.VisualizerMainForm.treeClicked">
+<code class="sig-name descname">treeClicked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/callVisualizer.html#VisualizerMainForm.treeClicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.callVisualizer.VisualizerMainForm.treeClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets called when an item in the tree is clicked or entered
+:param index: QModelItem</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beamon.ui.pyvista_widget">
+<span id="ui-visualization"></span><h2>UI.Visualization<a class="headerlink" href="#module-beamon.ui.pyvista_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget">
+<em class="property">class </em><code class="sig-prename descclassname">beamon.ui.pyvista_widget.</code><code class="sig-name descname">PyVistaWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.init_plot">
+<code class="sig-name descname">init_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.init_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.init_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates the plots vital objects like the grid and the coordinate system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.init_settings">
+<code class="sig-name descname">init_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.init_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.init_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>init default settings and states</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_boundary_conditions">
+<code class="sig-name descname">update_boundary_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_boundary_conditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_boundary_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>scatter two blue cones for momentum and orange blue cones for translation on each node with bc</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_displaced_nodes">
+<code class="sig-name descname">update_displaced_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_displaced_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_displaced_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates displaced nodes from displaced nodes coordinates in database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_element_displacements">
+<code class="sig-name descname">update_element_displacements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_element_displacements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_element_displacements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates elements displacements</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_elements">
+<code class="sig-name descname">update_elements</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">opacity</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_elements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates elements according to new nodes coordinates from database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_elements_orientation">
+<code class="sig-name descname">update_elements_orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_elements_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_elements_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates elements local coordinate systems according to element orientation from database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_global">
+<code class="sig-name descname">update_global</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">reset_view</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_global"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Central update for all visualization objects based on their hierarchic dependencies and their data sets.
+&#64;see machine state diagram ‘user interaction’ in documentation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_id</strong> (<em>integer</em>) – model number</p></li>
+<li><p><strong>reset_view</strong> (<em>boolean</em>) – reset camera view</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_grid">
+<code class="sig-name descname">update_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update grid data according to grid settings such as vector normal, size, tick and type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_labels">
+<code class="sig-name descname">update_labels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reset_view</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span></em>, <em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates label positions if they should be shown</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_nodes">
+<code class="sig-name descname">update_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates nodes coordinates from database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_section_forces">
+<code class="sig-name descname">update_section_forces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_section_forces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_section_forces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates elements section forces</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="beamon.ui.pyvista_widget.PyVistaWidget.update_support_forces">
+<code class="sig-name descname">update_support_forces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/beamon/ui/pyvista_widget.html#PyVistaWidget.update_support_forces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#beamon.ui.pyvista_widget.PyVistaWidget.update_support_forces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates nodes support forces</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.core">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.simulation">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.database.database">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.ui.main">UI.Main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.ui.callVisualizer">UI.Visualizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-beamon.ui.pyvista_widget">UI.Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="theory.html" title="previous chapter">Theory</a></li>
+      <li>Next: <a href="contrib.html" title="next chapter">Contributing</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

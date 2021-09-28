@@ -1,0 +1,71 @@
+How TOs
+*******
+
+This chapter introduces some best practices and tutorials on how to implement some necessary features in the project.
+
+How To Build This Documentation
+================================
+
+Steps to build sphinx documentation:
+
+#. Install perl
+#. Install MikTex and latexmk package in MikTex
+#. Install sphinx package in your Python environment
+
+On your environment command line run following commands from project root directory.
+
+Latex Build
+-----------
+
+.. code-block::
+
+    python -m sphinx -b latex docs\source docs\build\latex
+
+to build the latex version of the documentation. And then run
+
+.. code-block::
+
+    cd docs\build\latex && make
+
+to compile the latex documentation.
+
+HTML Build
+-----------
+
+.. code-block::
+
+    python -m sphinx -b html docs\source docs\build\html
+
+to build the html version of the documentation.
+
+Epub Build
+-----------
+
+.. code-block::
+
+    python -m sphinx -b epub docs\source docs\build\epub
+
+PDF Build
+-----------
+
+Rhino doesn't support latex math. That's why LATEX Build is better.
+
+.. code-block::
+
+    sphinx-build -b rinoh docs\source docs\build\pdf
+
+Build All
+----------
+
+To build all documentation versions run the following command on your root directory
+
+.. code-block::
+
+    make build_doc
+
+How to Style QTableView Cells
+=============================
+
+https://www.learnpyqt.com/tutorials/qtableview-modelviews-numpy-pandas/
+
+

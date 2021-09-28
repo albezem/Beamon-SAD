@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>beamon.simulation &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for beamon.simulation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
+
+<span class="kn">import</span> <span class="nn">beamon.core</span> <span class="k">as</span> <span class="nn">beamcalc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">calfem.core</span> <span class="k">as</span> <span class="nn">cal</span>
+<span class="kn">from</span> <span class="nn">beamon.simullation_error</span> <span class="kn">import</span> <span class="n">SimulationError</span>
+<span class="kn">from</span> <span class="nn">beamon.database.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+
+<div class="viewcode-block" id="Simulation"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation">[docs]</a><span class="k">class</span> <span class="nc">Simulation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Main simulation module. Uses core and database to do calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span><span class="p">:</span> <span class="n">Database</span>
+    <span class="n">Tg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>  <span class="c1"># inverse global transformation matrix</span>
+
+<div class="viewcode-block" id="Simulation.local_element_displacements"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.local_element_displacements">[docs]</a>    <span class="k">def</span> <span class="nf">local_element_displacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Simulation results for local element displacements as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;xi&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39;, &#39;phi&#39;]</span>
+
+<span class="sd">        :return: local element displacements matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">local_element_displacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.global_element_displacements"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.global_element_displacements">[docs]</a>    <span class="k">def</span> <span class="nf">global_element_displacements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Simulation results for global element displacements for translation as pandas</span>
+<span class="sd">        Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39;]</span>
+
+<span class="sd">        :return: local element displacements matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_element_displacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.element_stats"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.element_stats">[docs]</a>    <span class="k">def</span> <span class="nf">element_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Statistics about Simulation results for elements as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;Min N&#39;, &#39;Max N&#39;, &#39;Min Vy&#39;, &#39;Max Vy&#39;, &#39;Min Vz&#39;, &#39;Max Vz&#39;, &#39;Min T&#39;, &#39;Max T&#39;, &#39;Min My&#39;, &#39;Max My&#39;,</span>
+<span class="sd">        &#39;Min Mz&#39;, &#39;Max Mz&#39;]</span>
+
+<span class="sd">        :return: Simulation results statistics matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">element_stats</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Simulation.local_element_section_forces"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.local_element_section_forces">[docs]</a>    <span class="k">def</span> <span class="nf">local_element_section_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Simulation results for local element section forces as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;xi&#39;, &#39;N&#39;, &#39;Vy&#39;, &#39;Vz&#39;, &#39;T&#39;, &#39;My&#39;,&#39;Mz&#39;]</span>
+
+<span class="sd">        :return: local element section forces matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">local_element_section_forces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.global_element_evaluation_points"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.global_element_evaluation_points">[docs]</a>    <span class="k">def</span> <span class="nf">global_element_evaluation_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns simulation evaluation point coordinates in global coordinate system</span>
+<span class="sd">        as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;]</span>
+
+<span class="sd">        :return: global element evaluation points matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_element_evaluation_points</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.global_element_displaced_points"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.global_element_displaced_points">[docs]</a>    <span class="k">def</span> <span class="nf">global_element_displaced_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns displaced points coordinates in global coordinate system for each evaluation point on elements</span>
+<span class="sd">        as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Element Nr.&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;]</span>
+
+<span class="sd">        :return: global element evaluation points matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_element_displaced_points</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.nodes_results"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.nodes_results">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Simulation results for global nodes displacements (ax,ay,az,aphi_x,aphi_y,a_phiz) with nodes coordinates</span>
+<span class="sd">        (x,y,z) and normal forces (Qx,Qy,Qz,Qphi_x,Qphi_y,Qphi_z) as pandas Dataframe with following columns:</span>
+<span class="sd">        [&#39;Node Nr.&#39;, &#39;ax&#39;, &#39;ay&#39;, &#39;az&#39;, &#39;aphi_x&#39;, &#39;aphi_y&#39;, &#39;aphi_z&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;Qx&#39;, &#39;Qy&#39;, &#39;Qz&#39;, &#39;Qphi_x&#39;,</span>
+<span class="sd">        &#39;Qphi_y&#39;, &#39;Qphi_z&#39;]</span>
+
+<span class="sd">        :return: local element displacements matrix</span>
+<span class="sd">        :rtype: pandas Dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">nodes_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="n">Database</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
+
+<div class="viewcode-block" id="Simulation.simulate"><a class="viewcode-back" href="../../api.html#beamon.simulation.Simulation.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the simulation according to data in the database.</span>
+
+<span class="sd">        :param m_id: model number</span>
+<span class="sd">        :type m_id: integer</span>
+<span class="sd">        :param n: number of evaluation points</span>
+<span class="sd">        :type n: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># nodes coordinates</span>
+        <span class="n">nodes_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="c1"># get topology matrix</span>
+        <span class="n">origin_Edof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_edof_for_simulation</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">origin_Edof</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SimulationError</span><span class="p">(</span><span class="s2">&quot;No topology defined (see if elements where defined)&quot;</span><span class="p">)</span>
+        <span class="c1"># create nodes dof numbers matrix</span>
+        <span class="n">Dof</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">createdofs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes_data</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="c1"># get boundary conditions</span>
+        <span class="n">bc</span> <span class="o">=</span> <span class="n">beamcalc</span><span class="o">.</span><span class="n">assemble_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_bc</span><span class="p">(</span><span class="n">m_id</span><span class="p">),</span> <span class="n">Dof</span><span class="p">)</span>
+        <span class="c1"># fill edof matrix with new dof numbers</span>
+        <span class="n">Edof</span> <span class="o">=</span> <span class="n">beamcalc</span><span class="o">.</span><span class="n">fill_edof</span><span class="p">(</span><span class="n">origin_Edof</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="c1"># make joints. Creates new topology with cloned nodes (with new dof) for joints</span>
+        <span class="c1"># Edof, nodes, Dof, bc, joints_mapping = beamcalc.make_joints(origin_Edof.copy(), nodes_data, origin_Dof, 6, bc)</span>
+
+        <span class="c1"># extract element coordinates</span>
+        <span class="n">static_edof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_static_edof</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="n">Ex</span><span class="p">,</span> <span class="n">Ey</span><span class="p">,</span> <span class="n">Ez</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">coordxtr</span><span class="p">(</span><span class="n">static_edof</span><span class="p">,</span> <span class="n">nodes_data</span><span class="p">,</span> <span class="n">Dof</span><span class="p">)</span>
+        <span class="c1"># dof count</span>
+        <span class="n">number_of_dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">origin_Edof</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">origin_Edof</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">number_of_dofs</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bc</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SimulationError</span><span class="p">(</span><span class="s2">&quot;Boundary conditions not connected to structure&quot;</span><span class="p">)</span>
+        <span class="c1"># preallocate stiffness matrix</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_of_dofs</span><span class="p">,</span> <span class="n">number_of_dofs</span><span class="p">])</span>
+        <span class="c1"># get global loads vector from nodes loads</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">beamcalc</span><span class="o">.</span><span class="n">assemble_global_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_loads_for_simulation</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">Dof</span><span class="p">,</span> <span class="n">number_of_dofs</span><span class="p">)</span>
+        <span class="c1"># get element local loads vector from element loads</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">beamcalc</span><span class="o">.</span><span class="n">assemble_element_loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_all_lineloads_for_simulation</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">Edof</span><span class="p">)</span>
+        <span class="c1"># get elements properties</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_links_profiles</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="c1"># raise error if some elements has no profiles defined</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">origin_Edof</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SimulationError</span><span class="p">(</span><span class="s2">&quot;Some elements have no profiles defined&quot;</span><span class="p">)</span>
+        <span class="c1"># get elements orientations (z axis is important for calculation others for local to global transformation)</span>
+        <span class="n">eo_x</span><span class="p">,</span> <span class="n">eo_y</span><span class="p">,</span> <span class="n">eo_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_link_orientations</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+
+        <span class="c1"># Simulation part</span>
+        <span class="c1">#  calculate element stiffness matrices and assemble them in global stiffness matrix</span>
+        <span class="k">for</span> <span class="n">elx</span><span class="p">,</span> <span class="n">ely</span><span class="p">,</span> <span class="n">elz</span><span class="p">,</span> <span class="n">eltopo</span><span class="p">,</span> <span class="n">elo</span><span class="p">,</span> <span class="n">elp</span><span class="p">,</span> <span class="n">elq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Ex</span><span class="p">,</span> <span class="n">Ey</span><span class="p">,</span> <span class="n">Ez</span><span class="p">,</span> <span class="n">Edof</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">eo_z</span><span class="p">,</span> <span class="n">ep</span><span class="p">,</span> <span class="n">eq</span><span class="p">):</span>
+            <span class="n">Ke</span><span class="p">,</span> <span class="n">fe</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">beam3e</span><span class="p">(</span><span class="n">elx</span><span class="p">,</span> <span class="n">ely</span><span class="p">,</span> <span class="n">elz</span><span class="p">,</span> <span class="n">elo</span><span class="p">,</span> <span class="n">elp</span><span class="p">,</span> <span class="n">elq</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="n">K</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">assem</span><span class="p">(</span><span class="n">eltopo</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">Ke</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">fe</span><span class="p">)</span>
+        <span class="c1">#  solve system of equations according to boundary conditions</span>
+        <span class="c1">#  calculating nodes displacement and support forces</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">solveq</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">bc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SimulationError</span><span class="p">(</span><span class="s2">&quot;Singular system of equations&quot;</span><span class="p">)</span>
+        <span class="c1"># assembling them into a dataframe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">beamcalc</span><span class="o">.</span><span class="n">assemble_nodes_results</span><span class="p">(</span><span class="n">origin_Edof</span><span class="p">,</span> <span class="n">nodes_data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_displaced_nodes</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">])</span>
+        <span class="c1"># extract element displacements from nodes displacements without joints dof results</span>
+        <span class="n">ed</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">extractEldisp</span><span class="p">(</span><span class="n">Edof</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">a</span><span class="p">)</span>
+
+        <span class="c1"># for local element displacements and inner forces</span>
+        <span class="n">e_disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">e_sec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="c1"># for global elements evaluation points</span>
+        <span class="n">g_e_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># [e_id, x, y, z]</span>
+        <span class="c1"># for global displaced elements points</span>
+        <span class="n">g_e_disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># [e_id, x, y, z]</span>
+        <span class="c1"># for statistics for each element</span>
+        <span class="n">e_stats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+
+        <span class="n">e_id</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># element number</span>
+        <span class="k">for</span> <span class="n">elx</span><span class="p">,</span> <span class="n">ely</span><span class="p">,</span> <span class="n">elz</span><span class="p">,</span> <span class="n">elo_x</span><span class="p">,</span> <span class="n">elo_y</span><span class="p">,</span> <span class="n">elo_z</span><span class="p">,</span> <span class="n">elp</span><span class="p">,</span> <span class="n">eld</span><span class="p">,</span> <span class="n">elq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Ex</span><span class="p">,</span> <span class="n">Ey</span><span class="p">,</span> <span class="n">Ez</span><span class="p">,</span> <span class="n">eo_x</span><span class="p">,</span> <span class="n">eo_y</span><span class="p">,</span> <span class="n">eo_z</span><span class="p">,</span> <span class="n">ep</span><span class="p">,</span> <span class="n">ed</span><span class="p">,</span> <span class="n">eq</span><span class="p">):</span>
+            <span class="c1"># do calculation</span>
+            <span class="n">es</span><span class="p">,</span> <span class="n">edi</span><span class="p">,</span> <span class="n">eci</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">beam3s</span><span class="p">(</span><span class="n">elx</span><span class="p">,</span> <span class="n">ely</span><span class="p">,</span> <span class="n">elz</span><span class="p">,</span> <span class="n">elo_z</span><span class="p">,</span> <span class="n">elp</span><span class="p">,</span> <span class="n">eld</span><span class="p">,</span> <span class="n">elq</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">n</span><span class="p">)</span>
+            <span class="c1"># save output</span>
+            <span class="n">e_disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">e_disp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e_id</span><span class="p">),</span> <span class="n">eci</span><span class="p">,</span> <span class="n">edi</span><span class="p">]))</span>
+            <span class="n">e_sec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">e_sec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e_id</span><span class="p">),</span> <span class="n">eci</span><span class="p">,</span> <span class="n">es</span><span class="p">]))</span>
+            <span class="c1"># extract new statistics information form results</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e_id</span><span class="p">,</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]),</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]),</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]),</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">es</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]),</span>
+                             <span class="p">])</span>
+            <span class="n">e_stats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">e_stats</span><span class="p">,</span> <span class="n">temp</span><span class="p">))</span>
+
+            <span class="c1"># transform local points to global points:</span>
+
+            <span class="c1"># calculate new global evaluation points (p1 + eci * elo_x)</span>
+            <span class="n">g_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">eci</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eci</span><span class="p">:</span>
+                <span class="n">g_points</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">e_id</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">elx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ely</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">elz</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">elo_x</span><span class="p">))</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">g_e_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">g_e_points</span><span class="p">,</span> <span class="n">g_points</span><span class="p">))</span>
+
+            <span class="c1"># transform local displacements to global displacements</span>
+            <span class="n">g_displacments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">eci</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">Tl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">elo_x</span><span class="p">,</span> <span class="n">elo_y</span><span class="p">,</span> <span class="n">elo_z</span><span class="p">]</span>  <span class="c1"># local transformation matrix</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Tg</span><span class="p">,</span> <span class="n">Tl</span><span class="p">)</span>  <span class="c1"># total transformation matrix</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">eci</span><span class="p">:</span>
+                <span class="n">local_disp</span> <span class="o">=</span> <span class="n">edi</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+                <span class="n">global_disp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">local_disp</span><span class="p">)</span>
+                <span class="c1"># local_point = np.array([x[0], 0, 0]) + edi[id, :3]</span>
+                <span class="c1"># global_point = T.dot(local_point) + np.array([elx[0], ely[0], elz[0]])</span>
+                <span class="c1"># g_displacments[id] = np.hstack((e_id, global_point))</span>
+                <span class="n">g_displacments</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">e_id</span><span class="p">,</span> <span class="n">global_disp</span><span class="p">))</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">g_e_disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">g_e_disp</span><span class="p">,</span> <span class="n">g_displacments</span><span class="p">))</span>
+
+            <span class="n">e_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">local_element_displacements</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">e_disp</span><span class="p">,</span>
+                                                                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;xi&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">local_element_section_forces</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">e_sec</span><span class="p">,</span>
+                                                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;xi&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Qy&#39;</span><span class="p">,</span> <span class="s1">&#39;Qz&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span>
+                                                                           <span class="s1">&#39;My&#39;</span><span class="p">,</span>
+                                                                           <span class="s1">&#39;Mz&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">element_stats</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">e_stats</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element Nr.&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min N&#39;</span><span class="p">,</span> <span class="s1">&#39;Max N&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min Vy&#39;</span><span class="p">,</span> <span class="s1">&#39;Max Vy&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min Vz&#39;</span><span class="p">,</span> <span class="s1">&#39;Max Vz&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min T&#39;</span><span class="p">,</span> <span class="s1">&#39;Max T&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min My&#39;</span><span class="p">,</span> <span class="s1">&#39;Max My&#39;</span><span class="p">,</span>
+                                                                     <span class="s1">&#39;Min Mz&#39;</span><span class="p">,</span> <span class="s1">&#39;Max Mz&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_element_evaluation_points</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">g_e_points</span><span class="p">,</span>
+                                                                      <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">global_element_displacements</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">g_e_disp</span><span class="p">,</span>
+                                                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element Nr.&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">])</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

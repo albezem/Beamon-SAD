@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>beamon.ui.main &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for beamon.ui.main</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Maher Albezem, maher.albezem@sla.rwth-aachen.de</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtGui</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QIcon</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QMdiArea</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QFileDialog</span><span class="p">,</span> <span class="n">QMdiSubWindow</span>
+
+<span class="c1"># import ui files</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.main_ui</span> <span class="kn">import</span> <span class="n">Ui_MainWindow</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.notification</span> <span class="kn">import</span> <span class="n">Notification</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.callTable</span> <span class="kn">import</span> <span class="n">TableMainForm</span> <span class="k">as</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.callIntro</span> <span class="kn">import</span> <span class="n">IntroMainForm</span> <span class="k">as</span> <span class="n">Intro</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.call_load_project</span> <span class="kn">import</span> <span class="n">LoadProjectMainForm</span> <span class="k">as</span> <span class="n">ProjectLoader</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.callLogDialog</span> <span class="kn">import</span> <span class="n">LogDialogForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.expansions.callBeamSize2</span> <span class="kn">import</span> <span class="n">BeamSizeMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.callVisualizer</span> <span class="kn">import</span> <span class="n">VisualizerMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.callVisualizationManual</span> <span class="kn">import</span> <span class="n">VisualizationManual</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.call_project_browser</span> <span class="kn">import</span> <span class="n">ProjectBrowserMainForm</span> <span class="k">as</span> <span class="n">ProjectBrowser</span>
+
+<span class="c1"># import core specific stuff</span>
+<span class="kn">from</span> <span class="nn">beamon.database.database</span> <span class="kn">import</span> <span class="n">Database</span>
+
+
+<div class="viewcode-block" id="Main"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main">[docs]</a><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main User Interface class for backend implementation.</span>
+<span class="sd">    Note:this class calls the compiled main_ui.py which contains the GUI of Beamon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">database</span><span class="p">:</span> <span class="n">Database</span>
+    <span class="n">project_browser</span><span class="p">:</span> <span class="n">ProjectBrowser</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">vis_manual</span><span class="p">:</span> <span class="n">VisualizationManual</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">visualizers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">toolbar_actions</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">testmode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ram</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">database_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Contructor for Main ui window</span>
+
+<span class="sd">        :param input: (optional) path to input txt file</span>
+<span class="sd">        :type input: string</span>
+<span class="sd">        :param m_name: model name</span>
+<span class="sd">        :type m_name: string</span>
+<span class="sd">        :param testmode: (optional) True: lunch in Testmode without starter wizard and confirmation on close</span>
+<span class="sd">        :type testmode: True/False</span>
+<span class="sd">        :param ram: (optional) True: lunch database in ram storage.</span>
+<span class="sd">        :type ram: True/False</span>
+<span class="sd">        :param database_path: (optional) path to database to load</span>
+<span class="sd">        :type database_path: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_MainWindow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># confirmation on close event</span>
+        <span class="k">if</span> <span class="n">testmode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_exit</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_exit</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ram</span> <span class="o">=</span> <span class="n">ram</span>
+
+        <span class="c1"># check if input file exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">input</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;WARNING: input file is inaccessible&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="p">:</span> <span class="n">Notification</span> <span class="o">=</span> <span class="n">Notification</span><span class="p">()</span>
+
+        <span class="c1"># init mouse icons</span>
+        <span class="c1"># 1. Set the cursor map</span>
+        <span class="c1"># pix = QPixmap(&quot;:/mouse/mouse_add.png&quot;)</span>
+        <span class="c1"># 2. Scale textures</span>
+        <span class="c1"># pix = pix.scaled(QSize(20,20), Qt.KeepAspectRatio)</span>
+        <span class="c1"># 3. Set cursor style and cursor focus position</span>
+        <span class="c1"># self.mouse_add = QCursor(pix, 1, 1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouse_add</span> <span class="o">=</span> <span class="n">QCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CrossCursor</span><span class="p">)</span>
+        <span class="n">pix</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="s2">&quot;:/tree/mouse_delete.png&quot;</span><span class="p">)</span>
+        <span class="n">pix</span> <span class="o">=</span> <span class="n">pix</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouse_remove</span> <span class="o">=</span> <span class="n">QCursor</span><span class="p">(</span><span class="n">pix</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># change window icon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;:/tree/sla-logo2.png&#39;</span><span class="p">))</span>
+
+        <span class="c1"># maximize window</span>
+        <span class="c1"># self.setWindowState(QtCore.Qt.WindowMaximized)</span>
+
+        <span class="c1"># Manuebar connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionPLaden</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_database_diag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionPSpeichern</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_database_as_diag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionStartQuerschnittswerte</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startBeamSize</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionHilfe</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startQswHelp</span><span class="p">)</span>
+        <span class="c1"># self.ui.actionStartVisualizer.triggered.connect(self.startVisualizer)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionHelp</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_visualizer_manual</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionCascade_subwindows</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cascadeView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionTile_subwindows</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tileView</span><span class="p">)</span>
+        <span class="c1"># self.ui.action_ffnen.triggered.connect(self.read_file_diag)</span>
+        <span class="c1"># self.ui.actionspeichern.triggered.connect(self.save_file_diag)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionabout_Beamon</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">about</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionModels</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_project_browser</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionOpen_New_Project</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_project_loader</span><span class="p">)</span>
+
+        <span class="c1"># init context menu actions</span>
+        <span class="c1"># self.ui.mdiArea.setContextMenuPolicy(Qt.CustomContextMenu)</span>
+        <span class="c1"># self.ui.mdiArea.customContextMenuRequested.connect(self.onCustomContextMenuRequested)</span>
+
+        <span class="c1"># toolbar actions for switching windows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settingsAction</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Settings&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beamSize</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;BeamSize&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualizerAction</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Visualizer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">actionTriggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbtnpressed</span><span class="p">)</span>
+
+        <span class="c1"># QMdiArea options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">setOption</span><span class="p">(</span><span class="n">QMdiArea</span><span class="o">.</span><span class="n">DontMaximizeSubWindowOnActivation</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># status bar options</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;:/tree/logs.png&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">statusBar</span><span class="o">.</span><span class="n">addPermanentWidget</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_log</span><span class="p">)</span>
+
+        <span class="c1"># init error log</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># init table widget inside Dock Widget</span>
+        <span class="c1"># get the dock widget action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">toggleViewAction</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>  <span class="c1"># trigger two times</span>
+
+        <span class="c1"># setting the table widget as a dock widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">Table</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="c1"># lunch loader wizard</span>
+        <span class="k">if</span> <span class="n">testmode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_database</span><span class="p">(</span><span class="n">database_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_project_loader</span><span class="p">(</span><span class="n">on_start_up</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># start the visualiser at first</span>
+        <span class="k">if</span> <span class="n">testmode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">m_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">import_text</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">m_name</span><span class="o">=</span><span class="n">m_name</span><span class="p">)</span>
+            <span class="c1"># self.startBeamSize()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">import_text</span><span class="p">(</span>
+                <span class="n">path</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">maher</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">beamon_sad</span><span class="se">\\</span><span class="s2">tests</span><span class="se">\\</span><span class="s2">testcases</span><span class="se">\\</span><span class="s2">gate_with_joint2.txt&quot;</span><span class="p">,</span> <span class="n">m_name</span><span class="o">=</span><span class="s2">&quot;Gate&quot;</span><span class="p">)</span>
+            <span class="c1"># self.startVisualizer(1)</span>
+            <span class="c1"># self.startVisualizer(1)</span>
+            <span class="c1"># self.startVisualizer(2)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_project_browser</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Main.open_log"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.open_log">[docs]</a>    <span class="k">def</span> <span class="nf">open_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Opens a Dialog with log history inside</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">LogDialogForm</span><span class="p">()</span>
+        <span class="n">seperator</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">seperator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="n">dlg</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+        <span class="n">dlg</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;:/tree/logs.png&#39;</span><span class="p">))</span>
+        <span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Main.append_to_log"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.append_to_log">[docs]</a>    <span class="k">def</span> <span class="nf">append_to_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Appends a given message to log and timestampes it with current datetime</span>
+
+<span class="sd">        :param msg: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y_%H-%M-%S&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dt</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">: &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_message</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Main.display_message"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.display_message">[docs]</a>    <span class="k">def</span> <span class="nf">display_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display a message in status bar for a duration (default 5 seconds)</span>
+
+<span class="sd">        :param msg: Message to display</span>
+<span class="sd">        :type msg: string</span>
+<span class="sd">        :param time: milliseconds</span>
+<span class="sd">        :type time: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">statusBar</span><span class="o">.</span><span class="n">currentMessage</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span> <span class="o">+</span> <span class="n">msg</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">statusBar</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">setNotify</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Main.onCustomContextMenuRequested"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.onCustomContextMenuRequested">[docs]</a>    <span class="k">def</span> <span class="nf">onCustomContextMenuRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Context Menu callback method</span>
+
+<span class="sd">        :param pos: position of the context menu event that the widget receives</span>
+<span class="sd">        :type pos: QPosition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionTile_subwindows</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionCascade_subwindows</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Main.open_database"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.open_database">[docs]</a>    <span class="k">def</span> <span class="nf">open_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Opens a database in path. Opens a new empty Database if overwrite is true. if File do not exist and overwrite</span>
+<span class="sd">        is false an exception will be thrown.</span>
+
+<span class="sd">        :param path: path to database file</span>
+<span class="sd">        :type path: string</span>
+<span class="sd">        :param overwrite: True/False</span>
+<span class="sd">        :type overwrite: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="c1"># remove database first</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="c1"># open new database</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">ram</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ram</span><span class="p">,</span> <span class="n">path_to_save_database</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># open existing database</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">path_to_database</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ram</span><span class="p">)</span></div>
+            <span class="c1"># self.database.sort_node_indexes()</span>
+        <span class="c1"># self.setWindowTitle(self.database.name)</span>
+
+<div class="viewcode-block" id="Main.open_database_diag"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.open_database_diag">[docs]</a>    <span class="k">def</span> <span class="nf">open_database_diag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Opens a user interface to load a database file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;Database (*.db)&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;open db file&quot;</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="n">dlg</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
+        <span class="c1"># init the database</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="c1"># no file was chosen, init default empty database</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_database</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="c1"># self.database.sort_node_indexes()</span>
+                <span class="c1"># close all visualizations if open</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">subWindowList</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Visualizer&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">setActiveSubWindow</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">closeActiveSubWindow</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">startVisualizer</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="s2">&quot;project &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; loaded.&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Main.export_excel"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.export_excel">[docs]</a>    <span class="k">def</span> <span class="nf">export_excel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open user interface to export specific Dataset to n Excel file</span>
+
+<span class="sd">        :param dataframe: Dataset as Pandas DataFrame to be exported</span>
+<span class="sd">        :type dataframe: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>  <span class="c1"># get current absolute path</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;Excel (*.xlsx)&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;export table to Excel File&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="n">dlg</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dataframe</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%g</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># self.display_message(&quot;Error opening file. See log history&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Main.export_csv"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.export_csv">[docs]</a>    <span class="k">def</span> <span class="nf">export_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open user interface to export specific Dataset to a CSV file</span>
+
+<span class="sd">        :param dataframe: Dataset as Pandas DataFrame to be exported</span>
+<span class="sd">        :type dataframe: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>  <span class="c1"># get current absolute path</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;CSV (*.csv)&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;export table to CSV File&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="n">dlg</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dataframe</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%g</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># self.display_message(&quot;Error opening file. See log history&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Main.save_database_as_diag"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.save_database_as_diag">[docs]</a>    <span class="k">def</span> <span class="nf">save_database_as_diag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the database to a database file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;Database (*.db)&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Save project as&quot;</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">dlg</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="n">dlg</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="c1"># no file was chosen, init default empty database</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">ram</span><span class="p">:</span>
+                <span class="c1"># do nothing</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">backup</span><span class="p">(</span><span class="n">fname</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Main.keyPressEvent"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets triggered when a key is pressed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># toggle dockwidget</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Escape</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Main.tileView"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.tileView">[docs]</a>    <span class="k">def</span> <span class="nf">tileView</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Changes Subwindows order to TileView</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">tileSubWindows</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Main.cascadeView"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.cascadeView">[docs]</a>    <span class="k">def</span> <span class="nf">cascadeView</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Changes Subwindows order to CascadeView</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">cascadeSubWindows</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">toolbtnpressed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">window_title</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">subWindowList</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span> <span class="o">==</span> <span class="n">window_title</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">setActiveSubWindow</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create_window_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="n">m_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar_actions</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbar_actions</span><span class="p">[</span><span class="n">m_id</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">remove_window_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">removeAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbar_actions</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">m_id</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Main.closeEvent"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        controls closing signal</span>
+<span class="sd">        :param event: the closing event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_exit</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Warning</span><span class="p">)</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+            <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s2">&quot;:/tree/cancel.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Are you sure you want to close?&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Closing app&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">retval</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">:</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Main.startBeamSize"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.startBeamSize">[docs]</a>    <span class="k">def</span> <span class="nf">startBeamSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        starts the application BeamSize as a subwindow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># if singleton (call only once)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">subWindowList</span><span class="p">():</span>
+            <span class="c1"># print(item.windowTitle())</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BeamSize&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">setActiveSubWindow</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">return</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">BeamSizeMainForm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">sub_window</span> <span class="o">=</span> <span class="n">QMdiSubWindow</span><span class="p">()</span>
+        <span class="n">sub_window</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">addSubWindow</span><span class="p">(</span><span class="n">sub_window</span><span class="p">)</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s2">&quot;:/tree/material.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="c1"># w.setWindowIcon(icon)</span>
+        <span class="c1"># sub_window.setWidget(w)</span>
+
+        <span class="c1"># widget.show()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beamSize</span><span class="p">)</span>
+
+        <span class="c1"># to maximize the window on start</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setWindowState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowMaximized</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Main.startVisualizer"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.startVisualizer">[docs]</a>    <span class="k">def</span> <span class="nf">startVisualizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;starts the application for visualising models.</span>
+
+<span class="sd">        :param m_id: model number</span>
+<span class="sd">        :type m_id: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">m_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># singleton models (call only once for every model)</span>
+        <span class="n">visualizer_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">visualizer_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># key already used</span>
+            <span class="k">if</span> <span class="n">visualizer_widget</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+                <span class="c1"># activate sub window</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">subWindowList</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">()</span> <span class="o">==</span> <span class="n">model_name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">setActiveSubWindow</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                        <span class="k">return</span>
+
+        <span class="c1"># create the visualizer</span>
+        <span class="n">visualizer</span> <span class="o">=</span> <span class="n">VisualizerMainForm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">)</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s2">&quot;:/tree/loads.png&quot;</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="n">visualizer</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="n">visualizer</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="c1"># add to hash map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualizers</span><span class="p">[</span><span class="n">m_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">visualizer</span>
+        <span class="c1"># make it a subwindow</span>
+        <span class="n">sub_window</span> <span class="o">=</span> <span class="n">QMdiSubWindow</span><span class="p">()</span>
+        <span class="n">sub_window</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">visualizer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">addSubWindow</span><span class="p">(</span><span class="n">sub_window</span><span class="p">)</span>
+        <span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_window_action</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+        <span class="c1"># self.ui.toolBar.addAction(self.visualizerAction)</span>
+        <span class="c1"># to maximize the window on start</span>
+        <span class="c1"># self.visualizer.setWindowState(Qt.WindowMaximized)</span>
+
+<div class="viewcode-block" id="Main.start_visualizer_manual"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.start_visualizer_manual">[docs]</a>    <span class="k">def</span> <span class="nf">start_visualizer_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Starts visualizer-scene keybindings help table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span> <span class="o">=</span> <span class="n">VisualizationManual</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_manual</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">start_project_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on_start_up</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">ProjectLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on_start_up</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">start_project_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span> <span class="o">=</span> <span class="n">ProjectBrowser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">activateWindow</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span> <span class="o">=</span> <span class="n">ProjectBrowser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_browser</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Main.startQswHelp"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.startQswHelp">[docs]</a>    <span class="k">def</span> <span class="nf">startQswHelp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        starts a web browser from QtWebEngineView and displays the readme page</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+        <span class="c1"># call only once</span>
+        <span class="c1"># for item in self.ui.mdiArea.subWindowList():</span>
+        <span class="c1">#     if item.windowTitle() == &quot;Hilfe zu Querschnittswerte&quot;:</span>
+        <span class="c1">#         self.ui.mdiArea.setActiveSubWindow(item)</span>
+        <span class="c1">#         return</span>
+        <span class="c1"># win = QswHelpMainForm()</span>
+        <span class="c1"># self.ui.mdiArea.addSubWindow(win)</span>
+        <span class="c1"># win.show()</span>
+        <span class="c1"># win.setWindowState(QtCore.Qt.WindowMaximized)</span>
+
+<div class="viewcode-block" id="Main.about"><a class="viewcode-back" href="../../../api.html#beamon.ui.main.Main.about">[docs]</a>    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens info page with user manual in the dock widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">intro_widget</span> <span class="o">=</span> <span class="n">Intro</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">intro_widget</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

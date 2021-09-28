@@ -1,0 +1,318 @@
+
+Making A Model
+##############
+
+There are two ways to define Geometry information. Either with an input file (geometry file) or using data
+tables in the user interface.
+
+
+.. _nodes-input:
+
+Nodes And Boundry Conditions
+============================
+
+Nodes are labeled with index numbers and have coordinates in Room.
+Each node has 6 degrees of freedom (DOF) defined in order :math:`u_x, u_y, u_z, \varphi_x, \varphi_y, \varphi_z`
+You can set boundary conditions by locking movement in the desired direction.
+
+With Geometry File
+------------------
+
+Nodes entry begins with keyword '*\node'.
+To lock a movement in a certain direction use 1 and to keep the movement unlocked use 0.
+The following syntax diagram shows the syntax for nodes input.
+
+.. figure:: resources/figures/nodeEntry.png
+
+    Syntax diagram for nodes entry in geometry file
+
+Where dof is defined as:
+
+.. figure:: resources/figures/dof.png
+
+    Syntax diagram for dof in nodes entry in geometry file
+
+**Example**::
+
+    *node
+    -1.0,0.0,0.0,1,1,1,1,1,1
+    0.0,0.0,-1.0,1,1,1,0,0,0
+    1.0,0.0,2.0
+    3.0,0.0,-2.0,1,1,1,0,1,1
+    4.0,0.0,1.0,1,1,1,1,0,1
+    2.0,0.0,2.0,1,1,1,1,1,0
+    3.0,0.0,2.0,1,1,1,1,1,1
+
+first node location is (-1,0,0) and has it's all dof directions locked. Second node location is (0,0,-1) and has all
+translation dof directions locked.
+
+Notice that the third node has only its coordinates defined. All undefined dof numbers will be substituted
+with 0 (unlocked).
+
+With User Interface
+--------------------
+As in nodes, elements and other input tables
+right click on a table row or on an emtpy table to add/remove rows.
+
+Use the checkbox to lock (checked) and
+unlock (unchecked) the movement in a certain direction.
+
+.. image:: resources/figures/NodeEntryGUI.png
+  :alt: Editing Nodes
+
+Nodes and Boundry Conditions Visualization
+------------------------------------------
+
+Nodes are black square points. Orange cones are the boundary conditions (bc) for locking translation in each global direction
+in the cartesian coordinate system. Two nested blue cones are bc for locking rotation in each direction.
+
+.. image:: resources/figures/vis_node.png
+  :alt: Nodes Visualization
+
+
+Elements
+========
+
+Elements are, in this current development stage, 3D Beams. Each element has an index number and is defined using starting
+and ending node index number. Vector :math:`v` is used to define local z-axis. (for further info about element
+orientation see :doc:`theory`)
+
+With Geometry File
+-------------------
+
+Elements entry begins with keyword '*ßelement'. A starting and ending node index must be given.
+Element orientation is optional input and is defined using vector :math:`\vec{v}`.
+If not given default element orientation will be used.
+At last optional but necessary profile number should be given.
+
+The following syntax diagram shows the syntax for elements input.
+
+.. figure:: resources/figures/elementEntry.png
+
+    Syntax diagram for element entry in geometry file
+
+**Example**:
+from nodes example above we can define following elements::
+
+    *element
+    1,2,1,-1,0,0
+    2,3,,0,0,1
+    3,4,1,-1,0,0
+
+first element is defined with nodes 1 and 2 and has profile 1 and orientation vector (1,-1,0).
+Second element has no profile defined and will be excluded from simulation later.
+
+With User Interface
+--------------------
+
+Analogous to :ref:`nodes-input`
+
+Elements Visualization
+----------------------
+
+Visual example of an element defined with nodes 5 and 6. With local axes orientation different from global axes.
+
+.. image:: resources/figures/vis_element.png
+  :alt: Elements Visualization
+
+Nodes Joints
+============
+
+Joints specify which element degree of freedom should be excluded from force transition between two elements.
+In Beamon, the user can change the element's degrees of freedom.
+
+With Geometry File
+------------------
+To define joints use the keyword '*joint'.
+Each entry starts with a valid element index number followed by two sets of 6 optional integer numbers.
+The following syntax diagram hopefully clarifies syntax for joints.
+
+.. figure:: resources/figures/jointEntry.png
+
+    Syntax diagram for joint entry in geometry file
+
+**Example**:
+from elements example above we can define the following joints::
+
+    *joint
+    1,123456,123456
+    2,123,456
+    3,,1
+
+The first join entry detaches element 1 of all degrees of freedom from the structure.
+This will produce a singular system of equations.
+The second entry makes more sense. It detaches :math:`u_x, u_y, u_z` degrees of freedom
+at the beginning of element 2 and detaches :math:`\varphi_x, \varphi_y, \varphi_z` degrees of freedom at the end of
+element 2 from the structure. The third entry detaches :math:`u_x` at the end of element 3.
+
+With User Interface
+-------------------
+
+Element degrees of freedom can be seen only if the user has already defined elements.
+All degrees of freedom can be changed using the checkboxes as in the figure below.
+
+.. image:: resources/figures/jointEntryGUI.png
+  :alt: Editing Joints
+
+
+Joints Visualization
+--------------------
+
+Joint nodes can be detected when yellow spheres are displayed near the nodes in each element's direction.
+
+.. image:: resources/figures/vis_joint.png
+  :alt: Joints Visualization
+
+Nodes Loads
+===========
+
+Nodes Loads or Point Load describes the force that acts at a point.
+Point loads can be only defined using an existing node index number and the following parameters:
+
+:math:`\vec{F}= \left( \begin{array}{c} F_x \\ F_y \\ F_z \end{array}\right)` is Force vector
+and
+:math:`\vec{M}= \left( \begin{array}{c} M_x \\ M_y \\ M_z \end{array}\right)` is momentum vector on the specified node
+
+With Geometry File
+------------------
+
+To define node loads use the keyword '*\load'. Each entry starts with a valid node index number followed by 6
+floating-point numbers for force and momentum vector respectively.
+
+The following syntax diagram hopefully clarifies syntax for point load.
+
+.. figure:: resources/figures/loadEntry.png
+
+    Syntax diagram for load entry in geometry files
+
+**Example**:
+from nodes example above we can define following loads::
+
+    *load
+    2,10000,0,0,0,0,0
+    2, 1,1
+    1, 1,1,1,1,1,1
+
+Note that loads on node 1 are superposition in the calculation.
+The second entry contains only the first two components of the force vector.
+In this case, all other components will be assumed to be zero as if '2,1,1,0,0,0,0' where given.
+
+With User Interface
+--------------------
+
+Analogous to :ref:`nodes-input`
+
+
+Nodes Loads Visualization
+-------------------------
+
+for :math:`\vec{F}= \left(\begin{array}{c} 1 \\ 1 \\ 0 \end{array}\right)` and
+:math:`\vec{M}= \left(\begin{array}{c} 0 \\ 1 \\ 1 \end{array}\right)`
+
+we get the following:
+
+.. image:: resources/figures/vis_loads.png
+
+
+Element Loads
+=============
+
+Element load or distributed load is understood to be a load that is distributed across a connecting element.
+In Beamon such loads are constantly distributed across elements.
+Element loads can be only defined using an existing element index number and the following four parameters:
+* :math:`q_x` force in local x-axis direction
+* :math:`q_y` force in local y-axis direction
+* :math:`q_z` force in local z-axis direction
+* :math:`q_w` momentum in local x-axis direction
+
+With Geometry File
+------------------
+
+To define element loads use the keyword '*\lineload'. Each entry starts with a valid node index number followed by 6
+floating-point numbers for force and momentum vector respectively.
+
+The following syntax diagram describes element load entries.
+
+.. figure:: resources/figures/lineloadEntry.png
+
+    Syntax Diagram of element loads entry in geometry files
+
+**Example**::
+
+    *lineload
+    2,0,1,-7.5e+07,0
+    1,1,0,0,0
+    3,0,0,0,1
+
+first element load entry has constant :math:`q_z=-7.5e+06` value on element 2.
+
+
+With User Interface
+--------------------
+
+Analogous to :ref:`nodes-input`
+
+
+Element Loads Visualization
+---------------------------
+
+From example above we get following visualization
+
+.. image:: resources/figures/vis_lineloads.png
+
+Profiles and BeamSize
+=====================
+
+Simulating 3D Beams requires specific element properties (profiles). Each profile must contain following parameters:
+
+* :math:`E`: modulus of elasticity E
+* :math:`G`: shear modulus
+* :math:`A`: cross section area
+* :math:`Iy`: moment of inertia with respect to the local y-axis
+* :math:`Iz`: moment of inertia with respect to the local z-axis
+* :math:`Kv`: St Venant torsional stiffness
+* :math:`K`: optional spring stiffness (excluded from simulation momentarily)
+
+**Note**: It is assumed that :math:`I_{yz}` is zero.
+
+With Geometry File
+------------------
+
+To define profiles use keyword '\*profile'.
+The following syntax diagram shows how each profile entry should be.
+
+.. figure:: resources/figures/profileEntry.png
+
+    Syntax diagram for profile entries in geometry files
+
+**Example**::
+
+    *profile
+    7e+10,3e+10,0.25,0.00520833,0.00520833,0.00880208,0
+
+With User Interface
+--------------------
+
+Analogous to :ref:`nodes-input`
+
+With BeamSize
+-------------
+
+Calculating profile values could be tricky, especially if you are dealing with complex profiles.
+**BeamSize** should simplify calculating profile values depending on which geometry you use.
+
+It is worth noting that in the current development only profiles with :math:`I_{yz}=0` yield correct simulation results.
+
+Steps to calculate profiles:
+
+1. Choose geometry type (one of the tabs)
+2. Enter profile dimensions in "Dimensions" section or just click and drag one of the handles in the drawing on the right side
+3. Results in "Output" section can be saved by clicking "save" button
+4. Save results in your project by entering modulus of elasticity and shear modulus.
+5. Calculated and entered values can be seen in profiles table in the visualizer.
+
+
+.. figure:: resources/figures/beamsize.png
+
+    BeamSize GUI depicting interaction with drawing.
+

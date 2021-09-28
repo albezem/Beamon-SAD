@@ -1,0 +1,592 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>beamon.ui.callVisualizer &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for beamon.ui.callVisualizer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Maher Albezem, maher.albezem@sla.rwth-aachen.de</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QAbstractTableModel</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span>
+
+<span class="kn">from</span> <span class="nn">beamon.database.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.ElementsTableModel</span> <span class="kn">import</span> <span class="n">ElementsTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.LoadsTableModel</span> <span class="kn">import</span> <span class="n">LoadsTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.ElementLoadsTableModel</span> <span class="kn">import</span> <span class="n">ElementLoadsTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.ProfilesTableModel</span> <span class="kn">import</span> <span class="n">ProfilesTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.JointsTableModel</span> <span class="kn">import</span> <span class="n">JointsTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.ElementsDispTableModel</span> <span class="kn">import</span> <span class="n">ElementsDispTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.ElementsSctionForcesTableModel</span> <span class="kn">import</span> <span class="n">ElementsSectionForcesTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.NodesDispTableModel</span> <span class="kn">import</span> <span class="n">NodesDispTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.NodesSupportTableModel</span> <span class="kn">import</span> <span class="n">NodesSupportTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.StatsTableModel</span> <span class="kn">import</span> <span class="n">StatsTableModel</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.visualizer</span> <span class="kn">import</span> <span class="n">Ui_Form</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.NodesTableModel</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.Delegates</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.pyvista_widget</span> <span class="kn">import</span> <span class="n">PyVistaWidget</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.settings.callGridSettings</span> <span class="kn">import</span> <span class="n">GridSettingsMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.settings.callViewSettings</span> <span class="kn">import</span> <span class="n">ViewSettingsMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.settings.callResultsViewSettings</span> <span class="kn">import</span> <span class="n">ResultsViewSettingsMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.callLoading</span> <span class="kn">import</span> <span class="n">LoadingMainForm</span>
+<span class="kn">from</span> <span class="nn">beamon.simulation</span> <span class="kn">import</span> <span class="n">Simulation</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.callTable</span> <span class="kn">import</span> <span class="n">TableMainForm</span> <span class="k">as</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.callUneditableTable</span> <span class="kn">import</span> <span class="n">UneditableTableMainForm</span> <span class="k">as</span> <span class="n">ResultsTable</span>
+<span class="kn">from</span> <span class="nn">beamon.ui.tables.callDisplayTable</span> <span class="kn">import</span> <span class="n">DisplayTableMainForm</span> <span class="k">as</span> <span class="n">DisplayTable</span>
+
+
+<div class="viewcode-block" id="VisualizerMainForm"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm">[docs]</a><span class="k">class</span> <span class="nc">VisualizerMainForm</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a class calls the compiled visualiser.py file and contains the backend functionality of the GUI</span>
+
+<span class="sd">    Author: Maher Albezem (maher.albezem[at]sla.rwth-aachen.de)</span>
+<span class="sd">    This class calls the compiled GUI visualiser.</span>
+<span class="sd">    The GUI is compiled with pyuic5 from *.ui to *.py extension</span>
+<span class="sd">    This class also contains all the back-end functionality of visualiser.</span>
+
+<span class="sd">    Warning: it is important to set the parent class as QWidget only because of QMdiArea functionality</span>
+<span class="sd">    in the referencing class</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span><span class="p">:</span> <span class="n">Database</span>
+    <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">dimension</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">QAbstractTableModel</span>
+    <span class="n">delegate</span><span class="p">:</span> <span class="n">QItemDelegate</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_ui</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span> <span class="o">=</span> <span class="n">parent_ui</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_Form</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">:</span> <span class="n">Database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">database</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+        <span class="c1"># self.show()</span>
+
+        <span class="c1"># only for testing: to constantly watch variables</span>
+        <span class="c1"># self.animation()</span>
+
+        <span class="c1"># the drawing state of the visualiser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+        <span class="c1"># set visualization component</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">:</span> <span class="n">PyVistaWidget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">widget</span>
+        <span class="c1"># show model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">m_id</span><span class="p">)</span>
+
+        <span class="c1"># self.visualization = PyVistaWidget(self.ui.frame, self)</span>
+        <span class="c1"># self.ui.widget = self.visualization</span>
+        <span class="c1"># preset warning component</span>
+        <span class="c1"># self.gif = QMovie(&#39;:/tree/loading_animation.gif&#39;)</span>
+        <span class="c1"># self.gif.setScaledSize(QSize(150, 150))</span>
+        <span class="c1"># self.warning_label = QLabel()</span>
+        <span class="c1"># self.warning_label.setMovie(self.gif)</span>
+
+        <span class="c1"># specify a dataset for the visualization</span>
+        <span class="c1"># self.visualization.set_dataset(self.parent.database)</span>
+        <span class="c1"># initiate visualization settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_settings</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menu_requested</span><span class="p">)</span>
+        <span class="c1"># expand tools window tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">treeWidget</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span> <span class="o">=</span> <span class="n">ResultsTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table_widget</span> <span class="o">=</span> <span class="n">DisplayTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="c1"># add context menu actions</span>
+        <span class="c1"># self.ui.widget.ui.setContextMenuPolicy(Qt.CustomContextMenu)</span>
+        <span class="c1"># self.ui.widget.ui.customContextMenuRequested.connect(self.on_custom_context_menu_requested)</span>
+        <span class="c1"># self.display_coordinate_system = QAction(&quot;Koordinatensystem&quot;)</span>
+        <span class="c1"># self.display_coordinate_system.setCheckable(True)</span>
+        <span class="c1"># self.display_coordinate_system.setIcon(QIcon(&#39;:/tree/coordinates.png&#39;))</span>
+        <span class="c1"># self.display_coordinate_system.triggered.connect(self.display_global_coordinate_system)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">visibilityChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_state_changed</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.init_settings"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.init_settings">[docs]</a>    <span class="k">def</span> <span class="nf">init_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads the settings from dataset and adjust visualization settings accordingly</span>
+<span class="sd">        If ther is no predefined settings default settings will be loaded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_grid_settings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_view_settings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_results_view_settings</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">update_grid_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">grid_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_grid_settings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">grid_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># set default grid settings</span>
+            <span class="n">grid_x1origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">grid_x2origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">grid_x3origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">grid_n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">grid_n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">grid_n3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">grid_xtick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_xtick</span>
+            <span class="n">grid_ytick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">grid_ytick</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_x1origin</span><span class="p">,</span> <span class="n">grid_x2origin</span><span class="p">,</span> <span class="n">grid_x3origin</span><span class="p">,</span> <span class="n">grid_n1</span><span class="p">,</span> <span class="n">grid_n2</span><span class="p">,</span> <span class="n">grid_n3</span><span class="p">,</span> <span class="n">grid_xtick</span><span class="p">,</span> <span class="n">grid_ytick</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">set_grid_settings</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_grid_settings</span><span class="p">(</span><span class="n">grid_settings</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">view_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_view_settings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ele</span><span class="p">:</span> <span class="n">ele</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="n">view_settings</span><span class="p">)):</span>  <span class="c1"># check if any value is None</span>
+            <span class="c1"># set default view settings</span>
+            <span class="n">view_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">dim</span>
+            <span class="n">show_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_labels</span>
+            <span class="n">show_local_systems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_local_systems</span>
+            <span class="n">show_bc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_bc</span>
+            <span class="n">show_node_loads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_node_loads</span>
+            <span class="n">show_line_loads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_line_loads</span>
+            <span class="n">show_color_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">show_color_bar</span>
+
+            <span class="n">params</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">view_dim</span><span class="p">,</span> <span class="n">show_labels</span><span class="p">,</span> <span class="n">show_local_systems</span><span class="p">,</span> <span class="n">show_bc</span><span class="p">,</span> <span class="n">show_node_loads</span><span class="p">,</span> <span class="n">show_line_loads</span><span class="p">,</span> <span class="n">show_color_bar</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">set_view_settings</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_view_settings</span><span class="p">(</span><span class="n">view_settings</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_results_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">results_view_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_results_view_settings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">results_view_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># set default view settings</span>
+            <span class="n">settings_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">results_view_map</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">set_results_view_settings</span><span class="p">(</span><span class="n">settings_map</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_results_view_settings</span><span class="p">(</span><span class="n">results_view_map</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.treeClicked"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.treeClicked">[docs]</a>    <span class="k">def</span> <span class="nf">treeClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets called when an item in the tree is clicked or entered</span>
+<span class="sd">        :param index: QModelItem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Nodes&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_nodes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Elements&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_links</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Joints&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_joints</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Nodes Loads&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_loads</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Elements Loads&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_lineloads</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Profiles&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_profiles</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BeamSize Calculator&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">startBeamSize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Start Simulation&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Extreme Values&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_statistics</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Local Elements Displacements&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_elements_displacements</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Local Elements Section Forces&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_elements_inner_forces</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Global Nodes Displacements&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_nodes_displacements</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Global Nodes Support Forces&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_nodes_support_forces</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Grid&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_grid_settings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;View&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_view_settings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">data</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;View Results&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_results_view_settings</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.start_grid_settings"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.start_grid_settings">[docs]</a>    <span class="k">def</span> <span class="nf">start_grid_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call grid settings ui and block the main ui</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ui</span> <span class="o">=</span> <span class="n">GridSettingsMainForm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.start_view_settings"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.start_view_settings">[docs]</a>    <span class="k">def</span> <span class="nf">start_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call view settings ui and block the main ui</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ui</span> <span class="o">=</span> <span class="n">ViewSettingsMainForm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.start_results_view_settings"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.start_results_view_settings">[docs]</a>    <span class="k">def</span> <span class="nf">start_results_view_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call results view settings ui and block the main ui</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ui</span> <span class="o">=</span> <span class="n">ResultsViewSettingsMainForm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.table_state_changed"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.table_state_changed">[docs]</a>    <span class="k">def</span> <span class="nf">table_state_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This gets called when dock widget gets toggled</span>
+<span class="sd">        :param state: visibility state of the dock widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">on_custom_context_menu_requested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_coordinate_system</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">display_global_coordinate_system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_coordinate_system</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">display_global_coordinate_system</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">hide_global_coordinate_system</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.keyPressEvent"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Escape</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">treeWidget</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">treeWidget</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">set_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_dimension</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.change_nodes"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.change_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">change_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the nodes table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_nodes&quot;</span>
+
+        <span class="c1"># init nodes table model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">NodesTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+
+        <span class="c1"># give the view the model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># give the view the controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Nodes | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.change_links"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.change_links">[docs]</a>    <span class="k">def</span> <span class="nf">change_links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the links table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">has_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s2">&quot;No Nodes Available!&quot;</span><span class="p">,</span> <span class="s2">&quot;add new nodes to build a structure&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_elements&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ElementsTableModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Elements | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.change_joints"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.change_joints">[docs]</a>    <span class="k">def</span> <span class="nf">change_joints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls the joints table</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_display_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_joints&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">JointsTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Joints | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">change_loads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">has_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s2">&quot;No Nodes Available!&quot;</span><span class="p">,</span> <span class="s2">&quot;add new nodes to build a structure&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_loads&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">LoadsTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Loads | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">change_lineloads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">has_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s2">&quot;No Elements Available!&quot;</span><span class="p">,</span> <span class="s2">&quot;add new elements to build a structure&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_lineloads&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ElementLoadsTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Elements Loads | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">change_profiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;edit_profiles&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ProfilesTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnHidden</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Edit Profiles&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_results_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;display_stats&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">element_stats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">StatsTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">element_stats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Simulation Statistics | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_elements_displacements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_results_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;display_el_disp&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">local_element_displacements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ElementsDispTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">local_element_displacements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Local Elements Displacements | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_elements_inner_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_results_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;display_el_sec&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">local_element_section_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ElementsSectionForcesTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">local_element_section_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">),</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">element_stats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Local Elements Section Forces | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_nodes_displacements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_results_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;display_node_displacements&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">NodesDispTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Global Nodes Displacements | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_nodes_support_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_results_table_widget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;display_node_displacements&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">NodesSupportTableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">nodes_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">]],</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">InLineEditDelegate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegate</span><span class="p">)</span>
+        <span class="c1"># show the table widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Global Nodes Support Forces | &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.reset_inputfields"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.reset_inputfields">[docs]</a>    <span class="k">def</span> <span class="nf">reset_inputfields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets all buttons in the GUI to normal state again</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># reset input mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">toggle_dockwidget</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VisualizerMainForm.closeEvent"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+        <span class="c1"># remove the action in the toolBar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove_window_action</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">removeSubWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">mdiArea</span><span class="o">.</span><span class="n">activeSubWindow</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">warn_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Warning</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Table &quot;</span> <span class="o">+</span> <span class="n">table_name</span> <span class="o">+</span> <span class="s2">&quot; will be closed&quot;</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setInformativeText</span><span class="p">(</span><span class="s2">&quot;möchten Sie die Tabelle schließen?&quot;</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Hinweis&quot;</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setDetailedText</span><span class="p">(</span><span class="s2">&quot;Tabellen, die nicht übernommen worden sind, werden nicht gespeichert&quot;</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.display_log"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.display_log">[docs]</a>    <span class="k">def</span> <span class="nf">display_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays a log message on the status bar of the Main window and saves the message to the log</span>
+<span class="sd">        @param message: String</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># save log to global log entries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">append_to_log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">changeDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_dimension</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VisualizerMainForm.context_menu_requested"><a class="viewcode-back" href="../../../api.html#beamon.ui.callVisualizer.VisualizerMainForm.context_menu_requested">[docs]</a>    <span class="k">def</span> <span class="nf">context_menu_requested</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Context menu for visualizer</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="c1"># TODO: implementation please!</span>
+
+    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_log</span><span class="p">(</span><span class="s2">&quot;Simulation started&quot;</span><span class="p">)</span>
+        <span class="n">ui</span> <span class="o">=</span> <span class="n">LoadingMainForm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># start simulation inside loading with a second thread</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_log</span><span class="p">(</span><span class="s2">&quot;Simulation ended&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">update_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">m_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_table_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_widget</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_results_table_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_table_widget</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_display_table_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_ui</span><span class="o">.</span><span class="n">tableDockWidget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_table_widget</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">m_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">m_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">m_id</span><span class="p">,</span> <span class="n">m_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_inputfields</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contrib.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

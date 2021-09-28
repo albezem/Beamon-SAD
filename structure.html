@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Structure &#8212; Beamon SAD alpha documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Implementation Details" href="implementation.html" />
+    <link rel="prev" title="Programming Environment" href="env.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="project-structure">
+<h1>Project Structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h1>
+<p>For structuring python projects read the Hitchhiker’s Guid to Python <a class="reference external" href="https://docs.python-guide.org/writing/structure/">here</a>.</p>
+<div class="section" id="directives-structure">
+<h2>Directives Structure<a class="headerlink" href="#directives-structure" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">/</span><span class="n">F</span>
+<span class="go">.</span>
+<span class="go">|   .gitattributes</span>
+<span class="go">│   .gitignore</span>
+<span class="go">│   LICENSE</span>
+<span class="go">│   make.bat</span>
+<span class="go">│   make.sh</span>
+<span class="go">│   README.md</span>
+<span class="go">│   requirements.txt</span>
+<span class="go">│   runbeamon.spec</span>
+<span class="go">│   setup.py</span>
+<span class="go">├───beamon</span>
+<span class="go">│   ├───resources</span>
+<span class="go">│   │   ├───custom_icons</span>
+<span class="go">│   │   └───ui</span>
+<span class="go">│   ├───ui</span>
+<span class="go">│   │   ├───expansions</span>
+<span class="go">│   │   ├───settings</span>
+<span class="go">│   │   ├───tables</span>
+<span class="go">├───build</span>
+<span class="go">├───dist</span>
+<span class="go">├───docs</span>
+<span class="go">│   ├───build</span>
+<span class="go">│   ├───release</span>
+<span class="go">│   └───source</span>
+<span class="go">│       ├───resources</span>
+<span class="go">│       │   └───figures</span>
+<span class="go">│       └───_static</span>
+<span class="go">├───releases</span>
+<span class="go">│   └───alpha</span>
+<span class="go">├───resources</span>
+<span class="go">└───tests</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="discription">
+<h2>Discription<a class="headerlink" href="#discription" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-actual-module">
+<h3>The Actual Module<a class="headerlink" href="#the-actual-module" title="Permalink to this headline">¶</a></h3>
+<p>This is where the core focus of the repository is.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./beamon/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Programs code</p></td>
+</tr>
+</tbody>
+</table>
+<p>When user lunches Beamon as a python package using python interpreter, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">beamon</span>
+</pre></div>
+</div>
+<p>file __main__.py will be executed.
+On the other hand __main.py will be executed if beamon executable e.g. <cite>runbeamon.exe</cite> is called using bash</p>
+</div>
+<div class="section" id="release-files">
+<h3>Release Files<a class="headerlink" href="#release-files" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./releases</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>All executables releases</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./docs/release</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>latest documentation release</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resources">
+<h3>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./beamon/resources</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>program dependent resources for running</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./resources</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>project dependent resources</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="license">
+<h3>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./LICENSE</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Copyright</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="setup-py">
+<h3>Setup.py<a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./setup.py</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package and distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="make">
+<h3>Make<a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./make.bat and ./make.sh</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>make for both linux and windows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pyinstaller-specification">
+<h3>PyInstaller Specification:<a class="headerlink" href="#pyinstaller-specification" title="Permalink to this headline">¶</a></h3>
+<p>This file is auto generated from make and excluded from remote repository. It can be modified for testing purposes.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./runbeamon.spec</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>secure distribution management.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="distribution-files">
+<h3>Distribution files<a class="headerlink" href="#distribution-files" title="Permalink to this headline">¶</a></h3>
+<p>This directory is also autogenerated and excluded from remote repository.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./dist/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>distributing Beamon as package or executable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="requirements-file">
+<h3>Requirements File<a class="headerlink" href="#requirements-file" title="Permalink to this headline">¶</a></h3>
+<p>Contains all dependencies for the project.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./requirements.txt</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Developers evironment dependencies</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<p>It is worth noting that the <strong>release</strong> directory inside <strong>docs</strong> is the latest documentation release.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./docs/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package reference documentation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test-suite">
+<h3>Test Suite<a class="headerlink" href="#test-suite" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Location</p></td>
+<td><p>./tests/</p></td>
+</tr>
+<tr class="row-even"><td><p>Purpose</p></td>
+<td><p>Package integration and unit tests.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/sla-logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="making_a_model.html">Making A Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contrib.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="env.html">Programming Environment</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Project Structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#directives-structure">Directives Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#discription">Discription</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-actual-module">The Actual Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-files">Release Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-py">Setup.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#make">Make</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyinstaller-specification">PyInstaller Specification:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distribution-files">Distribution files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements-file">Requirements File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-suite">Test Suite</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto.html">How TOs</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="contrib.html">Contributing</a><ul>
+      <li>Previous: <a href="env.html" title="previous chapter">Programming Environment</a></li>
+      <li>Next: <a href="implementation.html" title="next chapter">Implementation Details</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Maher Albezem.
+      
+      |
+      <a href="_sources/structure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
